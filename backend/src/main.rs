@@ -130,19 +130,15 @@ async fn start_scan(req: actix_web::HttpRequest, data: web::Data<AppState>, body
     }
     let task_config = config.clone();
     let status_clone = Arc::clone(&status);
-    let db_path = config.db_path.clone();
     let webhook_url = config.webhook_url.clone();
     let scan_id_clone = scan_id.clone();
     let target_clone = target.clone();
     let scan_mode_clone = scan_mode.clone();
     tokio::spawn(async move {
+        let scan_status = status_clone.clone();
         scanner.run_full_scan(status_clone, mode_cfg, &task_config).await;
-        // Persist to database after completion
-        let phase = status.get_phase().as_str().to_string();
-        let alerts = status.get_alerts();
-        if let Ok(conn) = rusqlite::Connection::open(&db_path) {
-            let _ = db::update_scan_result(&conn, &status.scan_id, &phase, &alerts);
-        }
+        let phase = scan_status.get_phase().as_str().to_string();
+        let alerts = scan_status.get_alerts();
         // Fire webhook notification if configured
         if let Some(url) = webhook_url {
             if phase == "complete" || phase == "stopped" {
@@ -162,13 +158,6 @@ async fn start_scan(req: actix_web::HttpRequest, data: web::Data<AppState>, body
             }
         }
     });
-
-    // Save scan start to DB
-    {
-        if let Ok(conn) = rusqlite::Connection::open(&config.db_path) {
-            let _ = db::save_scan(&conn, &scan_id, &target, &scan_mode);
-        }
-    }
 
     info!(scan_id = %scan_id, target = %target, "Scan queued");
 
@@ -243,20 +232,6 @@ async fn get_results(data: web::Data<AppState>, path: web::Path<String>) -> Http
         });
     }
 
-    // Fall back to database for persisted scans
-    if let Ok(conn) = rusqlite::Connection::open(&data.config.db_path) {
-        if let Some((entry, alerts)) = db::load_scan_results(&conn, &scan_id) {
-            return HttpResponse::Ok().json(ResultsResponse {
-                scan_id: entry.scan_id,
-                target_url: entry.target_url,
-                phase: entry.phase,
-                total_alerts: entry.total_alerts,
-                summary: entry.alert_summary,
-                alerts,
-            });
-        }
-    }
-
     HttpResponse::NotFound().json(serde_json::json!({
         "detail": "Scan not found"
     }))
@@ -264,11 +239,9 @@ async fn get_results(data: web::Data<AppState>, path: web::Path<String>) -> Http
 
 async fn get_history(data: web::Data<AppState>) -> HttpResponse {
     let scans = data.scans.read().await;
-    let mut in_memory_ids = std::collections::HashSet::new();
     let mut entries: Vec<HistoryEntry> = scans
         .values()
         .map(|s| {
-            in_memory_ids.insert(s.scan_id.clone());
             let alerts = s.get_alerts();
             let summary = AlertSummary::from_alerts(&alerts);
             HistoryEntry {
@@ -284,15 +257,6 @@ async fn get_history(data: web::Data<AppState>) -> HttpResponse {
         })
         .collect();
 
-    // Merge from database for persisted scans not in memory
-    if let Ok(conn) = rusqlite::Connection::open(&data.config.db_path) {
-        for entry in db::load_history(&conn) {
-            if !in_memory_ids.contains(&entry.scan_id) {
-                entries.push(entry);
-            }
-        }
-    }
-
     // Newest first
     entries.sort_by(|a, b| {
         b.started_at
@@ -300,6 +264,16 @@ async fn get_history(data: web::Data<AppState>) -> HttpResponse {
             .unwrap_or(std::cmp::Ordering::Equal)
     });
     HttpResponse::Ok().json(entries)
+}
+
+async fn delete_scan(data: web::Data<AppState>, path: web::Path<String>) -> HttpResponse {
+    let scan_id = path.into_inner();
+    let mut scans = data.scans.write().await;
+    scans.remove(&scan_id);
+    HttpResponse::Ok().json(serde_json::json!({
+        "scan_id": scan_id,
+        "message": "Scan deleted"
+    }))
 }
 
 async fn export_scan(
@@ -539,18 +513,6 @@ async fn main() -> std::io::Result<()> {
             .unwrap_or(100),
     };
 
-    // Initialize database
-    db::ensure_db_dir(&config.db_path);
-    if let Ok(conn) = rusqlite::Connection::open(&config.db_path) {
-        if db::init_db(&conn).is_ok() {
-            info!("Database initialized at {}", config.db_path);
-        } else {
-            warn!("Failed to initialize database — scans will not be persisted");
-        }
-    } else {
-        warn!("Failed to open database — scans will not be persisted");
-    }
-
     info!(zap_url = %zap_url, "BlackHawk API starting");
     info!(
         active_scan_enabled = active_scan_enabled,
@@ -591,6 +553,7 @@ async fn main() -> std::io::Result<()> {
             .route("/api/results/{scan_id}", web::get().to(get_results))
             .route("/api/history", web::get().to(get_history))
             .route("/api/export/{scan_id}", web::get().to(export_scan))
+            .route("/api/delete/{scan_id}", web::post().to(delete_scan))
             // Serve index.html at root
             .route("/", web::get().to(serve_index));
 

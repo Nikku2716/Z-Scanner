@@ -55,9 +55,8 @@
 
         // History
         historyList:     $("#historyList"),
+        historyError:    $("#historyError"),
 
-        // Ambient
-        ambientCanvas:   $("#ambientCanvas"),
     };
 
     let currentScanId = null;
@@ -99,136 +98,8 @@
     updateClock();
     setInterval(updateClock, 1000);
 
-    // ------------------------------------------------------------------
-    // Ambient three.js scene
-    // ------------------------------------------------------------------
-    function initAmbientCanvas() {
-        const canvas = dom.ambientCanvas;
-        if (!canvas || !window.THREE || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 300;
-
-        const renderer = new THREE.WebGLRenderer({
-            canvas,
-            alpha: true,
-            antialias: true,
-        });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        const COUNT = 45;
-        const positions = new Float32Array(COUNT * 3);
-        const velocities = [];
-
-        for (let i = 0; i < COUNT; i++) {
-            positions[i * 3] = (Math.random() - 0.5) * 400;
-            positions[i * 3 + 1] = (Math.random() - 0.5) * 400;
-            positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
-            velocities.push({
-                x: (Math.random() - 0.5) * 0.15,
-                y: (Math.random() - 0.5) * 0.12,
-            });
-        }
-
-        const geometry = new THREE.BufferGeometry();
-        geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-
-        const material = new THREE.PointsMaterial({
-            color: 0x2bee4b,
-            size: 2.5,
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-        });
-
-        const particles = new THREE.Points(geometry, material);
-        scene.add(particles);
-
-        // Connection lines
-        const lineMat = new THREE.LineBasicMaterial({
-            color: 0x2bee4b,
-            transparent: true,
-            opacity: 0.04,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-        });
-
-        let lineGeo, lines;
-
-        function updateConnections() {
-            const pos = geometry.attributes.position.array;
-            const pairs = [];
-            const maxDist = 220;
-
-            for (let i = 0; i < COUNT; i++) {
-                for (let j = i + 1; j < COUNT; j++) {
-                    const dx = pos[i * 3] - pos[j * 3];
-                    const dy = pos[i * 3 + 1] - pos[j * 3 + 1];
-                    const dz = pos[i * 3 + 2] - pos[j * 3 + 2];
-                    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-                    if (dist < maxDist) {
-                        pairs.push(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
-                        pairs.push(pos[j * 3], pos[j * 3 + 1], pos[j * 3 + 2]);
-                    }
-                }
-            }
-
-            if (lines) {
-                scene.remove(lines);
-                lines.geometry.dispose();
-            }
-
-            if (pairs.length > 0) {
-                lineGeo = new THREE.BufferGeometry();
-                lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(pairs, 3));
-                lines = new THREE.LineSegments(lineGeo, lineMat);
-                scene.add(lines);
-            } else {
-                lines = null;
-            }
-        }
-
-        updateConnections();
-
-        function animate() {
-            const pos = geometry.attributes.position.array;
-            for (let i = 0; i < COUNT; i++) {
-                pos[i * 3] += velocities[i].x;
-                pos[i * 3 + 1] += velocities[i].y;
-                if (Math.abs(pos[i * 3]) > 200) velocities[i].x *= -1;
-                if (Math.abs(pos[i * 3 + 1]) > 200) velocities[i].y *= -1;
-            }
-            geometry.attributes.position.needsUpdate = true;
-            updateConnections();
-            renderer.render(scene, camera);
-            raf = requestAnimationFrame(animate);
-        }
-
-        let raf = requestAnimationFrame(animate);
-
-        function resize() {
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-            renderer.setSize(w, h);
-        }
-
-        window.addEventListener("resize", resize);
-
-        document.addEventListener("visibilitychange", () => {
-            if (document.hidden && raf) {
-                cancelAnimationFrame(raf);
-                raf = null;
-            } else if (!document.hidden && !raf) {
-                updateConnections();
-                raf = requestAnimationFrame(animate);
-            }
-        });
-    }
+    // Ambient — intentionally omitted.
+    // Adcker is flat, zero elevation, no abstract graphics, no illustrations.
 
     // Scroll reveal observer
     // ------------------------------------------------------------------
@@ -380,16 +251,20 @@
         dom.scanPhaseLabel.querySelector("span:last-child").textContent = text;
 
         if (phase === "complete") {
-            dot.style.background = "var(--color-risk-low)";
+            dot.style.background = "#191919";
+            dot.style.opacity = "0.3";
             dot.style.animation = "none";
         } else if (phase === "error") {
-            dot.style.background = "var(--color-risk-high)";
+            dot.style.background = "#191919";
+            dot.style.opacity = "1";
             dot.style.animation = "none";
         } else if (phase === "stopped") {
-            dot.style.background = "var(--color-risk-medium)";
+            dot.style.background = "#191919";
+            dot.style.opacity = "0.6";
             dot.style.animation = "none";
         } else {
-            dot.style.background = "var(--color-voltage)";
+            dot.style.background = "#191919";
+            dot.style.opacity = "0.8";
             dot.style.animation = "";
         }
     }
@@ -408,6 +283,18 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.detail || `Request failed (${res.status})`);
+        }
+        return res.json();
+    }
+
+    async function apiDelete(path) {
+        const res = await fetch(API_BASE + path, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
         });
         if (!res.ok) {
             const err = await res.json().catch(() => ({}));
@@ -532,7 +419,7 @@
             // Update severity chart
             updateSeverityChart(data.summary);
 
-            allAlerts = data.alerts || [];
+            allAlerts = deduplicateAlerts(data.alerts || []);
             renderAlerts(allAlerts);
             resetFilterTabs();
 
@@ -701,6 +588,22 @@
         return div.innerHTML;
     }
 
+    function deduplicateAlerts(alerts) {
+        const seen = new Map();
+        return alerts.filter((a) => {
+            const key = a.name + "|||" + a.risk;
+            if (seen.has(key)) {
+                const existing = seen.get(key);
+                if (a.url && existing.urls.indexOf(a.url) === -1) {
+                    existing.urls.push(a.url);
+                }
+                return false;
+            }
+            seen.set(key, { urls: a.affected_urls || (a.url ? [a.url] : []) });
+            return true;
+        });
+    }
+
     function resetFilterTabs() {
         $$("#filterTabs .filter-btn").forEach((t) => t.classList.remove("active"));
         $("#filterTabs .filter-btn[data-filter='all']").classList.add("active");
@@ -823,11 +726,13 @@
                         ${entry.alert_summary.Medium ? `<span class="history-badge history-badge--med">${entry.alert_summary.Medium}M</span>` : ""}
                         ${entry.alert_summary.Low ? `<span class="history-badge history-badge--low">${entry.alert_summary.Low}L</span>` : ""}
                     </div>
+                    <button class="history-item__delete" aria-label="Delete scan" title="Delete">✕</button>
                 </div>`;
         }).join("");
     }
 
     async function handleHistoryClick(e) {
+        if (e.target.closest(".history-item__delete")) return;
         const item = e.target.closest(".history-item");
         if (!item) return;
         const scanId = item.dataset.scanId;
@@ -836,6 +741,37 @@
         // Load results for this scan
         currentScanId = scanId;
         await showResults();
+    }
+
+    async function handleHistoryDelete(e) {
+        const btn = e.target.closest(".history-item__delete");
+        if (!btn) return;
+        e.stopPropagation();
+        e.preventDefault();
+        const item = btn.closest(".history-item");
+        if (!item) return;
+        const scanId = item.dataset.scanId;
+        if (!scanId) return;
+
+        dom.historyError.textContent = "";
+        // Remove from DOM immediately
+        item.remove();
+        // Show empty state if no more items
+        if (!dom.historyList.querySelector(".history-item")) {
+            dom.historyList.innerHTML = `<div class="history-empty"><p>No scans yet. Start a scan to see history here.</p></div>`;
+        }
+
+        try {
+            const res = await fetch(API_BASE + `/api/delete/${scanId}`, {
+                method: "POST",
+            });
+            if (!res.ok) {
+                const text = await res.text().catch(() => "");
+                dom.historyError.textContent = `Delete failed (${res.status}): ${text.slice(0, 120)}`;
+            }
+        } catch (err) {
+            dom.historyError.textContent = `Delete error: ${err.message}`;
+        }
     }
 
     // ------------------------------------------------------------------
@@ -899,14 +835,14 @@
     dom.exportJsonBtn.addEventListener("click", () => exportResults("json"));
     dom.exportCsvBtn.addEventListener("click", () => exportResults("csv"));
 
-    // History click handler
+    // History click handlers
     dom.historyList.addEventListener("click", handleHistoryClick);
+    dom.historyList.addEventListener("click", handleHistoryDelete);
 
     // Load history on start
     loadHistory();
 
-    // Init ambient background animation
-    initAmbientCanvas();
+    // Ambient omitted — flat brutalist editorial surface
 
     // Init scroll reveal observer
     initScrollReveal();

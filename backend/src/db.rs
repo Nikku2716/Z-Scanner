@@ -234,3 +234,10 @@ pub fn load_scan_results(conn: &Connection, scan_id: &str) -> Option<(HistoryEnt
 
     Some((entry, alerts))
 }
+
+pub fn delete_scan(conn: &Connection, scan_id: &str) -> Result<bool> {
+    conn.execute("DELETE FROM alerts WHERE scan_id = ?1", params![scan_id])?;
+    let deleted = conn.execute("DELETE FROM scans WHERE scan_id = ?1", params![scan_id])?;
+    info!(scan_id = %scan_id, rows = deleted, "Scan deleted from database");
+    Ok(deleted > 0)
+}
