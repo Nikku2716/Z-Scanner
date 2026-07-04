@@ -5,7 +5,7 @@
 Built with a **Go** backend and a **React/Vite** frontend, orchestrated via Docker Compose.
 
 <p align="center">
-  <img src="screenshots/screenshot1.png" alt="BlackHawk dashboard screenshot" width="49%">
+  <img src="screenshots/screenshot1.png" alt="BlackHawk dashboard screenshot" width="100%">
 </p>
 
 ---
@@ -126,4 +126,4 @@ BlackHawk/
 
 ## License
 
-[LICENSE](LICENSE).
+[GNU GPLv3](LICENSE).
