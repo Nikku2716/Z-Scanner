@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BlackHawk Report — {{.Scan.Target}}</title>
+  <style>
+    body { font-family: 'Courier New', monospace; background: #0a0e14; color: #c9d1d9; margin: 2rem; }
+    h1 { color: #00e5ff; font-size: 1.5rem; }
+    .meta { color: #6b7280; margin-bottom: 2rem; }
+    .summary { display: flex; gap: 1rem; margin-bottom: 2rem; }
+    .badge { padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; }
+    .high { background: #7f1d1d; color: #fca5a5; }
+    .medium { background: #78350f; color: #fcd34d; }
+    .low { background: #1e3a5f; color: #93c5fd; }
+    .info { background: #1f2937; color: #9ca3af; }
+    .alert { border: 1px solid #1f2937; border-left: 3px solid #00e5ff; padding: 1rem; margin-bottom: 1rem; }
+    .alert h3 { margin: 0 0 0.5rem; color: #e5e7eb; }
+    .alert .url { color: #00e5ff; font-size: 0.875rem; word-break: break-all; }
+    .alert p { margin: 0.25rem 0; font-size: 0.875rem; color: #9ca3af; }
+  </style>
+</head>
+<body>
+  <h1>BlackHawk Scan Report</h1>
+  <div class="meta">
+    <div>Target: {{.Scan.Target}}</div>
+    <div>Status: {{.Scan.Status}}</div>
+    <div>Mode: {{.Scan.Config.Mode}}</div>
+    <div>Scanned: {{.Scan.CreatedAt.Format "2006-01-02 15:04 UTC"}}</div>
+  </div>
+  <div class="summary">
+    <span class="badge high">High: {{index .Counts "High"}}</span>
+    <span class="badge medium">Medium: {{index .Counts "Medium"}}</span>
+    <span class="badge low">Low: {{index .Counts "Low"}}</span>
+    <span class="badge info">Info: {{index .Counts "Informational"}}</span>
+  </div>
+  {{range .Scan.Alerts}}
+  <div class="alert">
+    <h3>[{{.Risk}}] {{.Name}}</h3>
+    <div class="url">{{.URL}}</div>
+    <p><strong>Plugin:</strong> {{.PluginID}}{{if .Param}} · <strong>Param:</strong> {{.Param}}{{end}}{{if .Method}} · <strong>Method:</strong> {{.Method}}{{end}}</p>
+    {{if .Attack}}<p><strong>Attack:</strong> {{.Attack}}</p>{{end}}
+    {{if .Evidence}}<p><strong>Evidence:</strong> {{.Evidence}}</p>{{end}}
+    <p>{{.Description}}</p>
+    <p><strong>Solution:</strong> {{.Solution}}</p>
+  </div>
+  {{end}}
+</body>
+</html>

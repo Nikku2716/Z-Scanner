@@ -1,19 +1,8 @@
-.agent
-.agents
-.gemini
-
-# Rust build artifacts
-backend/target/
-
-# Database
-data/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS
+.env
+*.db
+node_modules/
+dist/
+backend/bin/
+frontend/dist/
+*.tsbuildinfo
 .DS_Store
-Thumbs.db
