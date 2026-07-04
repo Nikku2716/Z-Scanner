@@ -6,7 +6,6 @@ Built with a **Go** backend and a **React/Vite** frontend, orchestrated via Dock
 
 <p align="center">
   <img src="screenshots/screenshot1.png" alt="BlackHawk dashboard screenshot" width="49%">
-  <img src="screenshots/screenshot2.png" alt="BlackHawk report screenshot" width="49%">
 </p>
 
 ---
@@ -127,4 +126,4 @@ BlackHawk/
 
 ## License
 
-BlackHawk is open source software licensed under the **GNU General Public License v3.0 or later**. See [LICENSE](LICENSE).
+[LICENSE](LICENSE).
