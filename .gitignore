@@ -6,3 +6,4 @@ backend/bin/
 frontend/dist/
 *.tsbuildinfo
 .DS_Store
+.agents/
