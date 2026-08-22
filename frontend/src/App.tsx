@@ -1,4 +1,5 @@
-import { NavLink, Route, Routes } from 'react-router-dom';
+import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import NewScan from './pages/NewScan';
 import ScanProgress from './pages/ScanProgress';
@@ -6,17 +7,27 @@ import Report from './pages/Report';
 import Capabilities from './pages/Capabilities';
 
 export default function App() {
+  const location = useLocation();
+  const isLanding = location.pathname === '/';
+
+  if (isLanding) {
+    return (
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
+    );
+  }
+
   return (
     <div className="layout">
       <aside className="sidebar">
         <div className="logo">
-          <span className="logo-mark" aria-hidden="true">bh</span>
-          <div>
-            BLACKHAWK
-            <span>vulnerability scanner</span>
-          </div>
+          <span className="logo-title">
+            <span className="logo-text-black">Black</span>
+            <span className="logo-text-hawk">Hawk</span>
+          </span>
         </div>
-        <NavLink to="/" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} end>
+        <NavLink to="/dashboard" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} end>
           <span className="material-symbols-outlined">grid_view</span>
           Dashboard
         </NavLink>
@@ -28,26 +39,26 @@ export default function App() {
           <span className="material-symbols-outlined">auto_awesome</span>
           Capabilities
         </NavLink>
+        <NavLink to="/" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+          <span className="material-symbols-outlined">home</span>
+          Landing
+        </NavLink>
         <div className="sidebar-footer">
           <div className="version">
-            <span className="material-symbols-outlined">draw</span>
-            v0.1.0-stable
+            <span className="material-symbols-outlined">terminal</span>
+            v0.1.0
           </div>
         </div>
       </aside>
       <main className="main">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/scan/new" element={<NewScan />} />
           <Route path="/scan/:id" element={<ScanProgress />} />
           <Route path="/report/:id" element={<Report />} />
           <Route path="/capabilities" element={<Capabilities />} />
         </Routes>
       </main>
-      <footer className="site-footer">
-        <span>Developed by ghostblade</span>
-        <span>opensource.</span>
-      </footer>
     </div>
   );
 }
