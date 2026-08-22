@@ -1,6 +1,7 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, type ScanMode } from '../api/client';
+import gsap from 'gsap';
 
 const MODES: { value: ScanMode; label: string; desc: string; icon: string }[] = [
   { value: 'quick', label: 'Quick', desc: 'Fast surface scan, 5 pages max', icon: 'bolt' },
@@ -15,6 +16,33 @@ export default function NewScan() {
   const [mode, setMode] = useState<ScanMode>('quick');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced || !containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.gsap-header > *',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: 'power2.out' }
+      );
+      gsap.fromTo(
+        '.gsap-form',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.4, delay: 0.15, ease: 'power2.out' }
+      );
+      gsap.fromTo(
+        '.gsap-mode-item',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, delay: 0.25, ease: 'power2.out' }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -31,23 +59,23 @@ export default function NewScan() {
   }
 
   return (
-    <>
-      <header className="page-header">
+    <div ref={containerRef}>
+      <header className="page-header gsap-header">
         <h1>New Scan</h1>
         <p>Enter a target URL and select scan depth</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="panel" style={{ maxWidth: '580px' }}>
+      <form onSubmit={handleSubmit} className="panel gsap-form" style={{ maxWidth: '580px' }}>
         <div style={{ marginBottom: '2rem' }}>
           <label style={{
             display: 'block',
             fontFamily: 'var(--font-label)',
-            fontSize: '0.6875rem',
-            color: 'var(--on-surface-variant)',
+            fontSize: '0.68rem',
+            color: 'var(--color-mist)',
             marginBottom: '0.625rem',
-            letterSpacing: '0.08em',
+            letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            fontWeight: 600,
+            fontWeight: 500,
           }}>
             Target URL
           </label>
@@ -66,34 +94,33 @@ export default function NewScan() {
           <label style={{
             display: 'block',
             fontFamily: 'var(--font-label)',
-            fontSize: '0.6875rem',
-            color: 'var(--on-surface-variant)',
+            fontSize: '0.68rem',
+            color: 'var(--color-mist)',
             marginBottom: '0.75rem',
-            letterSpacing: '0.08em',
+            letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            fontWeight: 600,
+            fontWeight: 500,
           }}>
             Scan Mode
           </label>
-          <div style={{ display: 'grid', gap: '0.75rem' }}>
-            {MODES.map((m, i) => {
+          <div style={{ display: 'grid', gap: '0.6rem' }}>
+            {MODES.map((m) => {
               const selected = mode === m.value;
               return (
                 <label
                   key={m.value}
-                  className="fade-in"
+                  className="gsap-mode-item"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
-                    padding: '1rem 1.125rem',
+                    padding: '0.875rem 1rem',
                     border: `1px solid ${selected ? 'var(--primary)' : 'var(--outline-variant)'}`,
                     borderRadius: 'var(--radius-lg)',
                     cursor: 'pointer',
-                    background: selected ? 'var(--color-sticky-note-mint)' : 'var(--surface-bright)',
+                    background: selected ? 'var(--color-green-soft)' : 'var(--color-deep)',
                     transition: 'all 0.25s ease',
-                    boxShadow: selected ? 'var(--shadow-note)' : 'none',
-                    animationDelay: `${i * 60}ms`,
+                    boxShadow: selected ? '0 0 20px rgba(217, 119, 87, 0.08)' : 'none',
                   }}
                 >
                   <span
@@ -105,26 +132,26 @@ export default function NewScan() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 'var(--radius)',
-                      border: `1px solid ${selected ? 'var(--primary)' : 'var(--outline-variant)'}`,
-                      color: selected ? 'var(--primary)' : 'var(--on-surface-variant)',
-                      fontSize: '1.25rem',
+                      border: `1px solid ${selected ? 'rgba(217, 119, 87, 0.3)' : 'var(--outline-variant)'}`,
+                      color: selected ? 'var(--primary)' : 'var(--color-mist)',
+                      fontSize: '1.2rem',
                       flexShrink: 0,
                       transition: 'all 0.25s ease',
-                      background: selected ? 'var(--color-highlighter-yellow)' : 'transparent',
+                      background: selected ? 'rgba(217, 119, 87, 0.12)' : 'transparent',
                     }}
                   >
                     {m.icon}
                   </span>
                   <div style={{ flex: 1 }}>
                     <div style={{
-                      fontFamily: 'var(--font-headline)',
+                      fontFamily: 'var(--font-body)',
                       fontSize: '0.875rem',
                       fontWeight: 600,
                       color: selected ? 'var(--primary)' : 'var(--on-surface)',
                     }}>
                       {m.label}
                     </div>
-                    <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'var(--outline)', marginTop: '0.125rem' }}>
+                    <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'var(--color-mist)', marginTop: '0.125rem' }}>
                       {m.desc}
                     </div>
                   </div>
@@ -148,7 +175,7 @@ export default function NewScan() {
             fontSize: '0.8125rem',
             marginBottom: '1.25rem',
             padding: '0.625rem 0.875rem',
-            border: '1px solid rgba(181, 52, 31, 0.35)',
+            border: '1px solid rgba(197, 48, 48, 0.2)',
             borderRadius: 'var(--radius)',
             background: 'var(--error-container)',
             display: 'flex',
@@ -170,12 +197,12 @@ export default function NewScan() {
             justifyContent: 'center',
             gap: '0.5rem',
           }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '1.125rem' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>
             {loading ? 'hourglass_empty' : 'rocket_launch'}
           </span>
           {loading ? 'Launching…' : 'Start Scan'}
         </button>
       </form>
-    </>
+    </div>
   );
 }

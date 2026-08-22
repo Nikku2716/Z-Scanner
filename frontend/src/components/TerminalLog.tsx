@@ -6,10 +6,10 @@ interface Props {
 }
 
 const levelColor: Record<string, string> = {
-  info: 'var(--on-surface-variant)',
-  success: 'var(--primary-dim)',
-  warn: 'var(--tertiary)',
-  error: 'var(--error)',
+  info: '#b0aea5',
+  success: '#d97757',
+  warn: '#ffbd2e',
+  error: '#ff5f57',
 };
 
 export default function TerminalLog({ logs }: Props) {
@@ -22,30 +22,30 @@ export default function TerminalLog({ logs }: Props) {
   return (
     <div
       style={{
-        background: 'var(--surface-container-lowest)',
+        background: '#141413',
         border: '1px solid var(--outline-variant)',
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
       }}
     >
-      {/* Terminal header with window dots */}
+      {/* Terminal header */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '0.5rem',
-        padding: '0.625rem 0.875rem',
-        background: 'var(--surface-container-low)',
+        padding: '0.6rem 0.875rem',
+        background: '#1c1c1e',
         borderBottom: '1px solid var(--outline-variant)',
       }}>
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ef4444' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#f59e0b' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#22c55e' }} />
+        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f56' }} />
+        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ffbd2e' }} />
+        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#27c93f' }} />
         <span style={{
           marginLeft: '0.5rem',
           fontFamily: 'var(--font-label)',
-          fontSize: '0.625rem',
-          color: 'var(--outline)',
-          letterSpacing: '0.05em',
+          fontSize: '0.6rem',
+          color: 'var(--color-mist)',
+          letterSpacing: '0.06em',
           textTransform: 'uppercase',
         }}>
           scan output
@@ -62,19 +62,19 @@ export default function TerminalLog({ logs }: Props) {
         fontFamily: 'var(--font-mono)',
       }}>
         {logs.length === 0 && (
-          <div style={{ color: 'var(--outline)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ color: '#87867f', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '0.875rem' }}>hourglass_empty</span>
             Waiting for scan events…
           </div>
         )}
         {logs.map((log, i) => (
           <div key={i} style={{
-            color: levelColor[log.level] ?? 'var(--on-surface-variant)',
+            color: levelColor[log.level] ?? '#b0aea5',
             padding: '1px 0',
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-all',
           }}>
-            <span style={{ color: 'var(--outline)', opacity: 0.5, userSelect: 'none', marginRight: '0.5rem' }}>
+            <span style={{ color: '#555', userSelect: 'none', marginRight: '0.5rem' }}>
               [{new Date(log.timestamp).toLocaleTimeString()}]
             </span>
             {log.message}

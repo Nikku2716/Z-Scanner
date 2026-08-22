@@ -1,3 +1,6 @@
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+
 const CAPABILITIES = [
   {
     icon: 'travel_explore',
@@ -45,13 +48,38 @@ const MODES = [
 ];
 
 export default function Capabilities() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced || !containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.gsap-cap-header > *',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: 'power2.out' }
+      );
+
+      gsap.fromTo(
+        '.gsap-cap-card',
+        { opacity: 0, y: 20, scale: 0.97 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, stagger: 0.06, delay: 0.15, ease: 'power2.out' }
+      );
+
+      gsap.fromTo(
+        '.gsap-cap-strip',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.4, delay: 0.35, ease: 'power2.out' }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <>
-      <header className="page-header capabilities-hero">
-        <span className="badge">
-          <span className="material-symbols-outlined" style={{ fontSize: '0.95rem' }}>auto_awesome</span>
-          Capabilities
-        </span>
+    <div ref={containerRef}>
+      <header className="page-header capabilities-hero gsap-cap-header">
         <h1>What BlackHawk can do</h1>
         <p>
           BlackHawk wraps OWASP ZAP into a focused scanner workflow: choose a mode, watch the scan unfold,
@@ -60,11 +88,10 @@ export default function Capabilities() {
       </header>
 
       <section className="capability-grid" aria-label="BlackHawk capabilities">
-        {CAPABILITIES.map((item, index) => (
+        {CAPABILITIES.map((item) => (
           <article
-            className={`capability-card capability-card--${item.tone} slide-up`}
+            className={`capability-card capability-card--${item.tone} gsap-cap-card`}
             key={item.title}
-            style={{ animationDelay: `${index * 65}ms` }}
           >
             <span className="capability-card__icon material-symbols-outlined" aria-hidden="true">
               {item.icon}
@@ -75,7 +102,7 @@ export default function Capabilities() {
         ))}
       </section>
 
-      <section className="capability-strip panel">
+      <section className="capability-strip panel gsap-cap-strip">
         <div>
           <span className="capability-strip__label">Scan modes</span>
           <h2>Pick the footprint before you press start.</h2>
@@ -89,6 +116,6 @@ export default function Capabilities() {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }

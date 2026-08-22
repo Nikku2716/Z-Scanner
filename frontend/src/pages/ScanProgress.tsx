@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api, type LogEntry, type Scan } from '../api/client';
 import ProgressBar from '../components/ProgressBar';
 import TerminalLog from '../components/TerminalLog';
+import gsap from 'gsap';
 
 export default function ScanProgress() {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +12,8 @@ export default function ScanProgress() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [error, setError] = useState('');
   const [stopping, setStopping] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -37,6 +40,28 @@ export default function ScanProgress() {
   }, [id]);
 
   useEffect(() => {
+    if (!scan || !containerRef.current) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.gsap-prog-header > *',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: 'power2.out' }
+      );
+      gsap.fromTo(
+        '.gsap-prog-grid > *',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, delay: 0.1, ease: 'power2.out' }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [scan?.id]);
+
+  useEffect(() => {
     if (scan?.status === 'complete') {
       navigate(`/report/${scan.id}`, { replace: true });
     }
@@ -56,7 +81,7 @@ export default function ScanProgress() {
 
   if (error && !scan) {
     return (
-      <div className="panel" style={{ color: 'var(--error)', borderLeft: '4px solid var(--error)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div className="panel" style={{ color: 'var(--error)', borderLeft: '3px solid var(--error)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>error</span>
         {error}
       </div>
@@ -66,7 +91,7 @@ export default function ScanProgress() {
   if (!scan) {
     return (
       <div className="panel" style={{ color: 'var(--on-surface-variant)', textAlign: 'center', padding: '3rem' }}>
-        <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.5 }}>hourglass_empty</span>
+        <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.4 }}>hourglass_empty</span>
         Loading scan…
       </div>
     );
@@ -76,20 +101,20 @@ export default function ScanProgress() {
   const phase = scan.progress.phase;
 
   return (
-    <>
-      <header className="page-header">
+    <div ref={containerRef}>
+      <header className="page-header gsap-prog-header">
         <h1>Scan Progress</h1>
         <p style={{ wordBreak: 'break-all' }}>{scan.target}</p>
       </header>
 
-      <div className="grid-2">
+      <div className="grid-2 gsap-prog-grid">
         <div className="panel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
             <div style={{
               fontFamily: 'var(--font-label)',
-              fontSize: '0.6875rem',
-              color: 'var(--on-surface-variant)',
-              letterSpacing: '0.08em',
+              fontSize: '0.68rem',
+              color: 'var(--color-mist)',
+              letterSpacing: '0.06em',
               textTransform: 'uppercase',
               display: 'flex',
               alignItems: 'center',
@@ -107,7 +132,7 @@ export default function ScanProgress() {
           {scan.progress.passiveQueue > 0 && (
             <div style={{
               fontFamily: 'var(--font-label)',
-              fontSize: '0.75rem',
+              fontSize: '0.72rem',
               color: 'var(--on-surface-variant)',
               marginTop: '0.5rem',
               display: 'flex',
@@ -123,10 +148,10 @@ export default function ScanProgress() {
             <div style={{
               marginTop: '1rem',
               padding: '0.625rem 0.875rem',
-              background: 'var(--color-sticky-note-mint)',
+              background: 'var(--color-green-soft)',
               borderRadius: 'var(--radius)',
-              border: '1px solid var(--outline-variant)',
-              color: 'var(--primary-dim)',
+              border: '1px solid rgba(217, 119, 87, 0.12)',
+              color: 'var(--primary)',
               fontSize: '0.8125rem',
               fontFamily: 'var(--font-label)',
               display: 'flex',
@@ -141,12 +166,12 @@ export default function ScanProgress() {
           <div style={{
             marginTop: '1rem',
             padding: '0.625rem 0.875rem',
-            background: isRunning ? 'var(--color-highlighter-yellow)' : 'var(--surface-container-lowest)',
+            background: isRunning ? 'var(--color-green-soft)' : 'var(--color-abyss)',
             borderRadius: 'var(--radius)',
             fontSize: '0.8125rem',
             fontFamily: 'var(--font-label)',
-            color: isRunning ? 'var(--primary-dim)' : 'var(--on-surface-variant)',
-            border: `1px solid ${isRunning ? 'var(--primary)' : 'var(--outline-variant)'}`,
+            color: isRunning ? 'var(--primary)' : 'var(--on-surface-variant)',
+            border: `1px solid ${isRunning ? 'rgba(217, 119, 87, 0.12)' : 'var(--outline-variant)'}`,
           }}>
             {scan.progress.message}
           </div>
@@ -157,7 +182,7 @@ export default function ScanProgress() {
               padding: '0.625rem 0.875rem',
               background: 'var(--error-container)',
               borderRadius: 'var(--radius)',
-              border: '1px solid rgba(181, 52, 31, 0.35)',
+              border: '1px solid rgba(197, 48, 48, 0.15)',
               color: 'var(--error)',
               fontSize: '0.8125rem',
               fontFamily: 'var(--font-label)',
@@ -185,7 +210,7 @@ export default function ScanProgress() {
                 </button>
               </Link>
             )}
-            <Link to="/">
+            <Link to="/dashboard">
               <button style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>grid_view</span>
                 Dashboard
@@ -197,12 +222,12 @@ export default function ScanProgress() {
         <div>
           <div style={{
             fontFamily: 'var(--font-label)',
-            fontSize: '0.6875rem',
-            color: 'var(--on-surface-variant)',
+            fontSize: '0.68rem',
+            color: 'var(--color-mist)',
             marginBottom: '0.625rem',
-            letterSpacing: '0.08em',
+            letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            fontWeight: 600,
+            fontWeight: 500,
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
@@ -213,7 +238,7 @@ export default function ScanProgress() {
           <TerminalLog logs={logs} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -232,7 +257,7 @@ function StatusPill({ status }: { status: string }) {
       {status === 'running' ? (
         <span className="pulse-dot" />
       ) : (
-        <span className="material-symbols-outlined" style={{ fontSize: '0.875rem' }}>{c.icon}</span>
+        <span className="material-symbols-outlined" style={{ fontSize: '0.8rem' }}>{c.icon}</span>
       )}
       {status}
     </span>
