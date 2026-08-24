@@ -27,8 +27,8 @@ func TestCorrelateFindings(t *testing.T) {
 	if findings[0].AffectedCount != 1 {
 		t.Errorf("XSS affected endpoints = %d, want 1 (exact dupes collapsed)", findings[0].AffectedCount)
 	}
-	if len(findings[0].Alerts) != 2 {
-		t.Errorf("XSS should retain both same-endpoint alerts as evidence, got %d", len(findings[0].Alerts))
+	if len(findings[0].Alerts) != 1 {
+		t.Errorf("XSS should keep exactly one evidence alert after dedup, got %d", len(findings[0].Alerts))
 	}
 	for _, f := range findings {
 		if len(f.Alerts) == 0 {
