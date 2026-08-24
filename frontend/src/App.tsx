@@ -59,7 +59,7 @@ export default function App() {
           <div className="sidebar-footer">
             <div className="version">
               <span className="material-symbols-outlined">terminal</span>
-              v0.1.0
+              v2.0.0
             </div>
           </div>
         </aside>
