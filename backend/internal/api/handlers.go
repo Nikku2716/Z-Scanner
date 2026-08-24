@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/ghost0/BlackHawk/backend/internal/scan"
+	"github.com/go-chi/chi/v5"
 )
 
 func (s *Server) health(w http.ResponseWriter, r *http.Request) {
@@ -14,8 +14,8 @@ func (s *Server) health(w http.ResponseWriter, r *http.Request) {
 }
 
 type startScanRequest struct {
-	Target string          `json:"target"`
-	Mode   scan.Mode       `json:"mode"`
+	Target string           `json:"target"`
+	Mode   scan.Mode        `json:"mode"`
 	Config *scan.ScanConfig `json:"config,omitempty"`
 }
 

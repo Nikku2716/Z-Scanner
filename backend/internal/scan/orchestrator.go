@@ -313,6 +313,9 @@ func siteNodesToAlerts(nodes []zapclient.SiteNode) []zapclient.ZAPAlert {
 	return alerts
 }
 
+// Store exposes the orchestrator's persistence layer for read-only analytics.
+func (o *Orchestrator) Store() *Store { return o.store }
+
 func (o *Orchestrator) fetchFinalAlerts(target string) ([]zapclient.ZAPAlert, error) {
 	// Fetch alerts once, after spidering, passive scanning, and active scanning
 	// have all finished. Polling phases update progress only; they do not append

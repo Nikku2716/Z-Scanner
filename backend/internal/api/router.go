@@ -3,11 +3,11 @@ package api
 import (
 	"net/http"
 
+	"github.com/ghost0/BlackHawk/backend/internal/report"
+	"github.com/ghost0/BlackHawk/backend/internal/scan"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/ghost0/BlackHawk/backend/internal/report"
-	"github.com/ghost0/BlackHawk/backend/internal/scan"
 )
 
 type Server struct {
@@ -40,6 +40,11 @@ func NewHandler(orch *scan.Orchestrator, reporter *report.Generator, origin stri
 		r.Delete("/scan/{id}", s.deleteScan)
 		r.Get("/report/{id}", s.getReport)
 		r.Get("/report/{id}/html", s.getReportHTML)
+		r.Get("/scan/{id}/endpoints", s.getEndpoints)
+		r.Get("/scan/{id}/surface", s.getAttackSurface)
+		r.Get("/scan/{id}/analytics", s.getAnalytics)
+		r.Get("/scan/{id}/findings", s.getFindings)
+		r.Get("/scan/{id}/findings/{findingId}", s.getFinding)
 		r.Get("/ws/{id}", s.scanWebSocket)
 	})
 

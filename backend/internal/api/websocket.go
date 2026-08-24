@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/ghost0/BlackHawk/backend/internal/scan"
 	"github.com/go-chi/chi/v5"
 	"github.com/gorilla/websocket"
-	"github.com/ghost0/BlackHawk/backend/internal/scan"
 )
 
 var upgrader = websocket.Upgrader{
@@ -15,10 +15,10 @@ var upgrader = websocket.Upgrader{
 }
 
 type wsMessage struct {
-	Type    string         `json:"type"`
-	Scan    *scan.Scan     `json:"scan,omitempty"`
-	Log     *scan.LogEntry `json:"log,omitempty"`
-	Logs    []scan.LogEntry `json:"logs,omitempty"`
+	Type string          `json:"type"`
+	Scan *scan.Scan      `json:"scan,omitempty"`
+	Log  *scan.LogEntry  `json:"log,omitempty"`
+	Logs []scan.LogEntry `json:"logs,omitempty"`
 }
 
 type Hub struct {
