@@ -9,10 +9,10 @@ import (
 
 // reportData is the model for the professional HTML security report.
 type reportData struct {
-	Scan        *scan.Scan
-	Score       scan.ScoreResult
-	Findings    []scan.Finding
-	Counts      map[string]int
+	Scan         *scan.Scan
+	Score        scan.ScoreResult
+	Findings     []scan.Finding
+	Counts       map[string]int
 	AffectedURLs []string
 }
 

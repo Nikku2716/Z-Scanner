@@ -3,8 +3,8 @@ package api
 import (
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/ghost0/BlackHawk/backend/internal/scan"
+	"github.com/go-chi/chi/v5"
 )
 
 // getScanCompare compares two completed scans: /api/compare/{base}/{target}
