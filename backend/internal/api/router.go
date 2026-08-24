@@ -45,6 +45,7 @@ func NewHandler(orch *scan.Orchestrator, reporter *report.Generator, origin stri
 		r.Get("/scan/{id}/analytics", s.getAnalytics)
 		r.Get("/scan/{id}/findings", s.getFindings)
 		r.Get("/scan/{id}/findings/{findingId}", s.getFinding)
+		r.Get("/compare/{baseId}/{targetId}", s.getScanCompare)
 		r.Get("/ws/{id}", s.scanWebSocket)
 	})
 
