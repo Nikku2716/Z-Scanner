@@ -7,21 +7,21 @@ import (
 )
 
 type ZAPAlert struct {
-	PluginID   string `json:"pluginId"`
-	AlertRef   string `json:"alertRef"`
-	Name       string `json:"name"`
-	Risk       string `json:"risk"`
-	Confidence string `json:"confidence"`
-	URL        string `json:"url"`
-	Method     string `json:"method"`
-	Param      string `json:"param"`
-	Attack     string `json:"attack"`
-	Evidence   string `json:"evidence"`
+	PluginID    string `json:"pluginId"`
+	AlertRef    string `json:"alertRef"`
+	Name        string `json:"name"`
+	Risk        string `json:"risk"`
+	Confidence  string `json:"confidence"`
+	URL         string `json:"url"`
+	Method      string `json:"method"`
+	Param       string `json:"param"`
+	Attack      string `json:"attack"`
+	Evidence    string `json:"evidence"`
 	Description string `json:"description"`
-	Solution   string `json:"solution"`
-	Reference  string `json:"reference"`
-	CWEID      string `json:"cweid"`
-	WASCID     string `json:"wascid"`
+	Solution    string `json:"solution"`
+	Reference   string `json:"reference"`
+	CWEID       string `json:"cweid"`
+	WASCID      string `json:"wascid"`
 }
 
 func (c *Client) GetAlerts(baseURL string) ([]ZAPAlert, error) {

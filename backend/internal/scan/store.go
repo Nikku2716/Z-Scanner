@@ -22,6 +22,9 @@ func NewStore(path string) (*Store, error) {
 	if err := s.migrate(); err != nil {
 		return nil, err
 	}
+	if err := s.migrateEndpoints(); err != nil {
+		return nil, err
+	}
 	return s, nil
 }
 

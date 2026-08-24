@@ -6,19 +6,19 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/ghost0/BlackHawk/backend/internal/zapclient"
+	"github.com/google/uuid"
 )
 
 type ProgressCallback func(*Scan, LogEntry)
 
 type Orchestrator struct {
-	zap     *zapclient.Client
-	store   *Store
-	mu      sync.RWMutex
-	active  map[string]context.CancelFunc
-	notify  map[string][]ProgressCallback
-	logs    map[string][]LogEntry
+	zap    *zapclient.Client
+	store  *Store
+	mu     sync.RWMutex
+	active map[string]context.CancelFunc
+	notify map[string][]ProgressCallback
+	logs   map[string][]LogEntry
 }
 
 func NewOrchestrator(zap *zapclient.Client, store *Store) *Orchestrator {
@@ -99,6 +99,9 @@ func (o *Orchestrator) Delete(id string) error {
 	o.mu.Unlock()
 	if running {
 		cancel()
+	}
+	if err := o.store.DeleteScanEndpoints(id); err != nil {
+		return err
 	}
 	return o.store.Delete(id)
 }
@@ -252,6 +255,10 @@ func (o *Orchestrator) run(ctx context.Context, scan *Scan) {
 	}
 	scan.Alerts = DeduplicateAlerts(scan.Alerts)
 
+	if err := o.collectEndpoints(scan, zapAlerts); err != nil {
+		o.log(scan, "warn", fmt.Sprintf("Endpoint discovery incomplete: %v", err))
+	}
+
 	scan.Status = StatusComplete
 	scan.Progress = Progress{
 		Phase:         "complete",
@@ -262,6 +269,48 @@ func (o *Orchestrator) run(ctx context.Context, scan *Scan) {
 	scan.UpdatedAt = time.Now().UTC()
 	o.persist(scan)
 	o.log(scan, "success", scan.Progress.Message)
+}
+
+// collectEndpoints gathers the attack surface for a completed scan from the
+// ZAP site tree, spider URL list, and alert set. Site-tree failures are
+// logged but do not fail the scan — alert-derived endpoints still persist.
+func (o *Orchestrator) collectEndpoints(scan *Scan, zapAlerts []zapclient.ZAPAlert) error {
+	if siteNodes, err := o.zap.GetSiteTree(); err == nil {
+		zapAlerts = append(zapAlerts, siteNodesToAlerts(siteNodes)...)
+	} else {
+		o.log(scan, "warn", fmt.Sprintf("Site tree unavailable: %v", err))
+	}
+	if urls, err := o.zap.GetURLs(scan.Target); err == nil {
+		for _, u := range urls {
+			zapAlerts = append(zapAlerts, zapclient.ZAPAlert{URL: u})
+		}
+	} else {
+		o.log(scan, "warn", fmt.Sprintf("Spider URL list unavailable: %v", err))
+	}
+
+	collector := NewEndpointCollector(o.store)
+	endpoints, err := collector.CollectFromZAP(scan.ID, scan.Target, zapAlerts)
+	if err != nil {
+		return err
+	}
+	o.log(scan, "info", fmt.Sprintf("Discovered %d unique endpoints", len(endpoints)))
+	return nil
+}
+
+// siteNodesToAlerts converts site-tree leaf nodes into lightweight alert-like
+// records so endpoint extraction can treat both sources uniformly.
+func siteNodesToAlerts(nodes []zapclient.SiteNode) []zapclient.ZAPAlert {
+	alerts := make([]zapclient.ZAPAlert, 0, len(nodes))
+	for _, n := range nodes {
+		if n.URL == "" {
+			continue
+		}
+		alerts = append(alerts, zapclient.ZAPAlert{
+			URL:    n.URL,
+			Method: n.Method,
+		})
+	}
+	return alerts
 }
 
 func (o *Orchestrator) fetchFinalAlerts(target string) ([]zapclient.ZAPAlert, error) {
