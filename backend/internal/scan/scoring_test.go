@@ -18,14 +18,17 @@ func alertSet() []Alert {
 func TestCorrelateFindings(t *testing.T) {
 	findings := CorrelateFindings("scan-9", alertSet())
 
-	if len(findings) != 4 {
-		t.Fatalf("want 4 findings, got %d", len(findings))
+	if len(findings) != 5 {
+		t.Fatalf("want 5 findings, got %d", len(findings))
 	}
 	if findings[0].Risk != "High" || findings[0].Name != "Cross Site Scripting" {
 		t.Errorf("first finding = %+v", findings[0])
 	}
-	if findings[0].AffectedCount != 2 {
-		t.Errorf("XSS affected endpoints = %d, want 2 (per-instance dupes collapsed)", findings[0].AffectedCount)
+	if findings[0].AffectedCount != 1 {
+		t.Errorf("XSS affected endpoints = %d, want 1 (exact dupes collapsed)", findings[0].AffectedCount)
+	}
+	if len(findings[0].Alerts) != 2 {
+		t.Errorf("XSS should retain both same-endpoint alerts as evidence, got %d", len(findings[0].Alerts))
 	}
 	for _, f := range findings {
 		if len(f.Alerts) == 0 {
@@ -84,7 +87,7 @@ func TestScoreScanDeterministicAndOrdered(t *testing.T) {
 	if a.Score >= 100 {
 		t.Errorf("alerts should reduce the score, got %d", a.Score)
 	}
-	if a.RiskCounts["High"] != 2 || a.RiskCounts["Medium"] != 1 || a.RiskCounts["Low"] != 1 {
+	if a.RiskCounts["High"] != 3 || a.RiskCounts["Medium"] != 1 || a.RiskCounts["Low"] != 1 {
 		t.Errorf("risk counts wrong: %+v", a.RiskCounts)
 	}
 	// High-confidence SQLi + XSS on distinct endpoints should hurt more than
