@@ -150,7 +150,7 @@ export default function ScanProgress() {
               padding: '0.625rem 0.875rem',
               background: 'var(--color-green-soft)',
               borderRadius: 'var(--radius)',
-              border: '1px solid rgba(217, 119, 87, 0.12)',
+              border: '1px solid rgba(22, 163, 74, 0.25)',
               color: 'var(--primary)',
               fontSize: '0.8125rem',
               fontFamily: 'var(--font-label)',
@@ -171,7 +171,7 @@ export default function ScanProgress() {
             fontSize: '0.8125rem',
             fontFamily: 'var(--font-label)',
             color: isRunning ? 'var(--primary)' : 'var(--on-surface-variant)',
-            border: `1px solid ${isRunning ? 'rgba(217, 119, 87, 0.12)' : 'var(--outline-variant)'}`,
+            border: `1px solid ${isRunning ? 'rgba(22, 163, 74, 0.25)' : 'var(--outline-variant)'}`,
           }}>
             {scan.progress.message}
           </div>
@@ -182,7 +182,7 @@ export default function ScanProgress() {
               padding: '0.625rem 0.875rem',
               background: 'var(--error-container)',
               borderRadius: 'var(--radius)',
-              border: '1px solid rgba(197, 48, 48, 0.15)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
               color: 'var(--error)',
               fontSize: '0.8125rem',
               fontFamily: 'var(--font-label)',

@@ -120,7 +120,7 @@ export default function NewScan() {
                     cursor: 'pointer',
                     background: selected ? 'var(--color-green-soft)' : 'var(--color-deep)',
                     transition: 'all 0.25s ease',
-                    boxShadow: selected ? '0 0 20px rgba(217, 119, 87, 0.08)' : 'none',
+                    boxShadow: selected ? '0 0 20px rgba(22, 163, 74, 0.12)' : 'none',
                   }}
                 >
                   <span
@@ -132,12 +132,12 @@ export default function NewScan() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 'var(--radius)',
-                      border: `1px solid ${selected ? 'rgba(217, 119, 87, 0.3)' : 'var(--outline-variant)'}`,
+                      border: `1px solid ${selected ? 'rgba(22, 163, 74, 0.4)' : 'var(--outline-variant)'}`,
                       color: selected ? 'var(--primary)' : 'var(--color-mist)',
                       fontSize: '1.2rem',
                       flexShrink: 0,
                       transition: 'all 0.25s ease',
-                      background: selected ? 'rgba(217, 119, 87, 0.12)' : 'transparent',
+                      background: selected ? 'rgba(22, 163, 74, 0.14)' : 'transparent',
                     }}
                   >
                     {m.icon}
@@ -175,7 +175,7 @@ export default function NewScan() {
             fontSize: '0.8125rem',
             marginBottom: '1.25rem',
             padding: '0.625rem 0.875rem',
-            border: '1px solid rgba(197, 48, 48, 0.2)',
+            border: '1px solid rgba(239, 68, 68, 0.25)',
             borderRadius: 'var(--radius)',
             background: 'var(--error-container)',
             display: 'flex',

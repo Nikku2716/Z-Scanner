@@ -6,10 +6,10 @@ interface Props {
 }
 
 const levelColor: Record<string, string> = {
-  info: '#b0aea5',
-  success: '#d97757',
-  warn: '#ffbd2e',
-  error: '#ff5f57',
+  info: '#8ca0b8',
+  success: '#22c55e',
+  warn: '#fbbf24',
+  error: '#f87171',
 };
 
 export default function TerminalLog({ logs }: Props) {
@@ -22,7 +22,7 @@ export default function TerminalLog({ logs }: Props) {
   return (
     <div
       style={{
-        background: '#141413',
+        background: '#10131b',
         border: '1px solid var(--outline-variant)',
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
@@ -34,7 +34,7 @@ export default function TerminalLog({ logs }: Props) {
         alignItems: 'center',
         gap: '0.5rem',
         padding: '0.6rem 0.875rem',
-        background: '#1c1c1e',
+        background: '#1c202a',
         borderBottom: '1px solid var(--outline-variant)',
       }}>
         <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f56' }} />
@@ -69,12 +69,12 @@ export default function TerminalLog({ logs }: Props) {
         )}
         {logs.map((log, i) => (
           <div key={i} style={{
-            color: levelColor[log.level] ?? '#b0aea5',
+            color: levelColor[log.level] ?? '#8ca0b8',
             padding: '1px 0',
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-all',
           }}>
-            <span style={{ color: '#555', userSelect: 'none', marginRight: '0.5rem' }}>
+            <span style={{ color: '#3d4e66', userSelect: 'none', marginRight: '0.5rem' }}>
               [{new Date(log.timestamp).toLocaleTimeString()}]
             </span>
             {log.message}

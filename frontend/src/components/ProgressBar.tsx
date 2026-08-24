@@ -42,7 +42,7 @@ export default function ProgressBar({ label, value, active }: Props) {
                 : 'var(--color-steel)',
             transition: 'width 0.5s ease, background 0.3s ease',
             borderRadius: '4px',
-            boxShadow: active ? '0 0 8px rgba(217, 119, 87, 0.25)' : 'none',
+            boxShadow: active ? '0 0 8px rgba(22, 163, 74, 0.4)' : 'none',
           }}
         />
       </div>

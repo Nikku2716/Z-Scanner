@@ -5,10 +5,38 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/** Splits text into per-char spans while keeping word wrapping intact. */
+function SplitChars({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(' ').map((word, wi) => (
+        <span key={wi} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+          {word.split('').map((ch, ci) => (
+            <span className="landing__char" key={ci}>
+              {ch}
+            </span>
+          ))}
+          {wi < text.split(' ').length - 1 ? ' ' : ''}
+        </span>
+      ))}
+    </>
+  );
+}
+
+const TERMINAL_SCRIPT = [
+  'blackhawk scan --target https://example.com --mode deep',
+  '[INFO] Spider engaged — crawling entry points…',
+  '[INFO] 24 pages discovered · mapping parameters',
+  '[WARN] Reflected XSS detected at /search?q=',
+  '[HIGH] SQL injection confirmed at /api/users',
+  '[DONE] Scan complete — 3 High · 5 Medium · 12 Low',
+];
+
 export default function Landing() {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const typedRef = useRef<HTMLDivElement>(null);
   const metricsRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
@@ -17,60 +45,136 @@ export default function Landing() {
   const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!containerRef.current) return;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced || !containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Hero content fade up
+      // ── Hero intro ──
       if (heroRef.current) {
-        gsap.fromTo(
-          heroRef.current.children,
-          { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out' }
-        );
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        tl.fromTo(
+          '.landing__hero-badge',
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.5 },
+          0.05
+        )
+          .fromTo(
+            heroRef.current.querySelectorAll('.landing__char'),
+            { opacity: 0, y: '0.7em', rotateX: -60 },
+            {
+              opacity: 1,
+              y: 0,
+              rotateX: 0,
+              duration: 0.55,
+              stagger: { each: 0.016, from: 'start' },
+            },
+            0.15
+          )
+          .fromTo(
+            '.landing__hero-desc, .landing__hero-actions',
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.55, stagger: 0.12 },
+            '-=0.25'
+          );
       }
 
-      // Terminal slide up with delay
+      // ── Terminal entrance + typewriter loop ──
       if (terminalRef.current) {
         gsap.fromTo(
           terminalRef.current,
-          { opacity: 0, y: 32 },
-          { opacity: 1, y: 0, duration: 0.7, delay: 0.25, ease: 'power2.out' }
+          { opacity: 0, y: 36, scale: 0.97 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.8, delay: 0.35, ease: 'power3.out' }
         );
+
+        if (!prefersReduced && typedRef.current) {
+          let lineIndex = 0;
+          let charIndex = 0;
+          let timer: number;
+
+          const typeNextChar = () => {
+            const el = typedRef.current;
+            if (!el) return;
+            const line = TERMINAL_SCRIPT[lineIndex];
+            el.textContent = line.slice(0, ++charIndex);
+
+            const isCmd = line.startsWith('$') || line.includes('blackhawk scan');
+            el.style.color = line.startsWith('[HIGH]')
+              ? '#ff7b72'
+              : line.startsWith('[WARN]')
+                ? '#fbbf24'
+                : line.startsWith('[DONE]')
+                  ? '#4ade80'
+                  : isCmd
+                    ? '#f4f8fd'
+                    : '#7dd3fc';
+
+            if (charIndex < line.length) {
+              timer = window.setTimeout(typeNextChar, line.startsWith('$') ? 34 : 16);
+            } else {
+              timer = window.setTimeout(() => {
+                charIndex = 0;
+                lineIndex = (lineIndex + 1) % TERMINAL_SCRIPT.length;
+                typeNextChar();
+              }, 2200);
+            }
+          };
+          timer = window.setTimeout(typeNextChar, 1400);
+          // store for cleanup via context
+          (terminalRef.current as HTMLElement & { __cleanup?: () => void }).__cleanup =
+            () => clearTimeout(timer);
+        }
       }
 
-      // Metrics stagger
+      if (prefersReduced) return; // skip scroll choreography below
+
+      // ── Metrics: stagger + count-up values ──
       if (metricsRef.current) {
         gsap.fromTo(
           metricsRef.current.children,
-          { opacity: 0, y: 16 },
+          { opacity: 0, y: 18 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.4,
-            stagger: 0.08,
-            ease: 'power1.out',
+            duration: 0.45,
+            stagger: 0.09,
+            ease: 'power2.out',
             scrollTrigger: {
               trigger: metricsRef.current,
-              start: 'top 85%',
+              start: 'top 88%',
               toggleActions: 'play none none reverse',
             },
           }
         );
+
+        metricsRef.current
+          .querySelectorAll<HTMLElement>('[data-count]')
+          .forEach((el) => {
+            const end = parseInt(el.dataset.count || '0', 10);
+            const obj = { v: 0 };
+            gsap.to(obj, {
+              v: end,
+              duration: 1.4,
+              ease: 'power2.out',
+              scrollTrigger: { trigger: el, start: 'top 90%' },
+              onUpdate: () => {
+                el.textContent = String(Math.round(obj.v));
+              },
+            });
+          });
       }
 
-      // Feature cards stagger
+      // ── Feature cards: wave stagger from center ──
       if (featuresRef.current) {
         gsap.fromTo(
           featuresRef.current.children,
-          { opacity: 0, scale: 0.92, y: 16 },
+          { opacity: 0, y: 26, scale: 0.95 },
           {
             opacity: 1,
-            scale: 1,
             y: 0,
-            duration: 0.4,
-            stagger: { each: 0.06, from: 'start', grid: 'auto' },
-            ease: 'back.out(1.4)',
+            scale: 1,
+            duration: 0.5,
+            stagger: { each: 0.07, from: 'center', grid: 'auto' },
+            ease: 'back.out(1.3)',
             scrollTrigger: {
               trigger: featuresRef.current,
               start: 'top 85%',
@@ -80,16 +184,16 @@ export default function Landing() {
         );
       }
 
-      // Steps stagger
+      // ── Steps slide in with connectors ──
       if (stepsRef.current) {
         gsap.fromTo(
           stepsRef.current.children,
-          { opacity: 0, y: 20 },
+          { opacity: 0, x: -28 },
           {
             opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.15,
+            x: 0,
+            duration: 0.55,
+            stagger: 0.14,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: stepsRef.current,
@@ -100,16 +204,16 @@ export default function Landing() {
         );
       }
 
-      // Mode cards stagger
+      // ── Mode cards ──
       if (modesRef.current) {
         gsap.fromTo(
           modesRef.current.children,
-          { opacity: 0, y: 16, scale: 0.95 },
+          { opacity: 0, y: 20, scale: 0.96 },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.4,
+            duration: 0.45,
             stagger: 0.08,
             ease: 'power2.out',
             scrollTrigger: {
@@ -121,16 +225,16 @@ export default function Landing() {
         );
       }
 
-      // Architecture nodes
+      // ── Architecture nodes ──
       if (archRef.current) {
         gsap.fromTo(
           archRef.current.children,
-          { opacity: 0, x: -20 },
+          { opacity: 0, x: -22 },
           {
             opacity: 1,
             x: 0,
             duration: 0.5,
-            stagger: 0.1,
+            stagger: 0.11,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: archRef.current,
@@ -141,56 +245,81 @@ export default function Landing() {
         );
       }
 
-      // CTA section
+      // ── CTA ──
       if (ctaRef.current) {
         gsap.fromTo(
           ctaRef.current.children,
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 24 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.5,
-            stagger: 0.1,
+            duration: 0.55,
+            stagger: 0.12,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: ctaRef.current,
-              start: 'top 85%',
+              start: 'top 82%',
               toggleActions: 'play none none reverse',
             },
           }
         );
       }
 
-      // Section headers — scroll reveal
-      const sectionHeaders = containerRef.current?.querySelectorAll('.landing__section-header');
-      if (sectionHeaders) {
-        sectionHeaders.forEach((header) => {
-          gsap.fromTo(
-            header.children,
-            { opacity: 0, y: 12 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              stagger: 0.08,
-              ease: 'power1.out',
-              scrollTrigger: {
-                trigger: header,
-                start: 'top 90%',
-                toggleActions: 'play none none reverse',
-              },
-            }
-          );
+      // ── Section headers reveal ──
+      containerRef.current?.querySelectorAll('.landing__section-header').forEach((header) => {
+        gsap.fromTo(
+          header.children,
+          { opacity: 0, y: 14 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: 'power1.out',
+            scrollTrigger: {
+              trigger: header,
+              start: 'top 90%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      });
+
+      // ── Parallax drift on terminal ──
+      if (terminalRef.current) {
+        gsap.to(terminalRef.current, {
+          yPercent: -6,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: terminalRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
         });
       }
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => {
+      const cleanup = (terminalRef.current as (HTMLElement & { __cleanup?: () => void }) | null)
+        ?.__cleanup;
+      cleanup?.();
+      ctx.revert();
+    };
   }, []);
+
+  /** Spotlight hover — tracks pointer into CSS vars consumed by the card gradient. */
+  function handleSpotlight(e: React.MouseEvent<HTMLDivElement>) {
+    const card = e.currentTarget;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--spot-x', `${e.clientX - r.left}px`);
+    card.style.setProperty('--spot-y', `${e.clientY - r.top}px`);
+  }
 
   return (
     <div className="landing" ref={containerRef}>
-      {/* ─── Scanline overlay ─── */}
+      {/* ─── Backdrop layers ─── */}
+      <div className="landing__backdrop" aria-hidden="true" />
       <div className="landing__scanlines" aria-hidden="true" />
 
       {/* ─── Nav ─── */}
@@ -207,7 +336,7 @@ export default function Landing() {
             <a href="#how-it-works" className="landing__nav-link">How It Works</a>
             <a href="#modes" className="landing__nav-link">Scan Modes</a>
           </div>
-          <Link to="/scan/new" className="landing__nav-cta">
+          <Link to="/scan/new" className="landing__nav-cta" data-magnetic>
             Launch Scanner
             <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>arrow_forward</span>
           </Link>
@@ -218,24 +347,24 @@ export default function Landing() {
       <section className="landing__hero">
         <div className="landing__hero-content" ref={heroRef}>
           <div className="landing__hero-badge">
-            <span className="material-symbols-outlined" style={{ fontSize: '0.8rem' }}>verified</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>verified</span>
             Powered by OWASP ZAP
           </div>
           <h1 className="landing__hero-title">
             Hunt Vulnerabilities<br />
-            <span className="landing__hero-accent">Before They Hunt You</span>
+            <span className="landing__hero-accent"><SplitChars text="Before They Hunt You" /></span>
           </h1>
           <p className="landing__hero-desc">
             Real-time web application security scanning with live progress tracking,
             risk-based filtering, and comprehensive OWASP coverage — all from your browser.
           </p>
           <div className="landing__hero-actions">
-            <Link to="/scan/new" className="landing__btn-primary">
-              <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>radar</span>
+            <Link to="/scan/new" className="landing__btn-primary" data-magnetic>
+              <span className="material-symbols-outlined" style={{ fontSize: '1.15rem' }}>radar</span>
               Start Scanning
             </Link>
             <Link to="/dashboard" className="landing__btn-secondary">
-              <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>grid_view</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '1.15rem' }}>grid_view</span>
               View Dashboard
             </Link>
           </div>
@@ -250,15 +379,14 @@ export default function Landing() {
             <span className="landing__terminal-title">blackhawk — scan</span>
           </div>
           <div className="landing__terminal-body">
-            <div className="landing__terminal-line">
-              <span className="landing__terminal-prompt">$</span>
-              <span className="landing__terminal-cmd">blackhawk scan --target https://example.com</span>
-            </div>
+            <div className="landing__typed-line" ref={typedRef} aria-hidden="true" />
+            <noscript>
+              <div className="landing__terminal-line">
+                <span className="landing__terminal-prompt">$</span> blackhawk scan --target https://example.com
+              </div>
+            </noscript>
             <div className="landing__terminal-line landing__terminal-line--dim">
               <span className="landing__terminal-prefix">[INFO]</span> Initializing spider scan...
-            </div>
-            <div className="landing__terminal-line landing__terminal-line--dim">
-              <span className="landing__terminal-prefix">[INFO]</span> Crawling 24 pages discovered
             </div>
             <div className="landing__terminal-line landing__terminal-line--accent">
               <span className="landing__terminal-prefix landing__terminal-prefix--warn">[WARN]</span> XSS vulnerability detected at /search?q=
@@ -322,7 +450,7 @@ export default function Landing() {
               {
                 icon: 'cell_tower',
                 title: 'Real-Time Progress',
-                desc: 'Live spider and active scan updates via WebSocket. Watch vulnerabilities surface as they\'re found.',
+                desc: "Live spider and active scan updates via WebSocket. Watch vulnerabilities surface as they're found.",
                 accent: 'cyan',
               },
               {
@@ -350,7 +478,7 @@ export default function Landing() {
                 accent: 'amber',
               },
             ].map((f) => (
-              <div className="landing__feature-card" key={f.title}>
+              <div className="landing__feature-card" key={f.title} onMouseMove={handleSpotlight}>
                 <div className={`landing__feature-icon landing__feature-icon--${f.accent}`}>
                   <span className="material-symbols-outlined">{f.icon}</span>
                 </div>
@@ -496,8 +624,8 @@ export default function Landing() {
             Clone, compose, and start scanning.
           </p>
           <div className="landing__hero-actions">
-            <Link to="/scan/new" className="landing__btn-primary">
-              <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>rocket_launch</span>
+            <Link to="/scan/new" className="landing__btn-primary" data-magnetic>
+              <span className="material-symbols-outlined" style={{ fontSize: '1.15rem' }}>rocket_launch</span>
               Launch Scanner
             </Link>
             <a
@@ -506,7 +634,7 @@ export default function Landing() {
               rel="noopener noreferrer"
               className="landing__btn-secondary"
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>code</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '1.15rem' }}>code</span>
               View on GitHub
             </a>
           </div>

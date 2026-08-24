@@ -65,7 +65,7 @@ export default function AlertTable({ alerts, filter }: Props) {
                 borderBottom: '1px solid var(--outline-variant)',
                 transition: 'background 0.15s ease',
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(20, 20, 19, 0.03)'; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(26, 24, 19, 0.04)'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
             >
               <td style={{ padding: '0.875rem 0.625rem', verticalAlign: 'top' }}>

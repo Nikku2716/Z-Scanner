@@ -123,7 +123,7 @@ export default function Dashboard() {
       )}
 
       {error && (
-        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(197, 48, 48, 0.2)', borderLeft: '3px solid var(--error)' }}>
+        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(239, 68, 68, 0.25)', borderLeft: '3px solid var(--error)' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
