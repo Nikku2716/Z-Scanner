@@ -7,6 +7,7 @@ import Report from './pages/Report';
 import Capabilities from './pages/Capabilities';
 import AttackSurface from './pages/AttackSurface';
 import SecurityOverview from './pages/SecurityOverview';
+import ComparePage from './pages/Compare';
 import CursorFX from './components/CursorFX';
 
 export default function App() {
@@ -47,6 +48,10 @@ export default function App() {
             <span className="material-symbols-outlined">auto_awesome</span>
             Capabilities
           </NavLink>
+          <NavLink to="/compare" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+            <span className="material-symbols-outlined">difference</span>
+            Compare
+          </NavLink>
           <NavLink to="/" end className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
             <span className="material-symbols-outlined">home</span>
             Landing
@@ -68,6 +73,7 @@ export default function App() {
               <Route path="/report/:id" element={<Report />} />
               <Route path="/scan/:id/surface" element={<AttackSurface />} />
               <Route path="/scan/:id/analytics" element={<SecurityOverview />} />
+              <Route path="/compare" element={<ComparePage />} />
               <Route path="/capabilities" element={<Capabilities />} />
             </Routes>
           </div>

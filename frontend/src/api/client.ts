@@ -121,6 +121,19 @@ export interface Analytics {
   totalEndpoints: number;
 }
 
+export interface Comparison {
+  baseScanId: string;
+  targetScanId: string;
+  baseScore: number;
+  targetScore: number;
+  scoreDelta: number;
+  newFindings: Finding[];
+  fixedFindings: Finding[];
+  persistentFindings: Finding[];
+  newEndpoints: Endpoint[];
+  removedEndpoints: Endpoint[];
+}
+
 const BASE = import.meta.env.VITE_API_URL ?? '';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -165,6 +178,8 @@ export const api = {
     request<Finding[]>(`/api/scan/${id}/findings${risk ? `?risk=${encodeURIComponent(risk)}` : ''}`),
   getFinding: (id: string, findingId: string) =>
     request<Finding>(`/api/scan/${id}/findings/${findingId}`),
+  compareScans: (baseId: string, targetId: string) =>
+    request<Comparison>(`/api/compare/${baseId}/${targetId}`),
   wsUrl: (id: string) => {
     const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = BASE ? new URL(BASE).host : window.location.host;
