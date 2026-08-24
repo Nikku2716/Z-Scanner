@@ -5,6 +5,8 @@ import NewScan from './pages/NewScan';
 import ScanProgress from './pages/ScanProgress';
 import Report from './pages/Report';
 import Capabilities from './pages/Capabilities';
+import AttackSurface from './pages/AttackSurface';
+import SecurityOverview from './pages/SecurityOverview';
 import CursorFX from './components/CursorFX';
 
 export default function App() {
@@ -64,6 +66,8 @@ export default function App() {
               <Route path="/scan/new" element={<NewScan />} />
               <Route path="/scan/:id" element={<ScanProgress />} />
               <Route path="/report/:id" element={<Report />} />
+              <Route path="/scan/:id/surface" element={<AttackSurface />} />
+              <Route path="/scan/:id/analytics" element={<SecurityOverview />} />
               <Route path="/capabilities" element={<Capabilities />} />
             </Routes>
           </div>

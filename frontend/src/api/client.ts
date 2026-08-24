@@ -45,6 +45,82 @@ export interface LogEntry {
   message: string;
 }
 
+export interface Endpoint {
+  id: string;
+  scanId: string;
+  url: string;
+  path: string;
+  method: string;
+  statusCode?: number;
+  contentType?: string;
+  params?: string[];
+  riskCounts?: Record<string, number>;
+  discoveredAt: string;
+}
+
+export interface AttackSurface {
+  scanId: string;
+  target: string;
+  total: number;
+  endpoints: Endpoint[];
+  methodCounts: Record<string, number>;
+  statusCounts: Record<string, number>;
+  riskTotals: Record<string, number>;
+}
+
+export interface Finding {
+  id: string;
+  scanId: string;
+  pluginId: string;
+  name: string;
+  risk: string;
+  confidence: string;
+  description: string;
+  solution: string;
+  reference: string;
+  cweid: string;
+  wascid?: string;
+  param?: string;
+  affectedUrls: string[];
+  affectedCount: number;
+  alerts: Alert[];
+}
+
+export interface CategoryStat {
+  name: string;
+  pluginId: string;
+  cweId?: string;
+  risk: string;
+  count: number;
+}
+
+export interface ScoreResult {
+  score: number;
+  riskCounts: Record<string, number>;
+  findingCount: number;
+  alertCount: number;
+  affectedEndpoints: number;
+  categories: CategoryStat[];
+  methodology: string;
+}
+
+export interface EndpointHit {
+  url: string;
+  path: string;
+  findingCount: number;
+  risks: Record<string, number>;
+}
+
+export interface Analytics {
+  scanId: string;
+  score: ScoreResult;
+  findings: Finding[];
+  mostAffected: EndpointHit[];
+  methodCounts: Record<string, number>;
+  statusCodes?: Record<string, number>;
+  totalEndpoints: number;
+}
+
 const BASE = import.meta.env.VITE_API_URL ?? '';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -76,6 +152,19 @@ export const api = {
     request<{ status: string }>(`/api/scan/${id}`, { method: 'DELETE' }),
   getReport: (id: string) => request<Scan>(`/api/report/${id}`),
   reportHTMLUrl: (id: string) => `${BASE}/api/report/${id}/html`,
+  getSurface: (id: string, params?: { method?: string; search?: string }) => {
+    const qs = new URLSearchParams();
+    if (params?.method) qs.set('method', params.method);
+    if (params?.search) qs.set('search', params.search);
+    const suffix = qs.toString() ? `?${qs}` : '';
+    return request<AttackSurface>(`/api/scan/${id}/surface${suffix}`);
+  },
+  getEndpoints: (id: string) => request<Endpoint[]>(`/api/scan/${id}/endpoints`),
+  getAnalytics: (id: string) => request<Analytics>(`/api/scan/${id}/analytics`),
+  getFindings: (id: string, risk?: string) =>
+    request<Finding[]>(`/api/scan/${id}/findings${risk ? `?risk=${encodeURIComponent(risk)}` : ''}`),
+  getFinding: (id: string, findingId: string) =>
+    request<Finding>(`/api/scan/${id}/findings/${findingId}`),
   wsUrl: (id: string) => {
     const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = BASE ? new URL(BASE).host : window.location.host;

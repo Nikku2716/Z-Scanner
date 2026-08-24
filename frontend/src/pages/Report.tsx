@@ -115,6 +115,18 @@ export default function Report() {
               HTML
             </button>
           </a>
+          <Link to={`/scan/${scan.id}/surface`}>
+            <button className="ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>hub</span>
+              Attack Surface
+            </button>
+          </Link>
+          <Link to={`/scan/${scan.id}/analytics`}>
+            <button className="ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>monitoring</span>
+              Security Overview
+            </button>
+          </Link>
           <Link to="/dashboard">
             <button style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>grid_view</span>
