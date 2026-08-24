@@ -24,25 +24,14 @@ func (g *Generator) GenerateJSON(s *scan.Scan) ([]byte, error) {
 	return json.MarshalIndent(reportScan, "", "  ")
 }
 
-type reportData struct {
-	Scan   *scan.Scan
-	Counts map[string]int
-}
-
 func (g *Generator) GenerateHTML(s *scan.Scan) ([]byte, error) {
-	tmpl, err := template.New("report").Parse(reportTemplate)
+	tmpl, err := template.New("report").Funcs(funcMap()).Parse(reportTemplate)
 	if err != nil {
 		return nil, fmt.Errorf("parse template: %w", err)
 	}
 
-	reportScan := normalizedScan(s)
-	counts := map[string]int{}
-	for _, a := range reportScan.Alerts {
-		counts[a.Risk]++
-	}
-
 	var buf bytes.Buffer
-	if err := tmpl.Execute(&buf, reportData{Scan: reportScan, Counts: counts}); err != nil {
+	if err := tmpl.Execute(&buf, buildReportData(s)); err != nil {
 		return nil, fmt.Errorf("execute template: %w", err)
 	}
 	return buf.Bytes(), nil

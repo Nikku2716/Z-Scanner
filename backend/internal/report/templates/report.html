@@ -2,47 +2,213 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>BlackHawk Report — {{.Scan.Target}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlackHawk Security Assessment — {{.Scan.Target}}</title>
   <style>
-    body { font-family: 'Courier New', monospace; background: #0a0e14; color: #c9d1d9; margin: 2rem; }
-    h1 { color: #00e5ff; font-size: 1.5rem; }
-    .meta { color: #6b7280; margin-bottom: 2rem; }
-    .summary { display: flex; gap: 1rem; margin-bottom: 2rem; }
-    .badge { padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; }
-    .high { background: #7f1d1d; color: #fca5a5; }
-    .medium { background: #78350f; color: #fcd34d; }
-    .low { background: #1e3a5f; color: #93c5fd; }
-    .info { background: #1f2937; color: #9ca3af; }
-    .alert { border: 1px solid #1f2937; border-left: 3px solid #00e5ff; padding: 1rem; margin-bottom: 1rem; }
-    .alert h3 { margin: 0 0 0.5rem; color: #e5e7eb; }
-    .alert .url { color: #00e5ff; font-size: 0.875rem; word-break: break-all; }
-    .alert p { margin: 0.25rem 0; font-size: 0.875rem; color: #9ca3af; }
+    :root {
+      --bg: #0a0e14; --surface: #11161d; --border: #1f2937;
+      --text: #c9d1d9; --muted: #8b949e; --accent: #00e5ff;
+      --high: #ef4444; --medium: #f59e0b; --low: #eab308; --info: #6b7280;
+      --good: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.55; }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    header.report-header { border-bottom: 2px solid var(--accent); padding-bottom: 1.25rem; margin-bottom: 2rem; }
+    h1 { color: var(--accent); font-size: 1.6rem; margin: 0 0 0.25rem; letter-spacing: 0.02em; }
+    .subtitle { color: var(--muted); font-size: 0.9rem; }
+    h2 { color: #e5e7eb; font-size: 1.15rem; border-left: 3px solid var(--accent); padding-left: 0.6rem; margin: 2.25rem 0 0.9rem; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.95rem; }
+    section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th { text-align: left; color: var(--muted); font-weight: 600; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.06em; }
+    td { padding: 0.45rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; word-break: break-word; }
+    code, pre { font-family: 'Cascadia Code', Consolas, monospace; }
+    .kv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+    .kv { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 0.85rem; }
+    .kv .k { color: var(--muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .kv .v { font-size: 0.92rem; margin-top: 0.15rem; word-break: break-all; }
+
+    /* Score dial */
+    .score-row { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+    .dial { width: 130px; height: 130px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
+            background: conic-gradient(var(--dial-color) calc(var(--pct) * 1%), rgba(255,255,255,0.06) 0); }
+    .dial-inner { width: 100px; height: 100px; border-radius: 50%; background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .dial-score { font-size: 2rem; font-weight: 800; color: var(--dial-color); }
+    .dial-label { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; }
+    .score-notes { flex: 1; min-width: 260px; font-size: 0.82rem; color: var(--muted); }
+    .methodology { font-size: 0.74rem; color: var(--muted); margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px dashed var(--border); }
+
+    /* Badges */
+    .badge { display: inline-block; padding: 0.18rem 0.65rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; }
+    .badge.high { background: rgba(239,68,68,0.15); color: var(--high); border: 1px solid rgba(239,68,68,0.4); }
+    .badge.medium { background: rgba(245,158,11,0.12); color: var(--medium); border: 1px solid rgba(245,158,11,0.35); }
+    .badge.low { background: rgba(234,179,8,0.10); color: var(--low); border: 1px solid rgba(234,179,8,0.3); }
+    .badge.informational, .badge.info { background: rgba(107,114,128,0.12); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+
+    /* Findings */
+    .finding { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.9rem; overflow: hidden; }
+    .finding-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.02); cursor: default; flex-wrap: wrap; }
+    .finding-head h3 { margin: 0; font-size: 0.95rem; }
+    .finding-body { padding: 0.75rem 1rem 1rem; font-size: 0.86rem; }
+    .finding-body p { margin: 0.4rem 0; color: var(--text); }
+    .label { color: var(--muted); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; display: block; margin-top: 0.7rem; }
+    pre.evidence { background: #0a0e14; border: 1px solid var(--border); border-radius: 6px; padding: 0.7rem 0.9rem; font-size: 0.76rem; white-space: pre-wrap; word-break: break-word; max-height: 300px; overflow-y: auto; color: #a5d6ff; margin: 0.35rem 0 0; }
+    ul.urls { margin: 0.35rem 0 0; padding-left: 1.2rem; font-family: monospace; font-size: 0.78rem; color: var(--accent); }
+    .empty { color: var(--good); font-size: 0.9rem; }
+    footer { margin-top: 3rem; color: var(--muted); font-size: 0.72rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+    @media print { body { background: #fff; color: #111; } section { border-color: #ddd; } }
   </style>
 </head>
 <body>
-  <h1>BlackHawk Scan Report</h1>
-  <div class="meta">
-    <div>Target: {{.Scan.Target}}</div>
-    <div>Status: {{.Scan.Status}}</div>
-    <div>Mode: {{.Scan.Config.Mode}}</div>
-    <div>Scanned: {{.Scan.CreatedAt.Format "2006-01-02 15:04 UTC"}}</div>
+<div class="wrap">
+
+  <header class="report-header">
+    <h1>BlackHawk Security Assessment</h1>
+    <div class="subtitle">OWASP ZAP–powered web application security scan report</div>
+  </header>
+
+  <!-- Executive Summary -->
+  <h2>Executive Summary</h2>
+  <section>
+    {{if .Findings}}
+      <p>A security assessment of <strong>{{.Scan.Target}}</strong> identified
+      <strong>{{len .Findings}} distinct finding classes</strong>
+      ({{index .Counts "High"}} high, {{index .Counts "Medium"}} medium, {{index .Counts "Low"}} low,
+      {{index .Counts "Informational"}} informational) affecting
+      <strong>{{len .AffectedURLs}} endpoint{{if ne (len .AffectedURLs) 1}}s{{end}}</strong>.
+      The overall BlackHawk Security Score is
+      <strong style="color:{{scoreColor .Score.Score}}">{{.Score.Score}} / 100</strong>.</p>
+      {{if gt (index .Counts "High") 0}}
+        <p style="color:var(--high)">Immediate remediation is recommended for the high-severity findings listed below.</p>
+      {{end}}
+    {{else}}
+      <p class="empty">No vulnerabilities were identified for {{.Scan.Target}} in this scan.</p>
+    {{end}}
+  </section>
+
+  <!-- Target & Scan Configuration -->
+  <h2>Target Information &amp; Scan Configuration</h2>
+  <section>
+    <div class="kv-grid">
+      <div class="kv"><div class="k">Target</div><div class="v">{{.Scan.Target}}</div></div>
+      <div class="kv"><div class="k">Scan ID</div><div class="v">{{.Scan.ID}}</div></div>
+      <div class="kv"><div class="k">Scan Mode</div><div class="v">{{.Scan.Config.Mode}}</div></div>
+      <div class="kv"><div class="k">Max Children (spider)</div><div class="v">{{.Scan.Config.MaxChildren}}</div></div>
+      <div class="kv"><div class="k">Started</div><div class="v">{{.Scan.CreatedAt.Format "2006-01-02 15:04:05 UTC"}}</div></div>
+      <div class="kv"><div class="k">Completed</div><div class="v">{{.Scan.UpdatedAt.Format "2006-01-02 15:04:05 UTC"}}</div></div>
+      <div class="kv"><div class="k">Status</div><div class="v">{{.Scan.Status}}</div></div>
+      <div class="kv"><div class="k">Raw Alerts (deduplicated)</div><div class="v">{{len .Scan.Alerts}}</div></div>
+    </div>
+  </section>
+
+  <!-- Security Score -->
+  <h2>Security Score</h2>
+  <section>
+    <div class="score-row">
+      <div class="dial" style="--pct: {{.Score.Score}}; --dial-color: {{scoreColor .Score.Score}}">
+        <div class="dial-inner">
+          <span class="dial-score">{{.Score.Score}}</span>
+          <span class="dial-label">/ 100</span>
+        </div>
+      </div>
+      <div class="score-notes">
+        <table>
+          <tr><th>Severity</th><th>Finding Classes</th></tr>
+          <tr><td><span class="badge high">High</span></td><td>{{index .Counts "High"}}</td></tr>
+          <tr><td><span class="badge medium">Medium</span></td><td>{{index .Counts "Medium"}}</td></tr>
+          <tr><td><span class="badge low">Low</span></td><td>{{index .Counts "Low"}}</td></tr>
+          <tr><td><span class="badge info">Informational</span></td><td>{{index .Counts "Informational"}}</td></tr>
+        </table>
+        <div class="methodology">
+          {{.Score.Methodology}}<br>
+          <em>The BlackHawk Security Score is a prioritization aid derived from OWASP ZAP alert metadata.
+          It is not a CVSS score and does not replace professional judgment.
+          CWE/WASC classifications from ZAP are preserved per finding below.</em>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vulnerability Summary -->
+  <h2>Vulnerability Summary</h2>
+  <section>
+    {{if .Findings}}
+    <table>
+      <tr><th>Finding</th><th>Risk</th><th>Confidence</th><th>CWE</th><th>Affected Endpoints</th></tr>
+      {{$scan := .Scan.ID}}
+      {{range .Findings}}
+      <tr>
+        <td>{{.Name}}{{if .Param}} <span style="color:var(--muted)">[param: {{.Param}}]</span>{{end}}</td>
+        <td><span class="badge {{riskClass .Risk}}">{{.Risk}}</span></td>
+        <td>{{if .Confidence}}{{.Confidence}}{{else}}—{{end}}</td>
+        <td>{{if .CWEID}}CWE-{{.CWEID}}{{else}}—{{end}}</td>
+        <td>{{.AffectedCount}}</td>
+      </tr>
+      {{end}}
+    </table>
+    {{else}}<p class="empty">No findings to summarize.</p>{{end}}
+  </section>
+
+  <!-- Attack Surface -->
+  <h2>Attack Surface</h2>
+  <section>
+    <p style="margin:0 0 0.5rem"><strong>{{len .AffectedURLs}}</strong> unique endpoints carried at least one finding:</p>
+    <ul class="urls">
+      {{range .AffectedURLs}}<li>{{.}}</li>{{else}}<li>None recorded.</li>{{end}}
+    </ul>
+  </section>
+
+  <!-- Detailed Findings -->
+  <h2>Detailed Findings</h2>
+  {{$scanID := .Scan.ID}}
+  {{range .Findings}}
+  <div class="finding">
+    <div class="finding-head">
+      <h3>{{.Name}}</h3>
+      <span>
+        <span class="badge {{riskClass .Risk}}">{{.Risk}}</span>
+        {{if .Confidence}}<span class="badge info" style="margin-left:0.4rem">{{.Confidence}}</span>{{end}}
+      </span>
+    </div>
+    <div class="finding-body">
+      {{if .Description}}<span class="label">Description</span><p>{{.Description}}</p>{{end}}
+
+      <span class="label">Affected URL{{if ne (len .AffectedURLs) 1}}s{{end}} ({{.AffectedCount}})</span>
+      <ul class="urls">{{range .AffectedURLs}}<li>{{.}}</li>{{end}}</ul>
+
+      {{if or .Param .PluginID .Method}}
+      <span class="label">Details</span>
+      <p>
+        {{if .PluginID}}ZAP Plugin {{.PluginID}}{{end}}
+        {{if .WASCID}} · WASC-{{.WASCID}}{{end}}
+        {{if .CWEID}} · CWE-{{.CWEID}}{{end}}
+        {{if .Param}} · Parameter: <code>{{.Param}}</code>{{end}}
+      </p>
+      {{end}}
+
+      {{$f := .}}
+      {{range .Alerts}}{{if .Evidence}}
+        <span class="label">Evidence{{if $f.Param}} ({{$f.Param}}){{end}}</span>
+        <pre class="evidence">{{.URL}}
+{{.Evidence}}{{if .Attack}}
+
+Attack payload: {{.Attack}}{{end}}</pre>
+      {{break}}{{end}}{{end}}
+
+      {{if .Solution}}<span class="label">Remediation Guidance</span><p>{{.Solution}}</p>{{end}}
+      {{if .Reference}}<span class="label">References</span><p style="word-break:break-all">{{.Reference}}</p>{{end}}
+    </div>
   </div>
-  <div class="summary">
-    <span class="badge high">High: {{index .Counts "High"}}</span>
-    <span class="badge medium">Medium: {{index .Counts "Medium"}}</span>
-    <span class="badge low">Low: {{index .Counts "Low"}}</span>
-    <span class="badge info">Info: {{index .Counts "Informational"}}</span>
-  </div>
-  {{range .Scan.Alerts}}
-  <div class="alert">
-    <h3>[{{.Risk}}] {{.Name}}</h3>
-    <div class="url">{{.URL}}</div>
-    <p><strong>Plugin:</strong> {{.PluginID}}{{if .Param}} · <strong>Param:</strong> {{.Param}}{{end}}{{if .Method}} · <strong>Method:</strong> {{.Method}}{{end}}</p>
-    {{if .Attack}}<p><strong>Attack:</strong> {{.Attack}}</p>{{end}}
-    {{if .Evidence}}<p><strong>Evidence:</strong> {{.Evidence}}</p>{{end}}
-    <p>{{.Description}}</p>
-    <p><strong>Solution:</strong> {{.Solution}}</p>
-  </div>
+  {{else}}
+  <section><p class="empty">No vulnerability findings were produced by this scan.</p></section>
   {{end}}
+
+  <!-- Metadata -->
+  <footer>
+    Generated by BlackHawk v2.0.0 on {{.Scan.UpdatedAt.Format "2006-01-02 15:04 UTC"}} ·
+    Scan {{.Scan.ID}} · Engine: OWASP ZAP ·
+    Scoring: BlackHawk deterministic model (not CVSS)
+  </footer>
+</div>
 </body>
 </html>
