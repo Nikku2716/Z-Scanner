@@ -6,14 +6,14 @@ const SEVERITIES = ['High', 'Medium', 'Low', 'Informational'] as const;
 
 const SEVERITY_COLORS: Record<string, string> = {
   High: 'var(--error)',
-  Medium: '#f59e0b',
-  Low: '#eab308',
-  Informational: 'var(--color-steel)',
+  Medium: 'var(--warning)',
+  Low: '#8a6d00',
+  Informational: 'var(--on-surface-variant)',
 };
 
 function scoreColor(score: number) {
-  if (score >= 80) return 'var(--success, #34d399)';
-  if (score >= 50) return '#f59e0b';
+  if (score >= 80) return 'var(--success)';
+  if (score >= 50) return 'var(--warning)';
   return 'var(--error)';
 }
 
@@ -54,7 +54,7 @@ export default function AnalyticsPage() {
     return (
       <div>
         <header className="page-header"><h1>Security Overview</h1></header>
-        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(239,68,68,0.25)', borderLeft: '3px solid var(--error)' }}>
+        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(207,34,46,0.25)', borderLeft: '3px solid var(--error)' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
@@ -81,11 +81,11 @@ export default function AnalyticsPage() {
         <div className="panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
           <div style={{
             width: 132, height: 132, borderRadius: '50%',
-            background: `conic-gradient(${scoreColor(s.score)} ${s.score * 3.6}deg, var(--surface-container-high, rgba(255,255,255,0.06)) 0deg)`,
+            background: `conic-gradient(${scoreColor(s.score)} ${s.score * 3.6}deg, var(--surface-container-high, #f3f3f3) 0deg)`,
             display: 'grid', placeItems: 'center',
           }}>
             <div style={{
-              width: 104, height: 104, borderRadius: '50%', background: 'var(--surface, #101418)',
+              width: 104, height: 104, borderRadius: '50%', background: '#ffffff',
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             }}>
               <span style={{ fontSize: '2rem', fontWeight: 800, color: scoreColor(s.score), lineHeight: 1 }}>{s.score}</span>
@@ -104,7 +104,7 @@ export default function AnalyticsPage() {
             return (
               <div key={sev} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr 2.5rem', alignItems: 'center', gap: '0.75rem' }}>
                 <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.72rem', color: SEVERITY_COLORS[sev], fontWeight: 700 }}>{sev}</span>
-                <div style={{ height: 8, borderRadius: 4, background: 'var(--surface-container-high, rgba(255,255,255,0.05))' }}>
+                <div style={{ height: 8, borderRadius: 4, background: 'var(--surface-container-high, #f3f3f3)' }}>
                   <div style={{ width: `${(count / max) * 100}%`, height: '100%', borderRadius: 4, background: SEVERITY_COLORS[sev], transition: 'width 0.4s ease' }} />
                 </div>
                 <span style={{ textAlign: 'right', fontWeight: 700, fontSize: '0.85rem' }}>{count}</span>
@@ -130,7 +130,7 @@ export default function AnalyticsPage() {
           <h3 style={sectionTitle()}>Vulnerability Categories</h3>
           {s.categories.length === 0 && <Empty text="No vulnerabilities found — clean scan." />}
           {s.categories.map((c) => (
-            <div key={c.pluginId + c.name} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+            <div key={c.pluginId + c.name} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(55,53,47,0.08)' }}>
               <div style={{ minWidth: 0 }}>
                 <button
                   onClick={() => { const f = data.findings.find((x) => x.name === c.name && x.pluginId === c.pluginId); if (f) openFinding(f); }}
@@ -151,7 +151,7 @@ export default function AnalyticsPage() {
           <h3 style={sectionTitle()}>Most Affected Endpoints</h3>
           {data.mostAffected.length === 0 && <Empty text="No endpoint has known findings." />}
           {data.mostAffected.map((h) => (
-            <div key={h.url} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+            <div key={h.url} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(55,53,47,0.08)' }}>
               <code style={{ fontSize: '0.78rem', wordBreak: 'break-all' }}>{h.path}</code>
               <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.68rem', color: h.risks.High ? 'var(--error)' : 'var(--on-surface-variant)', flexShrink: 0 }}>
                 {h.findingCount} finding{h.findingCount !== 1 ? 's' : ''}
@@ -248,7 +248,7 @@ function Section({ title, body, mono }: { title: string; body?: string; mono?: b
         fontFamily: mono ? 'monospace' : 'inherit',
         fontSize: mono ? '0.75rem' : '0.85rem',
         color: 'var(--on-surface)',
-        background: 'var(--surface-container, rgba(255,255,255,0.03))',
+        background: 'var(--surface-container-high, #f3f3f3)',
         padding: '0.6rem', borderRadius: '6px',
       }}>{body}</pre>
     </div>

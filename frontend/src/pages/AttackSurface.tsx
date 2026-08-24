@@ -5,7 +5,7 @@ import { api, type AttackSurface, type Endpoint } from '../api/client';
 const METHOD_COLORS: Record<string, string> = {
   GET: 'var(--primary)',
   POST: 'var(--tertiary)',
-  PUT: '#eab308',
+  PUT: '#8a6d00',
   DELETE: 'var(--error)',
   PATCH: '#a78bfa',
 };
@@ -70,7 +70,7 @@ export default function AttackSurfacePage() {
       )}
 
       {error && (
-        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(239,68,68,0.25)', borderLeft: '3px solid var(--error)' }}>
+        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(207,34,46,0.25)', borderLeft: '3px solid var(--error)' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
@@ -140,7 +140,7 @@ export default function AttackSurfacePage() {
                     <span style={{
                       fontFamily: 'var(--font-label)',
                       fontSize: '0.7rem',
-                      color: (ep.statusCode ?? 0) >= 400 ? 'var(--error)' : (ep.statusCode ?? 0) >= 300 ? '#eab308' : 'var(--success, #34d399)',
+                      color: (ep.statusCode ?? 0) >= 400 ? 'var(--error)' : (ep.statusCode ?? 0) >= 300 ? '#8a6d00' : 'var(--success)',
                     }}>
                       {ep.statusCode}
                     </span>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { api, type Comparison, type Scan } from '../api/client';
 
 function deltaColor(d: number) {
-  if (d > 0) return 'var(--success, #34d399)';
+  if (d > 0) return 'var(--success)';
   if (d < 0) return 'var(--error)';
   return 'var(--on-surface-variant)';
 }
@@ -83,7 +83,7 @@ export default function ComparePage() {
           </form>
 
           {error && (
-            <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(239,68,68,0.25)', borderLeft: '3px solid var(--error)' }}>
+            <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(207,34,46,0.25)', borderLeft: '3px solid var(--error)' }}>
               {error}
             </div>
           )}
@@ -147,7 +147,7 @@ function Select({ label, value, onChange, scans, exclude }: {
 }
 
 function ScoreBox({ score }: { score: number }) {
-  const c = score >= 80 ? 'var(--success, #34d399)' : score >= 50 ? '#f59e0b' : 'var(--error)';
+  const c = score >= 80 ? 'var(--success)' : score >= 50 ? 'var(--warning)' : 'var(--error)';
   return (
     <div style={{ textAlign: 'center' }}>
       <div style={{ fontSize: '2.2rem', fontWeight: 800, color: c, lineHeight: 1 }}>{score}</div>
@@ -157,7 +157,7 @@ function ScoreBox({ score }: { score: number }) {
 }
 
 function CountCard({ label, count, tone, icon }: { label: string; count: number; tone: 'good' | 'bad' | 'warn' | 'neutral'; icon: string }) {
-  const colors = { good: 'var(--success, #34d399)', bad: 'var(--error)', warn: '#f59e0b', neutral: 'var(--on-surface-variant)' };
+  const colors = { good: 'var(--success)', bad: 'var(--error)', warn: 'var(--warning)', neutral: 'var(--on-surface-variant)' };
   return (
     <div className="panel" style={{ padding: '0.9rem 1rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
       <span className="material-symbols-outlined" style={{ color: colors[tone] }}>{icon}</span>
