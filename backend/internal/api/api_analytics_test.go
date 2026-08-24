@@ -23,7 +23,7 @@ func newTestServerWithStore(t *testing.T) (http.Handler, *scan.Store, *scan.Orch
 	t.Cleanup(func() { _ = store.Close() })
 	zap := zapclient.New("http://127.0.0.1:1", "test-key")
 	orch := scan.NewOrchestrator(zap, store)
-	return NewHandler(orch, report.New(), "http://localhost:5173"), store, orch
+	return NewHandler(orch, report.New(), "http://localhost:5174"), store, orch
 }
 
 func seedCompletedScan(t *testing.T, orch *scan.Orchestrator, id string, alerts []scan.Alert) {

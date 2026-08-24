@@ -50,7 +50,7 @@ func NewHandler(orch *scan.Orchestrator, reporter *report.Generator, origin stri
 	})
 
 	return cors.Handler(cors.Options{
-		AllowedOrigins:   []string{origin, "http://localhost:5173", "http://127.0.0.1:5173"},
+		AllowedOrigins:   []string{origin, "http://localhost:5174", "http://127.0.0.1:5174"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
 		AllowCredentials: true,

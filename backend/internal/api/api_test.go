@@ -22,7 +22,7 @@ func newTestServer(t *testing.T) http.Handler {
 	// A ZAP client pointed at an unreachable address — no scan can start,
 	// which is exactly what these API tests want.
 	zap := zapclient.New("http://127.0.0.1:1", "test-key")
-	return NewHandler(scan.NewOrchestrator(zap, store), report.New(), "http://localhost:5173")
+	return NewHandler(scan.NewOrchestrator(zap, store), report.New(), "http://localhost:5174")
 }
 
 func getJSON(t *testing.T, h http.Handler, path string) (int, map[string]any) {

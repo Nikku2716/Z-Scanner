@@ -19,7 +19,7 @@ func Load() Config {
 		Port:       port,
 		ZAPHost:    getEnv("ZAP_HOST", "http://localhost:8080"),
 		ZAPAPIKey:  getEnv("ZAP_API_KEY", "changeme"),
-		CORSOrigin: getEnv("CORS_ORIGIN", "http://localhost:5173"),
+		CORSOrigin: getEnv("CORS_ORIGIN", "http://localhost:5174"),
 		StorePath:  getEnv("STORE_PATH", "scans.db"),
 	}
 }

@@ -89,7 +89,7 @@ cd BlackHawk
 docker compose up --build
 ```
 
-- Frontend: http://localhost:5173
+- Frontend: http://localhost:5174
 - Backend API: http://localhost:8081
 - ZAP daemon: http://localhost:8080
 
@@ -130,7 +130,7 @@ All backend configuration is environment-driven (no hardcoded values):
 | `PORT` | `8081` | API listen port |
 | `ZAP_HOST` | `http://localhost:8080` | ZAP daemon base URL |
 | `ZAP_API_KEY` | `changeme` | ZAP API key |
-| `CORS_ORIGIN` | `http://localhost:5173` | Allowed browser origin |
+| `CORS_ORIGIN` | `http://localhost:5174` | Allowed browser origin |
 | `STORE_PATH` | `scans.db` | SQLite database path |
 
 ---
@@ -232,7 +232,7 @@ curl -X POST localhost:8081/api/scan \
 # → {"id":"…","status":"pending", …}
 
 # 3. Watch progress (browser or WebSocket)
-open localhost:5173/scan/<id>
+open localhost:5174/scan/<id>
 # or: wscat -c ws://localhost:8081/api/ws/<id>
 
 # 4. Review the security picture
