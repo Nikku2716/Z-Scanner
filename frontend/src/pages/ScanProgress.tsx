@@ -81,7 +81,7 @@ export default function ScanProgress() {
 
   if (error && !scan) {
     return (
-      <div className="panel" style={{ color: 'var(--error)', borderLeft: '3px solid var(--error)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>error</span>
         {error}
       </div>
@@ -148,10 +148,10 @@ export default function ScanProgress() {
             <div style={{
               marginTop: '1rem',
               padding: '0.625rem 0.875rem',
-              background: 'var(--color-green-soft)',
+              background: '#ecfdf5',
               borderRadius: 'var(--radius)',
               border: '1px solid rgba(22, 163, 74, 0.25)',
-              color: 'var(--primary)',
+              color: '#15803d',
               fontSize: '0.8125rem',
               fontFamily: 'var(--font-label)',
               display: 'flex',
@@ -166,12 +166,12 @@ export default function ScanProgress() {
           <div style={{
             marginTop: '1rem',
             padding: '0.625rem 0.875rem',
-            background: isRunning ? 'var(--color-green-soft)' : 'var(--color-abyss)',
+            background: isRunning ? 'var(--color-sky-tint)' : 'var(--color-paper-warmth)',
             borderRadius: 'var(--radius)',
             fontSize: '0.8125rem',
             fontFamily: 'var(--font-label)',
-            color: isRunning ? 'var(--primary)' : 'var(--on-surface-variant)',
-            border: `1px solid ${isRunning ? 'rgba(22, 163, 74, 0.25)' : 'var(--outline-variant)'}`,
+            color: isRunning ? 'var(--color-notion-blue)' : 'var(--color-graphite)',
+            border: `1px solid ${isRunning ? 'rgba(0, 117, 222, 0.25)' : 'rgba(0, 0, 0, 0.08)'}`,
           }}>
             {scan.progress.message}
           </div>
@@ -180,10 +180,10 @@ export default function ScanProgress() {
             <div style={{
               marginTop: '1rem',
               padding: '0.625rem 0.875rem',
-              background: 'var(--error-container)',
+              background: '#fef2f2',
               borderRadius: 'var(--radius)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              color: 'var(--error)',
+              border: '1px solid rgba(227, 45, 20, 0.25)',
+              color: 'var(--color-vermillion)',
               fontSize: '0.8125rem',
               fontFamily: 'var(--font-label)',
               display: 'flex',

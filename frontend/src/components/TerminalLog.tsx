@@ -22,9 +22,9 @@ export default function TerminalLog({ logs }: Props) {
   return (
     <div
       style={{
-        background: '#10131b',
-        border: '1px solid var(--outline-variant)',
-        borderRadius: 'var(--radius-lg)',
+        background: 'var(--color-midnight-ink, #02093a)',
+        border: '1px solid rgba(0, 0, 0, 0.1)',
+        borderRadius: 'var(--radius-cards, 12px)',
         overflow: 'hidden',
       }}
     >
@@ -33,22 +33,22 @@ export default function TerminalLog({ logs }: Props) {
         display: 'flex',
         alignItems: 'center',
         gap: '0.5rem',
-        padding: '0.6rem 0.875rem',
-        background: '#1c202a',
-        borderBottom: '1px solid var(--outline-variant)',
+        padding: '0.65rem 1rem',
+        background: 'rgba(255, 255, 255, 0.06)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
       }}>
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f56' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ffbd2e' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#27c93f' }} />
+        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#ff5f56' }} />
+        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#ffbd2e' }} />
+        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#27c93f' }} />
         <span style={{
           marginLeft: '0.5rem',
-          fontFamily: 'var(--font-label)',
-          fontSize: '0.6rem',
-          color: 'var(--color-mist)',
-          letterSpacing: '0.06em',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.68rem',
+          color: 'rgba(255, 255, 255, 0.65)',
+          letterSpacing: '0.08em',
           textTransform: 'uppercase',
         }}>
-          scan output
+          Live Scanner Output
         </span>
       </div>
 
@@ -74,7 +74,7 @@ export default function TerminalLog({ logs }: Props) {
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-all',
           }}>
-            <span style={{ color: '#3d4e66', userSelect: 'none', marginRight: '0.5rem' }}>
+            <span style={{ color: '#9b9b9b', userSelect: 'none', marginRight: '0.5rem' }}>
               [{new Date(log.timestamp).toLocaleTimeString()}]
             </span>
             {log.message}

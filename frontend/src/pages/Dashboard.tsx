@@ -104,7 +104,7 @@ export default function Dashboard() {
               {filteredScans.filter(s => s.status === 'running' || s.status === 'pending').length} active
             </span>
           </span>
-          <span style={{ color: 'var(--color-steel)' }}>·</span>
+          <span style={{ color: 'var(--on-surface-variant)' }}>·</span>
           <span>{filteredScans.length} total scan{filteredScans.length !== 1 ? 's' : ''}</span>
         </div>
         <Link to="/scan/new">
@@ -123,7 +123,7 @@ export default function Dashboard() {
       )}
 
       {error && (
-        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(239, 68, 68, 0.25)', borderLeft: '3px solid var(--error)' }}>
+        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
@@ -133,10 +133,10 @@ export default function Dashboard() {
 
       {!loading && scans.length === 0 && (
         <div className="panel" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: 'var(--color-steel)', display: 'block', marginBottom: '1rem' }}>radar</span>
+          <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: 'var(--on-surface-variant)', display: 'block', marginBottom: '1rem' }}>radar</span>
           <p style={{ color: 'var(--on-surface-variant)', marginBottom: '1.5rem', fontSize: '0.9375rem' }}>No scans yet. Point BlackHawk at a target to begin.</p>
-          <Link to="/scan/new"><button className="primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 auto' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>add</span>
+          <Link to="/scan/new"><button className="primary" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '10px 26px', fontSize: '15px', fontWeight: 500, minWidth: '170px', margin: '0 auto' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>add</span>
             Start First Scan
           </button></Link>
         </div>
@@ -144,7 +144,7 @@ export default function Dashboard() {
 
       {!loading && scans.length > 0 && filteredScans.length === 0 && (
         <div className="panel" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: 'var(--color-steel)', display: 'block', marginBottom: '1rem' }}>search_off</span>
+          <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: 'var(--on-surface-variant)', display: 'block', marginBottom: '1rem' }}>search_off</span>
           <p style={{ color: 'var(--on-surface-variant)', marginBottom: '1.5rem', fontSize: '0.9375rem' }}>No scans match "{searchTerm.trim()}". Try a different target, mode, or status.</p>
           <button className="ghost" onClick={() => setSearchTerm('')} style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>close</span>
@@ -166,7 +166,6 @@ export default function Dashboard() {
           return (
             <Link key={scan.id} to={link} style={{ textDecoration: 'none', display: 'block', opacity: isDeleting ? 0.4 : 1 }}>
               <div className={`card ${statusClass} gsap-dash-card`}>
-                {isRunning && <div className="card-glow-hint" />}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1.5rem', position: 'relative', zIndex: 1 }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.375rem' }}>

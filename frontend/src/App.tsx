@@ -8,7 +8,6 @@ import Capabilities from './pages/Capabilities';
 import AttackSurface from './pages/AttackSurface';
 import SecurityOverview from './pages/SecurityOverview';
 import ComparePage from './pages/Compare';
-import CursorFX from './components/CursorFX';
 
 export default function App() {
   const location = useLocation();
@@ -16,25 +15,21 @@ export default function App() {
 
   if (isLanding) {
     return (
-      <>
-        <CursorFX />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-        </Routes>
-      </>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
     );
   }
 
   return (
-    <>
-      <CursorFX />
-      <div className="layout">
+    <div className="layout">
         <aside className="sidebar">
           <div className="logo">
-            <span className="logo-title">
+            <NavLink to="/" className="logo-title" style={{ textDecoration: 'none' }}>
+              <span className="logo-mark">B</span>
               <span className="logo-text-black">Black</span>
               <span className="logo-text-hawk">Hawk</span>
-            </span>
+            </NavLink>
           </div>
           <NavLink to="/dashboard" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} end>
             <span className="material-symbols-outlined">grid_view</span>
@@ -79,6 +74,5 @@ export default function App() {
           </div>
         </main>
       </div>
-    </>
   );
 }

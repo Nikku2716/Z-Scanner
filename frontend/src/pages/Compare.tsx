@@ -63,10 +63,13 @@ export default function ComparePage() {
       )}
 
       {!loading && completedScans.length < 2 && (
-        <div className="panel" style={{ textAlign: 'center', padding: '3rem' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '2.5rem', color: 'var(--color-steel)' }}>compare_arrows</span>
-          <p style={{ color: 'var(--on-surface-variant)' }}>At least two completed scans are required for comparison.</p>
-          <Link to="/scan/new"><button className="primary">Launch a Scan</button></Link>
+        <div className="panel" style={{ textAlign: 'center', padding: '3.5rem 2rem' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '2.75rem', color: 'var(--color-stone)', display: 'block', marginBottom: '1rem' }}>compare_arrows</span>
+          <p style={{ color: 'var(--color-graphite)', fontSize: '0.9375rem', marginBottom: '1.5rem' }}>At least two completed scans are required for comparison.</p>
+          <Link to="/scan/new"><button className="primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', padding: '10px 26px', fontSize: '15px', fontWeight: 500, minWidth: '170px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>add</span>
+            Launch a Scan
+          </button></Link>
         </div>
       )}
 
@@ -83,8 +86,11 @@ export default function ComparePage() {
           </form>
 
           {error && (
-            <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(207,34,46,0.25)', borderLeft: '3px solid var(--error)' }}>
-              {error}
+            <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
+                {error}
+              </span>
             </div>
           )}
 
@@ -128,13 +134,13 @@ function Select({ label, value, onChange, scans, exclude }: {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          background: 'var(--surface-container)',
-          color: 'var(--on-surface)',
-          border: '1px solid var(--outline-variant)',
-          borderRadius: 'var(--radius-sm)',
-          padding: '0.45rem 0.6rem',
-          fontFamily: 'var(--font-label)',
-          fontSize: '0.8rem',
+          background: 'var(--color-pure-white, #ffffff)',
+          color: 'rgba(0, 0, 0, 0.95)',
+          border: '1px solid rgba(0, 0, 0, 0.12)',
+          borderRadius: 'var(--radius-buttons, 8px)',
+          padding: '0.55rem 0.75rem',
+          fontFamily: 'var(--font-notioninter)',
+          fontSize: '0.85rem',
         }}
       >
         <option value="" disabled>Select…</option>

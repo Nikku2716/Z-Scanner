@@ -70,7 +70,7 @@ export default function Report() {
   }
 
   if (error) return (
-    <div className="panel" style={{ color: 'var(--error)', borderLeft: '3px solid var(--error)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+    <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
       <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>error</span>
       {error}
     </div>

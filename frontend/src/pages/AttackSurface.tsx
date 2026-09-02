@@ -3,25 +3,26 @@ import { Link, useParams } from 'react-router-dom';
 import { api, type AttackSurface, type Endpoint } from '../api/client';
 
 const METHOD_COLORS: Record<string, string> = {
-  GET: 'var(--primary)',
-  POST: 'var(--tertiary)',
-  PUT: '#8a6d00',
-  DELETE: 'var(--error)',
-  PATCH: '#a78bfa',
+  GET: 'var(--color-notion-blue)',
+  POST: '#b45309',
+  PUT: '#e89d01',
+  DELETE: 'var(--color-vermillion)',
+  PATCH: '#7c3aed',
 };
 
 function MethodTag({ method }: { method: string }) {
-  const color = METHOD_COLORS[method] ?? 'var(--color-steel)';
+  const color = METHOD_COLORS[method] ?? 'var(--color-graphite)';
   return (
     <span style={{
-      fontFamily: 'var(--font-label)',
-      fontSize: '0.65rem',
-      fontWeight: 700,
-      letterSpacing: '0.05em',
+      fontFamily: 'var(--font-mono)',
+      fontSize: '0.68rem',
+      fontWeight: 600,
+      letterSpacing: '0.04em',
       color,
       border: `1px solid ${color}`,
-      borderRadius: '4px',
+      borderRadius: 'var(--radius-small)',
       padding: '0.1rem 0.45rem',
+      background: 'rgba(0, 0, 0, 0.02)',
     }}>
       {method}
     </span>
@@ -70,7 +71,7 @@ export default function AttackSurfacePage() {
       )}
 
       {error && (
-        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(207,34,46,0.25)', borderLeft: '3px solid var(--error)' }}>
+        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
@@ -124,7 +125,7 @@ export default function AttackSurfacePage() {
 
           {!loading && surface.endpoints.length === 0 && (
             <div className="panel" style={{ textAlign: 'center', padding: '3rem' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '2.5rem', color: 'var(--color-steel)' }}>search_off</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '2.5rem', color: 'var(--on-surface-variant)' }}>search_off</span>
               <p style={{ color: 'var(--on-surface-variant)' }}>No endpoints match the current filters.</p>
               <button className="ghost" onClick={() => { setSearch(''); setMethodFilter(''); }}>Clear filters</button>
             </div>

@@ -5,16 +5,16 @@ import { api, type Analytics, type Finding } from '../api/client';
 const SEVERITIES = ['High', 'Medium', 'Low', 'Informational'] as const;
 
 const SEVERITY_COLORS: Record<string, string> = {
-  High: 'var(--error)',
-  Medium: 'var(--warning)',
-  Low: '#8a6d00',
-  Informational: 'var(--on-surface-variant)',
+  High: 'var(--color-vermillion)',
+  Medium: '#b45309',
+  Low: 'var(--color-notion-blue)',
+  Informational: 'var(--color-stone)',
 };
 
 function scoreColor(score: number) {
-  if (score >= 80) return 'var(--success)';
-  if (score >= 50) return 'var(--warning)';
-  return 'var(--error)';
+  if (score >= 80) return '#15803d';
+  if (score >= 50) return '#b45309';
+  return 'var(--color-vermillion)';
 }
 
 export default function AnalyticsPage() {
@@ -54,7 +54,7 @@ export default function AnalyticsPage() {
     return (
       <div>
         <header className="page-header"><h1>Security Overview</h1></header>
-        <div className="panel" style={{ color: 'var(--error)', borderColor: 'rgba(207,34,46,0.25)', borderLeft: '3px solid var(--error)' }}>
+        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
@@ -81,33 +81,34 @@ export default function AnalyticsPage() {
         <div className="panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
           <div style={{
             width: 132, height: 132, borderRadius: '50%',
-            background: `conic-gradient(${scoreColor(s.score)} ${s.score * 3.6}deg, var(--surface-container-high, #f3f3f3) 0deg)`,
+            background: `conic-gradient(${scoreColor(s.score)} ${s.score * 3.6}deg, rgba(0, 0, 0, 0.08) 0deg)`,
             display: 'grid', placeItems: 'center',
           }}>
             <div style={{
-              width: 104, height: 104, borderRadius: '50%', background: '#ffffff',
+              width: 104, height: 104, borderRadius: '50%', background: 'var(--color-pure-white, #ffffff)',
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)',
             }}>
-              <span style={{ fontSize: '2rem', fontWeight: 800, color: scoreColor(s.score), lineHeight: 1 }}>{s.score}</span>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.6rem', color: 'var(--on-surface-variant)' }}>/ 100</span>
+              <span style={{ fontSize: '2.2rem', fontWeight: 700, color: scoreColor(s.score), lineHeight: 1 }}>{s.score}</span>
+              <span style={{ fontFamily: 'var(--font-notioninter)', fontSize: '0.65rem', color: 'var(--color-stone)' }}>/ 100</span>
             </div>
           </div>
-          <div style={{ fontFamily: 'var(--font-label)', fontSize: '0.7rem', color: 'var(--on-surface-variant)', marginTop: '1rem', textAlign: 'center' }}>
+          <div style={{ fontFamily: 'var(--font-notioninter)', fontSize: '0.75rem', fontWeight: 500, color: 'var(--color-stone)', marginTop: '1rem', textAlign: 'center' }}>
             BlackHawk Security Score
           </div>
         </div>
 
-        <div className="panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+        <div className="panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {SEVERITIES.map((sev) => {
             const count = s.riskCounts[sev] ?? 0;
             const max = Math.max(1, ...SEVERITIES.map((x) => s.riskCounts[x] ?? 0));
             return (
               <div key={sev} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr 2.5rem', alignItems: 'center', gap: '0.75rem' }}>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.72rem', color: SEVERITY_COLORS[sev], fontWeight: 700 }}>{sev}</span>
-                <div style={{ height: 8, borderRadius: 4, background: 'var(--surface-container-high, #f3f3f3)' }}>
+                <span style={{ fontFamily: 'var(--font-notioninter)', fontSize: '0.75rem', color: SEVERITY_COLORS[sev], fontWeight: 600 }}>{sev}</span>
+                <div style={{ height: 8, borderRadius: 4, background: 'rgba(0, 0, 0, 0.06)' }}>
                   <div style={{ width: `${(count / max) * 100}%`, height: '100%', borderRadius: 4, background: SEVERITY_COLORS[sev], transition: 'width 0.4s ease' }} />
                 </div>
-                <span style={{ textAlign: 'right', fontWeight: 700, fontSize: '0.85rem' }}>{count}</span>
+                <span style={{ textAlign: 'right', fontWeight: 600, fontSize: '0.85rem' }}>{count}</span>
               </div>
             );
           })}
@@ -130,7 +131,7 @@ export default function AnalyticsPage() {
           <h3 style={sectionTitle()}>Vulnerability Categories</h3>
           {s.categories.length === 0 && <Empty text="No vulnerabilities found — clean scan." />}
           {s.categories.map((c) => (
-            <div key={c.pluginId + c.name} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(55,53,47,0.08)' }}>
+            <div key={c.pluginId + c.name} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
               <div style={{ minWidth: 0 }}>
                 <button
                   onClick={() => { const f = data.findings.find((x) => x.name === c.name && x.pluginId === c.pluginId); if (f) openFinding(f); }}
@@ -151,7 +152,7 @@ export default function AnalyticsPage() {
           <h3 style={sectionTitle()}>Most Affected Endpoints</h3>
           {data.mostAffected.length === 0 && <Empty text="No endpoint has known findings." />}
           {data.mostAffected.map((h) => (
-            <div key={h.url} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(55,53,47,0.08)' }}>
+            <div key={h.url} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
               <code style={{ fontSize: '0.78rem', wordBreak: 'break-all' }}>{h.path}</code>
               <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.68rem', color: h.risks.High ? 'var(--error)' : 'var(--on-surface-variant)', flexShrink: 0 }}>
                 {h.findingCount} finding{h.findingCount !== 1 ? 's' : ''}
@@ -248,7 +249,7 @@ function Section({ title, body, mono }: { title: string; body?: string; mono?: b
         fontFamily: mono ? 'monospace' : 'inherit',
         fontSize: mono ? '0.75rem' : '0.85rem',
         color: 'var(--on-surface)',
-        background: 'var(--surface-container-high, #f3f3f3)',
+        background: 'var(--surface-container-high, #222222)',
         padding: '0.6rem', borderRadius: '6px',
       }}>{body}</pre>
     </div>

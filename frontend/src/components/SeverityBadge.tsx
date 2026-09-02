@@ -5,10 +5,10 @@ interface Props {
 }
 
 const config: Record<string, { bg: string; fg: string; border: string; icon: string }> = {
-  High:          { bg: 'rgba(220, 38, 38, 0.08)',  fg: '#b91c1c', border: 'rgba(220, 38, 38, 0.22)', icon: 'error' },
-  Medium:        { bg: 'rgba(217, 119, 6, 0.08)',  fg: '#b45309', border: 'rgba(217, 119, 6, 0.25)', icon: 'warning' },
-  Low:           { bg: 'rgba(37, 99, 235, 0.07)',  fg: '#1d4ed8', border: 'rgba(37, 99, 235, 0.22)', icon: 'info' },
-  Informational: { bg: 'rgba(111, 106, 96, 0.08)', fg: '#6f6a60', border: 'rgba(111, 106, 96, 0.25)', icon: 'help_outline' },
+  High:          { bg: '#fef2f2', fg: 'var(--color-vermillion)', border: 'rgba(227, 45, 20, 0.25)', icon: 'error' },
+  Medium:        { bg: '#fffbeb', fg: '#b45309', border: 'rgba(232, 157, 1, 0.28)', icon: 'warning' },
+  Low:           { bg: 'var(--color-sky-tint)', fg: 'var(--color-notion-blue)', border: 'rgba(0, 117, 222, 0.25)', icon: 'info' },
+  Informational: { bg: '#f4f4f5', fg: 'var(--color-stone)', border: 'rgba(0, 0, 0, 0.12)', icon: 'help_outline' },
 };
 
 export default function SeverityBadge({ severity, count, showCount }: Props) {

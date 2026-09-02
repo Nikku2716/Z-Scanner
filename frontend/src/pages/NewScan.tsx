@@ -114,13 +114,12 @@ export default function NewScan() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
-                    padding: '0.875rem 1rem',
-                    border: `1px solid ${selected ? 'var(--primary)' : 'var(--outline-variant)'}`,
-                    borderRadius: 'var(--radius-lg)',
+                    padding: '0.9rem 1.1rem',
+                    border: `1px solid ${selected ? 'var(--color-notion-blue)' : 'rgba(0, 0, 0, 0.08)'}`,
+                    borderRadius: 'var(--radius-cards)',
                     cursor: 'pointer',
-                    background: selected ? 'var(--color-green-soft)' : 'var(--color-deep)',
-                    transition: 'all 0.25s ease',
-                    boxShadow: selected ? '0 0 20px rgba(22, 163, 74, 0.12)' : 'none',
+                    background: selected ? 'var(--color-sky-tint)' : 'var(--color-pure-white)',
+                    transition: 'all var(--transition)',
                   }}
                 >
                   <span
@@ -131,13 +130,13 @@ export default function NewScan() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      borderRadius: 'var(--radius)',
-                      border: `1px solid ${selected ? 'rgba(22, 163, 74, 0.4)' : 'var(--outline-variant)'}`,
-                      color: selected ? 'var(--primary)' : 'var(--color-mist)',
+                      borderRadius: 'var(--radius-buttons)',
+                      border: `1px solid ${selected ? 'var(--color-notion-blue)' : 'rgba(0, 0, 0, 0.08)'}`,
+                      color: selected ? '#ffffff' : 'var(--color-stone)',
                       fontSize: '1.2rem',
                       flexShrink: 0,
-                      transition: 'all 0.25s ease',
-                      background: selected ? 'rgba(22, 163, 74, 0.14)' : 'transparent',
+                      transition: 'all var(--transition)',
+                      background: selected ? 'var(--color-notion-blue)' : 'var(--color-paper-warmth)',
                     }}
                   >
                     {m.icon}

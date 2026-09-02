@@ -26,23 +26,17 @@ export default function ProgressBar({ label, value, active }: Props) {
       </div>
       <div style={{
         height: '8px',
-        background: 'var(--color-slate)',
-        borderRadius: '4px',
+        background: 'rgba(0, 0, 0, 0.08)',
+        borderRadius: 'var(--radius-small)',
         overflow: 'hidden',
       }}>
         <div
-          className={active ? 'progress-glow' : ''}
           style={{
             height: '100%',
             width: `${pct}%`,
-            background: active
-              ? undefined
-              : pct === 100
-                ? 'var(--color-cyan)'
-                : 'var(--color-steel)',
-            transition: 'width 0.5s ease, background 0.3s ease',
-            borderRadius: '4px',
-            boxShadow: active ? '0 0 8px rgba(22, 163, 74, 0.4)' : 'none',
+            background: pct === 100 ? '#15803d' : 'var(--color-notion-blue)',
+            transition: 'width var(--transition), background var(--transition)',
+            borderRadius: 'var(--radius-small)',
           }}
         />
       </div>
