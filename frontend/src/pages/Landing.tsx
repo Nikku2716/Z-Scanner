@@ -16,13 +16,13 @@ const TERMINAL_SCRIPT = [
 ];
 
 const AVATARS = [
-  { icon: 'shield_person', border: 'blue', label: 'Security Lead' },
-  { icon: 'terminal', border: 'coral', label: 'DevOps Engineer' },
+  { icon: 'shield_person', border: 'pink', label: 'Security Lead' },
+  { icon: 'terminal', border: 'mint', label: 'DevOps Engineer' },
   { icon: 'smart_toy', border: 'yellow', label: 'Autonomous Agent' },
-  { icon: 'bug_report', border: 'sky', label: 'Penetration Tester' },
-  { icon: 'psychology', border: 'midnight', label: 'AppSec Analyst' },
-  { icon: 'code', border: 'coral', label: 'Full Stack Dev' },
-  { icon: 'verified', border: 'blue', label: 'Compliance Auditor' },
+  { icon: 'bug_report', border: 'aqua', label: 'Penetration Tester' },
+  { icon: 'psychology', border: 'violet', label: 'AppSec Analyst' },
+  { icon: 'code', border: 'orange', label: 'Full Stack Dev' },
+  { icon: 'verified', border: 'charcoal', label: 'Compliance Auditor' },
 ];
 
 export default function Landing() {
@@ -51,6 +51,12 @@ export default function Landing() {
           { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'back.out(1.7)' },
           0.05
         )
+          .fromTo(
+            '.landing__hero-eyebrow',
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.4 },
+            0.1
+          )
           .fromTo(
             '.landing__hero-headline',
             { opacity: 0, y: 24 },
@@ -82,7 +88,7 @@ export default function Landing() {
           el.textContent = line.slice(0, ++charIndex);
 
           if (charIndex < line.length) {
-            timer = window.setTimeout(typeNextChar, line.startsWith('blackhawk') ? 30 : 18);
+            timer = window.setTimeout(typeNextChar, line.startsWith('blackhawk') ? 28 : 16);
           } else {
             timer = window.setTimeout(() => {
               charIndex = 0;
@@ -200,7 +206,7 @@ export default function Landing() {
 
   return (
     <div className="landing" ref={containerRef}>
-      {/* ─── Fixed 64px Sticky Navigation Bar ─── */}
+      {/* ─── Sticky 64px Frosted Glass Navigation Bar ─── */}
       <nav className="landing__nav">
         <div className="landing__nav-inner">
           <Link to="/" className="landing__brand-link" aria-label="BlackHawk Home">
@@ -229,187 +235,196 @@ export default function Landing() {
         </div>
       </nav>
 
-      {/* ─── Hero Section (Centered Stack) ─── */}
-      <section className="landing__hero" ref={heroRef}>
-        {/* 7-Avatar Character Mark Row */}
-        <div className="landing__avatar-row" aria-label="Collaborative roles">
-          {AVATARS.map((av, idx) => (
-            <div
-              key={idx}
-              className={`landing__avatar-mark landing__avatar-mark--${av.border}`}
-              title={av.label}
-              aria-label={av.label}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
-                {av.icon}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Hero Headline with Embedded Highlight Pill */}
-        <h1 className="landing__hero-headline">
-          Where security and teams{' '}
-          <span className="landing__highlight-pill">Scan</span> together.
-        </h1>
-
-        {/* Editorial Subhead at 18px Lyon Text */}
-        <p className="landing__hero-subhead">
-          A calm, tactile vulnerability scanner under afternoon sun. Automated spider crawling,
-          zero-day parameter fuzzing, and real-time OWASP risk classification — organized like your favorite notebook.
-        </p>
-
-        {/* Two-Button CTA Row */}
-        <div className="landing__hero-cta-row">
-          <Link to="/scan/new" className="landing__btn-primary">
-            Start Live Scan
-            <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>radar</span>
-          </Link>
-          <Link to="/dashboard" className="landing__btn-ghost-cta">
-            Open Workspace Console →
-          </Link>
-        </div>
-
-        {/* Large Centered Product UI Mockup */}
-        <div className="landing__mockup-wrapper" id="workspace">
-          <div className="landing__mockup-card">
-            {/* Window Header */}
-            <div className="landing__mockup-header">
-              <div className="landing__mockup-dots">
-                <span className="landing__mockup-dot landing__mockup-dot--red" />
-                <span className="landing__mockup-dot landing__mockup-dot--amber" />
-                <span className="landing__mockup-dot landing__mockup-dot--green" />
-              </div>
-              <div className="landing__mockup-breadcrumbs">
-                <span>Workspace</span>
-                <span>/</span>
-                <span>BlackHawk Security</span>
-                <span>/</span>
-                <strong>Production API Audit</strong>
-              </div>
-              <div className="landing__mockup-tabs">
-                <span className="landing__mockup-tab landing__mockup-tab--active">
-                  <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>view_kanban</span>
-                  Board
-                </span>
-                <span className="landing__mockup-tab">
-                  <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>table_rows</span>
-                  Table
-                </span>
-                <span className="landing__mockup-tab">
-                  <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>terminal</span>
-                  Stream
+      {/* ─── Hero Section with Atmospheric Phoenix Orange Radial Gradient Wash ─── */}
+      <div className="landing__hero-wash">
+        <section className="landing__hero" ref={heroRef}>
+          {/* 7-Avatar Character Mark Row with Pastel Rings */}
+          <div className="landing__avatar-row" aria-label="Collaborative roles">
+            {AVATARS.map((av, idx) => (
+              <div
+                key={idx}
+                className={`landing__avatar-mark landing__avatar-mark--${av.border}`}
+                title={av.label}
+                aria-label={av.label}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                  {av.icon}
                 </span>
               </div>
-            </div>
+            ))}
+          </div>
 
-            {/* Mockup Body: Kanban Task Cards */}
-            <div className="landing__mockup-body">
-              <div className="landing__kanban-grid">
-                {/* Column 1: Spider Queue */}
-                <div className="landing__kanban-col">
-                  <div className="landing__kanban-col-header">
-                    <span className="landing__kanban-col-title">
-                      <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--color-notion-blue)' }}>hub</span>
-                      Spider Discovered
-                    </span>
-                    <span className="landing__kanban-col-count">14</span>
-                  </div>
+          <div>
+            <span className="landing__hero-eyebrow">
+              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>bolt</span>
+              Autonomous AppSec Engine
+            </span>
+          </div>
 
-                  <div className="landing__task-card">
-                    <div className="landing__task-header">
-                      <span className="landing__task-pill landing__task-pill--clean">DISCOVERED</span>
-                      <span style={{ fontSize: '12px' }}>⚡</span>
-                    </div>
-                    <div className="landing__task-title">/api/v2/user/profile</div>
-                    <div className="landing__task-meta">GET · 4 query params mapped</div>
-                  </div>
+          {/* Hero Headline with Embedded Canary Yellow Highlight Pill */}
+          <h1 className="landing__hero-headline">
+            Where security teams and developers{' '}
+            <span className="landing__highlight-pill">Scan</span> together.
+          </h1>
 
-                  <div className="landing__task-card">
-                    <div className="landing__task-header">
-                      <span className="landing__task-pill landing__task-pill--clean">DISCOVERED</span>
-                      <span style={{ fontSize: '12px' }}>🔒</span>
-                    </div>
-                    <div className="landing__task-title">/oauth/v2/authorize</div>
-                    <div className="landing__task-meta">POST · CSRF token verified</div>
-                  </div>
+          {/* Editorial Subhead */}
+          <p className="landing__hero-subhead">
+            A sunlit, tactile vulnerability scanner built for modern web stacks. Automated spider crawling,
+            OWASP Top 10 parameter fuzzing, and real-time attack surface mapping with zero noise.
+          </p>
+
+          {/* Two-Button CTA Row */}
+          <div className="landing__hero-cta-row">
+            <Link to="/scan/new" className="landing__btn-primary">
+              Start Live Scan
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>radar</span>
+            </Link>
+            <Link to="/dashboard" className="landing__btn-secondary">
+              Open Console →
+            </Link>
+          </div>
+
+          {/* Product UI Mockup */}
+          <div className="landing__mockup-wrapper" id="workspace">
+            <div className="landing__mockup-card">
+              {/* Window Header */}
+              <div className="landing__mockup-header">
+                <div className="landing__mockup-dots">
+                  <span className="landing__mockup-dot landing__mockup-dot--red" />
+                  <span className="landing__mockup-dot landing__mockup-dot--amber" />
+                  <span className="landing__mockup-dot landing__mockup-dot--green" />
                 </div>
-
-                {/* Column 2: Active Fuzzing */}
-                <div className="landing__kanban-col">
-                  <div className="landing__kanban-col-header">
-                    <span className="landing__kanban-col-title">
-                      <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--color-marigold)' }}>sync</span>
-                      Active Fuzzing
-                    </span>
-                    <span className="landing__kanban-col-count">3</span>
-                  </div>
-
-                  <div className="landing__task-card">
-                    <div className="landing__task-header">
-                      <span className="landing__task-pill landing__task-pill--med">IN PROGRESS</span>
-                      <span style={{ fontSize: '12px' }}>🔄</span>
-                    </div>
-                    <div className="landing__task-title">Path Traversal Verification</div>
-                    <div className="landing__task-meta">/static/download?file=../../</div>
-                  </div>
-
-                  <div className="landing__task-card">
-                    <div className="landing__task-header">
-                      <span className="landing__task-pill landing__task-pill--med">IN PROGRESS</span>
-                      <span style={{ fontSize: '12px' }}>🛡️</span>
-                    </div>
-                    <div className="landing__task-title">Header Injection Auditing</div>
-                    <div className="landing__task-meta">X-Forwarded-Host probe active</div>
-                  </div>
+                <div className="landing__mockup-breadcrumbs">
+                  <span>Workspace</span>
+                  <span>/</span>
+                  <span>Production API Audit</span>
+                  <span>/</span>
+                  <strong>https://api.corp.internal</strong>
                 </div>
-
-                {/* Column 3: Confirmed Findings */}
-                <div className="landing__kanban-col">
-                  <div className="landing__kanban-col-header">
-                    <span className="landing__kanban-col-title">
-                      <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--color-vermillion)' }}>warning</span>
-                      Confirmed Findings
-                    </span>
-                    <span className="landing__kanban-col-count">4</span>
-                  </div>
-
-                  <div className="landing__task-card">
-                    <div className="landing__task-header">
-                      <span className="landing__task-pill landing__task-pill--high">HIGH RISK</span>
-                      <span style={{ fontSize: '12px' }}>🚨</span>
-                    </div>
-                    <div className="landing__task-title">Cross-Site Scripting (XSS)</div>
-                    <div className="landing__task-meta">/search?q= — Unfiltered reflection</div>
-                  </div>
-
-                  <div className="landing__task-card">
-                    <div className="landing__task-header">
-                      <span className="landing__task-pill landing__task-pill--high">HIGH RISK</span>
-                      <span style={{ fontSize: '12px' }}>💥</span>
-                    </div>
-                    <div className="landing__task-title">SQL Injection Vulnerability</div>
-                    <div className="landing__task-meta">/api/v1/auth/login — Error-based payload</div>
-                  </div>
+                <div className="landing__mockup-tabs">
+                  <span className="landing__mockup-tab landing__mockup-tab--active">
+                    <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>view_kanban</span>
+                    Board
+                  </span>
+                  <span className="landing__mockup-tab">
+                    <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>table_rows</span>
+                    Table
+                  </span>
+                  <span className="landing__mockup-tab">
+                    <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>terminal</span>
+                    Stream
+                  </span>
                 </div>
               </div>
 
-              {/* Mockup Terminal Output */}
-              <div className="landing__mockup-terminal">
-                <div className="landing__terminal-label">
-                  <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'var(--color-notion-blue)' }}>terminal</span>
-                  Live Telemetry Output
+              {/* Mockup Body: Kanban Task Cards */}
+              <div className="landing__mockup-body">
+                <div className="landing__kanban-grid">
+                  {/* Column 1: Spider Queue */}
+                  <div className="landing__kanban-col">
+                    <div className="landing__kanban-col-header">
+                      <span className="landing__kanban-col-title">
+                        <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--color-ink)' }}>hub</span>
+                        Spider Mapped
+                      </span>
+                      <span className="landing__kanban-col-count">14</span>
+                    </div>
+
+                    <div className="landing__task-card">
+                      <div className="landing__task-header">
+                        <span className="landing__task-pill landing__task-pill--clean">DISCOVERED</span>
+                        <span style={{ fontSize: '12px' }}>⚡</span>
+                      </div>
+                      <div className="landing__task-title">/api/v2/user/profile</div>
+                      <div className="landing__task-meta">GET · 4 query params mapped</div>
+                    </div>
+
+                    <div className="landing__task-card">
+                      <div className="landing__task-header">
+                        <span className="landing__task-pill landing__task-pill--clean">DISCOVERED</span>
+                        <span style={{ fontSize: '12px' }}>🔒</span>
+                      </div>
+                      <div className="landing__task-title">/oauth/v2/authorize</div>
+                      <div className="landing__task-meta">POST · CSRF token verified</div>
+                    </div>
+                  </div>
+
+                  {/* Column 2: Active Fuzzing */}
+                  <div className="landing__kanban-col">
+                    <div className="landing__kanban-col-header">
+                      <span className="landing__kanban-col-title">
+                        <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--color-phoenix-orange)' }}>sync</span>
+                        Active Fuzzing
+                      </span>
+                      <span className="landing__kanban-col-count">3</span>
+                    </div>
+
+                    <div className="landing__task-card">
+                      <div className="landing__task-header">
+                        <span className="landing__task-pill landing__task-pill--med">IN PROGRESS</span>
+                        <span style={{ fontSize: '12px' }}>🔄</span>
+                      </div>
+                      <div className="landing__task-title">Path Traversal Verification</div>
+                      <div className="landing__task-meta">/static/download?file=../../</div>
+                    </div>
+
+                    <div className="landing__task-card">
+                      <div className="landing__task-header">
+                        <span className="landing__task-pill landing__task-pill--med">IN PROGRESS</span>
+                        <span style={{ fontSize: '12px' }}>🛡️</span>
+                      </div>
+                      <div className="landing__task-title">Header Injection Auditing</div>
+                      <div className="landing__task-meta">X-Forwarded-Host probe active</div>
+                    </div>
+                  </div>
+
+                  {/* Column 3: Confirmed Findings */}
+                  <div className="landing__kanban-col">
+                    <div className="landing__kanban-col-header">
+                      <span className="landing__kanban-col-title">
+                        <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--color-vermillion)' }}>warning</span>
+                        Confirmed Findings
+                      </span>
+                      <span className="landing__kanban-col-count">4</span>
+                    </div>
+
+                    <div className="landing__task-card">
+                      <div className="landing__task-header">
+                        <span className="landing__task-pill landing__task-pill--high">HIGH RISK</span>
+                        <span style={{ fontSize: '12px' }}>🚨</span>
+                      </div>
+                      <div className="landing__task-title">Cross-Site Scripting (XSS)</div>
+                      <div className="landing__task-meta">/search?q= — Unfiltered reflection</div>
+                    </div>
+
+                    <div className="landing__task-card">
+                      <div className="landing__task-header">
+                        <span className="landing__task-pill landing__task-pill--high">HIGH RISK</span>
+                        <span style={{ fontSize: '12px' }}>💥</span>
+                      </div>
+                      <div className="landing__task-title">SQL Injection Vulnerability</div>
+                      <div className="landing__task-meta">/api/v1/auth/login — Error-based payload</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="landing__typed-line" ref={typedRef}>
-                  blackhawk scan --target https://corp.internal --mode deep
+
+                {/* Mockup Terminal Output */}
+                <div className="landing__mockup-terminal">
+                  <div className="landing__terminal-label">
+                    <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'var(--color-aqua)' }}>terminal</span>
+                    Live Telemetry Stream
+                  </div>
+                  <div className="landing__typed-line" ref={typedRef}>
+                    blackhawk scan --target https://corp.internal --mode deep
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
-      {/* ─── Greyscale Logo Wall (Treated as Typography at 60% Alpha) ─── */}
+      {/* ─── Greyscale Logo Wall ─── */}
       <section className="landing__logo-wall" aria-label="Ecosystem compatibility">
         <div className="landing__logo-wall-label">
           Auditing targets across modern developer stacks
@@ -442,84 +457,84 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── 2×2 Feature Section ("Ask your on-demand assistants" style) ─── */}
+      {/* ─── Multi-Hue Pastel Feature Mosaic ─── */}
       <section className="landing__section" id="features">
         <div className="landing__section-header">
           <h2 className="landing__section-title">Organized for clarity. Engineered for depth.</h2>
           <p className="landing__section-subhead">
-            Notion-grade documentation combined with an industry-standard security engine.
+            Clean Amplemarket taxonomy combining flat pastel categorization with an enterprise security engine.
           </p>
         </div>
 
         <div className="landing__feature-mosaic" ref={mosaicRef}>
-          {/* Top Card: Full-width Accent Feature Card in Marigold */}
+          {/* Top Card: Full-width Canary Yellow Block */}
           <div className="landing__mosaic-full">
             <div>
-              <span className="badge" style={{ background: '#ffffff', color: '#000000', marginBottom: '1rem', border: 'none' }}>
-                SPARSE PUNCTUATION
+              <span className="badge" style={{ background: '#ffffff', color: 'var(--color-ink)', marginBottom: '1rem', border: 'none' }}>
+                ZERO FALSE POSITIVES
               </span>
               <h3 className="landing__mosaic-title">
-                Zero Noise. Every finding categorized like a ruled section.
+                Zero Noise. Every finding categorized like a clean workspace.
               </h3>
               <p className="landing__mosaic-desc">
                 BlackHawk stays quiet until actionable vulnerabilities are verified. Receive clean,
-                risk-ranked evidence without pages of false alarms cluttering your workspace.
+                risk-ranked evidence without pages of false alarms cluttering your security triage.
               </p>
-              <Link to="/scan/new" className="landing__btn-primary" style={{ background: '#000000', borderColor: '#000000' }}>
+              <Link to="/scan/new" className="landing__btn-primary">
                 Try Deep Scan
                 <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
               </Link>
             </div>
 
             {/* Task Card Preview inside colored block */}
-            <div style={{ background: '#ffffff', borderRadius: '12px', padding: '16px', boxShadow: 'var(--shadow-product-mockup)' }}>
+            <div style={{ background: '#ffffff', borderRadius: '12px', padding: '20px', border: '1px solid rgba(17, 17, 17, 0.08)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontFamily: 'var(--font-notioninter)', fontSize: '12px', fontWeight: 600, color: 'rgba(0,0,0,0.6)' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-ash)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   SUMMARY REPORT
                 </span>
                 <span className="landing__task-pill landing__task-pill--clean">READY</span>
               </div>
-              <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '6px', color: '#000000' }}>
+              <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '6px', color: 'var(--color-ink)' }}>
                 38 Endpoints Audited · Zero Latency
               </div>
-              <p style={{ fontSize: '13px', color: 'var(--color-graphite)', lineHeight: 1.45, margin: 0 }}>
-                OWASP Top 10 rules verified directly on your local runtime. Export as structured JSON or styled HTML in one click.
+              <p style={{ fontSize: '13px', color: 'var(--color-ash)', lineHeight: 1.5, margin: 0 }}>
+                OWASP Top 10 rules verified directly on your target. Export as structured JSON or styled HTML in one click.
               </p>
             </div>
           </div>
 
-          {/* Bottom Split Row: Sky Tint Card + Midnight Ink Dark Feature Card */}
+          {/* Bottom Split Row: Soft Violet Card + Midnight Indigo Dark Feature Card */}
           <div className="landing__mosaic-split">
-            {/* Bottom-left: Sky Tint Accent Card */}
-            <div className="landing__mosaic-col--sky">
-              <div className="landing__white-card-icon landing__white-card-icon--sky">
-                <span className="material-symbols-outlined" style={{ color: 'var(--color-notion-blue)' }}>
+            {/* Bottom-left: Soft Violet Card */}
+            <div className="landing__mosaic-col--violet">
+              <div className="landing__white-card-icon landing__white-card-icon--violet" style={{ background: '#ffffff' }}>
+                <span className="material-symbols-outlined" style={{ color: 'var(--color-ink)' }}>
                   cell_tower
                 </span>
               </div>
-              <h3 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '8px', color: '#000000', letterSpacing: '-0.3px' }}>
+              <h3 style={{ fontSize: '22px', fontWeight: 500, marginBottom: '8px', color: 'var(--color-ink)' }}>
                 Real-Time Telemetry Stream
               </h3>
-              <p style={{ fontSize: '14px', color: 'var(--color-graphite)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+              <p style={{ fontSize: '14px', color: 'rgba(17, 17, 17, 0.75)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
                 Live spider discovery and active parameter fuzzing streamed via WebSockets. Watch attack surfaces map in real time.
               </p>
-              <Link to="/capabilities" className="landing__nav-btn-demo">
+              <Link to="/capabilities" className="landing__nav-btn-demo" style={{ background: '#ffffff' }}>
                 View WebSocket Spec →
               </Link>
             </div>
 
-            {/* Bottom-right: Midnight Ink Dark Feature Card (Dark Mode Island) */}
+            {/* Bottom-right: Midnight Indigo Dark Feature Card */}
             <div className="landing__mosaic-col--midnight">
-              <div className="landing__white-card-icon" style={{ background: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.3)' }}>
-                <span className="material-symbols-outlined" style={{ color: '#ffffff' }}>
+              <div className="landing__white-card-icon" style={{ background: 'rgba(255, 255, 255, 0.1)', color: '#ffffff' }}>
+                <span className="material-symbols-outlined">
                   terminal
                 </span>
               </div>
-              <h3 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '8px', letterSpacing: '-0.3px' }}>
-                Dark Mode Island · Audit Terminal
+              <h3 style={{ fontSize: '22px', fontWeight: 500, marginBottom: '8px', color: '#ffffff' }}>
+                Audit Terminal & Raw Payloads
               </h3>
-              <p style={{ fontSize: '14px', lineHeight: 1.5, marginBottom: '1.25rem' }}>
-                A high-contrast audit window embedded in your paper notebook. Inspect raw HTTP request payloads, parameter mutations, and server headers.
+              <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.8)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+                High-contrast audit window embedded in your workspace. Inspect raw HTTP request payloads, parameter mutations, and server headers.
               </p>
               <Link to="/scan/new" style={{ color: '#ffffff', textDecoration: 'underline', textUnderlineOffset: '4px', fontSize: '14px', fontWeight: 500 }}>
                 Open Terminal Mode →
@@ -529,19 +544,19 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── White Feature Cards Grid (1px Hairline Borders, No Shadows) ─── */}
+      {/* ─── White Feature Cards Grid (12px Radius, 1px Hairline Borders) ─── */}
       <section className="landing__section">
         <div className="landing__section-header">
           <h2 className="landing__section-title">Tactile features. Enterprise power.</h2>
           <p className="landing__section-subhead">
-            Designed with 12px corners and 1px hairline borders like ruled sections in a Moleskine.
+            Designed with 12px corners, flat pastel taxonomy badges, and restrained typography.
           </p>
         </div>
 
         <div className="landing__white-grid" ref={whiteGridRef}>
           <div className="landing__white-card">
-            <div className="landing__white-card-icon">
-              <span className="material-symbols-outlined" style={{ color: 'var(--color-signal-blue)' }}>tune</span>
+            <div className="landing__white-card-icon landing__white-card-icon--aqua">
+              <span className="material-symbols-outlined">tune</span>
             </div>
             <h3 className="landing__white-card-title">4 Scan Profiles</h3>
             <p className="landing__white-card-desc">
@@ -550,8 +565,8 @@ export default function Landing() {
           </div>
 
           <div className="landing__white-card">
-            <div className="landing__white-card-icon landing__white-card-icon--coral">
-              <span className="material-symbols-outlined" style={{ color: 'var(--color-coral)' }}>shield</span>
+            <div className="landing__white-card-icon landing__white-card-icon--pink">
+              <span className="material-symbols-outlined">shield</span>
             </div>
             <h3 className="landing__white-card-title">OWASP Core Coverage</h3>
             <p className="landing__white-card-desc">
@@ -560,8 +575,8 @@ export default function Landing() {
           </div>
 
           <div className="landing__white-card">
-            <div className="landing__white-card-icon landing__white-card-icon--marigold">
-              <span className="material-symbols-outlined" style={{ color: 'var(--color-marigold)' }}>filter_alt</span>
+            <div className="landing__white-card-icon landing__white-card-icon--yellow">
+              <span className="material-symbols-outlined">filter_alt</span>
             </div>
             <h3 className="landing__white-card-title">Risk-Based Filtering</h3>
             <p className="landing__white-card-desc">
@@ -570,8 +585,8 @@ export default function Landing() {
           </div>
 
           <div className="landing__white-card">
-            <div className="landing__white-card-icon landing__white-card-icon--sky">
-              <span className="material-symbols-outlined" style={{ color: 'var(--color-notion-blue)' }}>download</span>
+            <div className="landing__white-card-icon landing__white-card-icon--mint">
+              <span className="material-symbols-outlined">download</span>
             </div>
             <h3 className="landing__white-card-title">Dual Audit Exports</h3>
             <p className="landing__white-card-desc">
@@ -580,8 +595,8 @@ export default function Landing() {
           </div>
 
           <div className="landing__white-card">
-            <div className="landing__white-card-icon">
-              <span className="material-symbols-outlined" style={{ color: 'var(--color-signal-blue)' }}>hub</span>
+            <div className="landing__white-card-icon landing__white-card-icon--violet">
+              <span className="material-symbols-outlined">hub</span>
             </div>
             <h3 className="landing__white-card-title">Attack Surface Mapping</h3>
             <p className="landing__white-card-desc">
@@ -590,8 +605,8 @@ export default function Landing() {
           </div>
 
           <div className="landing__white-card">
-            <div className="landing__white-card-icon landing__white-card-icon--coral">
-              <span className="material-symbols-outlined" style={{ color: 'var(--color-coral)' }}>difference</span>
+            <div className="landing__white-card-icon landing__white-card-icon--orange">
+              <span className="material-symbols-outlined">difference</span>
             </div>
             <h3 className="landing__white-card-title">Scan Comparison & Diff</h3>
             <p className="landing__white-card-desc">
@@ -601,7 +616,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── Scan Modes Section (Ruled Moleskine Style) ─── */}
+      {/* ─── Scan Modes Section ─── */}
       <section className="landing__section" id="modes">
         <div className="landing__section-header">
           <h2 className="landing__section-title">Tailored scan footprints</h2>
@@ -642,12 +657,12 @@ export default function Landing() {
           <div className="landing__arch-node">
             <span className="landing__arch-tag">CLIENT UI</span>
             <div style={{ margin: '0.75rem 0' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-notion-blue)' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-phoenix-orange)' }}>
                 desktop_windows
               </span>
             </div>
             <h3 className="landing__arch-title">React 18 + Vite</h3>
-            <p className="landing__arch-sub">Notion design system, live WebSocket hooks</p>
+            <p className="landing__arch-sub">Amplemarket design system, live WebSocket hooks</p>
           </div>
 
           <div className="landing__arch-arrow">
@@ -655,11 +670,9 @@ export default function Landing() {
           </div>
 
           <div className="landing__arch-node">
-            <span className="landing__arch-tag">
-              ORCHESTRATOR
-            </span>
+            <span className="landing__arch-tag">ORCHESTRATOR</span>
             <div style={{ margin: '0.75rem 0' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-notion-blue)' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-ink)' }}>
                 dns
               </span>
             </div>
@@ -674,7 +687,7 @@ export default function Landing() {
           <div className="landing__arch-node">
             <span className="landing__arch-tag">INSPECTION CORE</span>
             <div style={{ margin: '0.75rem 0' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-notion-blue)' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-phoenix-orange)' }}>
                 security
               </span>
             </div>
@@ -689,14 +702,14 @@ export default function Landing() {
         <div className="landing__cta-inner">
           <h2 className="landing__cta-title">
             Your security workspace starts{' '}
-            <span className="landing__highlight-pill" style={{ background: '#ffb110' }}>today</span>.
+            <span className="landing__highlight-pill">today</span>.
           </h2>
           <p className="landing__cta-desc">
             Autonomous web security scanning built on open source OWASP ZAP.
             No signup barriers. Launch on your workstation in 30 seconds.
           </p>
           <div className="landing__hero-cta-row" style={{ marginBottom: 0 }}>
-            <Link to="/scan/new" className="landing__btn-primary">
+            <Link to="/scan/new" className="landing__btn-accent">
               Launch Scanner
               <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>radar</span>
             </Link>
@@ -704,7 +717,7 @@ export default function Landing() {
               href="https://github.com/Nikku2716/BlackHawk"
               target="_blank"
               rel="noopener noreferrer"
-              className="landing__btn-ghost-cta"
+              className="landing__btn-secondary"
             >
               View on GitHub →
             </a>
@@ -712,7 +725,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── Moleskine / Notion Footer ─── */}
+      {/* ─── Footer ─── */}
       <footer className="landing__footer">
         <div className="landing__footer-brand">
           <span className="landing__brand-mark" style={{ width: '22px', height: '22px', fontSize: '12px' }}>B</span>

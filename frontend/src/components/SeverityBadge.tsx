@@ -5,25 +5,25 @@ interface Props {
 }
 
 const config: Record<string, { bg: string; fg: string; border: string; icon: string }> = {
-  High:          { bg: '#fef2f2', fg: 'var(--color-vermillion)', border: 'rgba(227, 45, 20, 0.25)', icon: 'error' },
-  Medium:        { bg: '#fffbeb', fg: '#b45309', border: 'rgba(232, 157, 1, 0.28)', icon: 'warning' },
-  Low:           { bg: 'var(--color-sky-tint)', fg: 'var(--color-notion-blue)', border: 'rgba(0, 117, 222, 0.25)', icon: 'info' },
-  Informational: { bg: '#f4f4f5', fg: 'var(--color-stone)', border: 'rgba(0, 0, 0, 0.12)', icon: 'help_outline' },
+  High:          { bg: 'var(--color-petal-pink)', fg: '#9f1239', border: '#f472b6', icon: 'error' },
+  Medium:        { bg: 'var(--color-canary-yellow)', fg: '#854d0e', border: '#facc15', icon: 'warning' },
+  Low:           { bg: 'var(--color-soft-violet)', fg: '#3730a3', border: '#a78bfa', icon: 'info' },
+  Informational: { bg: 'var(--color-pearl)', fg: 'var(--color-ash)', border: 'rgba(17, 17, 17, 0.1)', icon: 'help_outline' },
 };
 
 export default function SeverityBadge({ severity, count, showCount }: Props) {
-  const c = config[severity] ?? { bg: 'rgba(100, 116, 139, 0.1)', fg: '#94a3b8', border: 'rgba(100, 116, 139, 0.2)', icon: 'help' };
+  const c = config[severity] ?? { bg: 'var(--color-pearl)', fg: 'var(--color-ash)', border: 'rgba(17, 17, 17, 0.1)', icon: 'help' };
   return (
     <span
       style={{
         display: 'inline-flex',
         alignItems: 'center',
         gap: '0.3rem',
-        padding: '0.2rem 0.55rem',
-        borderRadius: '9999px',
-        fontFamily: 'var(--font-label)',
-        fontSize: '0.65rem',
-        fontWeight: 500,
+        padding: '0.2rem 0.6rem',
+        borderRadius: 'var(--radius-pills)',
+        fontFamily: 'var(--font-inter)',
+        fontSize: '0.68rem',
+        fontWeight: 600,
         letterSpacing: '0.04em',
         textTransform: 'uppercase',
         background: c.bg,
@@ -31,10 +31,10 @@ export default function SeverityBadge({ severity, count, showCount }: Props) {
         border: `1px solid ${c.border}`,
       }}
     >
-      <span className="material-symbols-outlined" style={{ fontSize: '0.8rem', fontVariationSettings: "'FILL' 1" }}>{c.icon}</span>
+      <span className="material-symbols-outlined" style={{ fontSize: '0.8rem' }}>{c.icon}</span>
       {severity}
       {showCount && (
-        <span style={{ fontWeight: 400, opacity: 0.8, marginLeft: '0.1rem' }}>{count}</span>
+        <span style={{ fontWeight: 700, marginLeft: '0.15rem' }}>{count}</span>
       )}
     </span>
   );

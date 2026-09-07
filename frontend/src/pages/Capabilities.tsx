@@ -6,45 +6,45 @@ const CAPABILITIES = [
     icon: 'travel_explore',
     title: 'Endpoint discovery',
     body: 'Spider targets to map reachable pages, parameters, and entry points before the report is assembled.',
-    tone: 'mint',
+    tone: 'mint', // Mint Green
   },
   {
     icon: 'shield',
     title: 'Passive analysis',
     body: 'Review headers, cookies, content security policy, and common misconfigurations without noisy probing.',
-    tone: 'cream',
+    tone: 'pink', // Petal Pink
   },
   {
     icon: 'bolt',
     title: 'Active checks',
     body: 'Run deeper OWASP ZAP checks when the selected scan mode calls for broader verification.',
-    tone: 'teal',
+    tone: 'yellow', // Canary Yellow
   },
   {
     icon: 'hub',
     title: 'OWASP mapping',
     body: 'Classify findings by risk and keep the evidence ready for triage, remediation, and audit trails.',
-    tone: 'cream',
+    tone: 'violet', // Soft Violet
   },
   {
     icon: 'monitoring',
     title: 'Live progress',
     body: 'Track spidering, active scan percentage, passive queue depth, and scanner events as they happen.',
-    tone: 'blush',
+    tone: 'aqua', // Aqua
   },
   {
     icon: 'download',
     title: 'Report exports',
     body: 'Open a readable HTML report or export structured JSON for sharing, storage, and downstream tooling.',
-    tone: 'cream',
+    tone: 'cream', // Pearl / Cream
   },
 ];
 
 const MODES = [
-  ['Quick', 'Fast surface scan for first-pass checks.'],
-  ['Fast', 'Moderate crawl depth for routine reviews.'],
-  ['Deep', 'Broader coverage for fuller assessments.'],
-  ['Stealth', 'Low-footprint mode for quieter validation.'],
+  ['Quick', 'Fast surface scan for first-pass staging checks.'],
+  ['Fast', 'Moderate crawl depth probing core API routes.'],
+  ['Deep', 'Exhaustive recursive spider mapping entire attack surfaces.'],
+  ['Stealth', 'Low-footprint mode for quieter verification.'],
 ];
 
 export default function Capabilities() {
@@ -82,8 +82,8 @@ export default function Capabilities() {
       <header className="page-header capabilities-hero gsap-cap-header">
         <h1>What BlackHawk can do</h1>
         <p>
-          BlackHawk wraps OWASP ZAP into a focused scanner workflow: choose a mode, watch the scan unfold,
-          then review findings with risk labels and exportable evidence.
+          BlackHawk combines OWASP ZAP with Amplemarket's calm taxonomy: choose a mode, watch the scan unfold,
+          and review findings with flat pastel risk classification.
         </p>
       </header>
 

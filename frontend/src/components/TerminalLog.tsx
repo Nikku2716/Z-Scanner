@@ -6,10 +6,10 @@ interface Props {
 }
 
 const levelColor: Record<string, string> = {
-  info: '#8ca0b8',
-  success: '#22c55e',
-  warn: '#fbbf24',
-  error: '#f87171',
+  info: 'rgba(255, 255, 255, 0.75)',
+  success: 'var(--color-mint-green)',
+  warn: 'var(--color-canary-yellow)',
+  error: 'var(--color-petal-pink)',
 };
 
 export default function TerminalLog({ logs }: Props) {
@@ -22,10 +22,11 @@ export default function TerminalLog({ logs }: Props) {
   return (
     <div
       style={{
-        background: 'var(--color-midnight-ink, #02093a)',
-        border: '1px solid rgba(0, 0, 0, 0.1)',
-        borderRadius: 'var(--radius-cards, 12px)',
+        background: 'var(--color-midnight-indigo)',
+        border: '1px solid rgba(17, 17, 17, 0.1)',
+        borderRadius: 'var(--radius-cards)',
         overflow: 'hidden',
+        boxShadow: 'var(--shadow-product-mockup)',
       }}
     >
       {/* Terminal header */}
@@ -44,9 +45,10 @@ export default function TerminalLog({ logs }: Props) {
           marginLeft: '0.5rem',
           fontFamily: 'var(--font-mono)',
           fontSize: '0.68rem',
-          color: 'rgba(255, 255, 255, 0.65)',
+          color: 'var(--color-soft-violet)',
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
+          fontWeight: 600,
         }}>
           Live Scanner Output
         </span>
@@ -54,7 +56,7 @@ export default function TerminalLog({ logs }: Props) {
 
       {/* Terminal body */}
       <div style={{
-        padding: '0.75rem',
+        padding: '0.85rem',
         height: '320px',
         overflowY: 'auto',
         fontSize: '0.75rem',
@@ -62,19 +64,19 @@ export default function TerminalLog({ logs }: Props) {
         fontFamily: 'var(--font-mono)',
       }}>
         {logs.length === 0 && (
-          <div style={{ color: '#87867f', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '0.875rem' }}>hourglass_empty</span>
-            Waiting for scan events…
+            Waiting for scan telemetry…
           </div>
         )}
         {logs.map((log, i) => (
           <div key={i} style={{
-            color: levelColor[log.level] ?? '#8ca0b8',
+            color: levelColor[log.level] ?? 'rgba(255, 255, 255, 0.75)',
             padding: '1px 0',
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-all',
           }}>
-            <span style={{ color: '#9b9b9b', userSelect: 'none', marginRight: '0.5rem' }}>
+            <span style={{ color: 'rgba(255, 255, 255, 0.35)', userSelect: 'none', marginRight: '0.5rem' }}>
               [{new Date(log.timestamp).toLocaleTimeString()}]
             </span>
             {log.message}

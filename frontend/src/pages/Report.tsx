@@ -70,15 +70,15 @@ export default function Report() {
   }
 
   if (error) return (
-    <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+    <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(232, 64, 13, 0.25)', background: '#fff5f5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
       <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>error</span>
       {error}
     </div>
   );
 
   if (!scan) return (
-    <div className="panel" style={{ color: 'var(--on-surface-variant)', textAlign: 'center', padding: '3rem' }}>
-      <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.4 }}>hourglass_empty</span>
+    <div className="panel" style={{ color: 'var(--color-ash)', textAlign: 'center', padding: '3.5rem' }}>
+      <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.5 }}>hourglass_empty</span>
       Loading report…
     </div>
   );
@@ -101,35 +101,35 @@ export default function Report() {
           ))}
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-          <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.72rem', color: 'var(--color-mist)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>notifications</span>
+          <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--color-ash)', display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 500 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>notifications</span>
             {total} alert{total !== 1 ? 's' : ''}
           </span>
-          <button onClick={exportJSON} className="ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>download</span>
+          <button onClick={exportJSON} className="pearl" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>download</span>
             JSON
           </button>
-          <a href={api.reportHTMLUrl(scan.id)} target="_blank" rel="noreferrer">
-            <button className="ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>code</span>
+          <a href={api.reportHTMLUrl(scan.id)} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+            <button className="pearl" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>code</span>
               HTML
             </button>
           </a>
           <Link to={`/scan/${scan.id}/surface`}>
-            <button className="ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>hub</span>
+            <button className="pearl" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>hub</span>
               Attack Surface
             </button>
           </Link>
           <Link to={`/scan/${scan.id}/analytics`}>
-            <button className="ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>monitoring</span>
-              Security Overview
+            <button className="pearl" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>monitoring</span>
+              Overview
             </button>
           </Link>
           <Link to="/dashboard">
-            <button style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>grid_view</span>
+            <button className="primary" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>grid_view</span>
               Dashboard
             </button>
           </Link>
@@ -142,13 +142,8 @@ export default function Report() {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={filter === f ? 'primary' : ''}
-              style={filter === f ? { fontSize: '0.8125rem' } : {
-                background: 'transparent',
-                borderColor: 'var(--outline-variant)',
-                color: 'var(--on-surface-variant)',
-                fontSize: '0.8125rem',
-              }}
+              className={filter === f ? 'primary' : 'pearl'}
+              style={{ fontSize: '0.8125rem' }}
             >
               {f === 'all' ? 'All' : f}
               {scan && f !== 'all' && counts[f] ? ` (${counts[f]})` : ''}

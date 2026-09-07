@@ -7,8 +7,8 @@ const SEVERITIES = ['High', 'Medium', 'Low', 'Informational'] as const;
 const SEVERITY_COLORS: Record<string, string> = {
   High: 'var(--color-vermillion)',
   Medium: '#b45309',
-  Low: 'var(--color-notion-blue)',
-  Informational: 'var(--color-stone)',
+  Low: '#3730a3',
+  Informational: 'var(--color-ash)',
 };
 
 function scoreColor(score: number) {
@@ -37,14 +37,14 @@ export default function AnalyticsPage() {
     try {
       setSelected(await api.getFinding(id, f.id));
     } catch {
-      setSelected(f); // fall back to the summary we already have
+      setSelected(f);
     }
   }
 
   if (loading) {
     return (
-      <div className="panel" style={{ color: 'var(--on-surface-variant)', textAlign: 'center', padding: '3rem' }}>
-        <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.4 }}>hourglass_empty</span>
+      <div className="panel" style={{ color: 'var(--color-ash)', textAlign: 'center', padding: '3.5rem' }}>
+        <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.5 }}>hourglass_empty</span>
         Computing security analytics…
       </div>
     );
@@ -54,13 +54,13 @@ export default function AnalyticsPage() {
     return (
       <div>
         <header className="page-header"><h1>Security Overview</h1></header>
-        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2' }}>
+        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(232, 64, 13, 0.25)', background: '#fff5f5' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
           </span>
         </div>
-        <Link to="/dashboard"><button className="ghost" style={{ marginTop: '1rem' }}>Back to Dashboard</button></Link>
+        <Link to="/dashboard"><button className="pearl" style={{ marginTop: '1rem' }}>Back to Dashboard</button></Link>
       </div>
     );
   }
@@ -81,19 +81,19 @@ export default function AnalyticsPage() {
         <div className="panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
           <div style={{
             width: 132, height: 132, borderRadius: '50%',
-            background: `conic-gradient(${scoreColor(s.score)} ${s.score * 3.6}deg, rgba(0, 0, 0, 0.08) 0deg)`,
+            background: `conic-gradient(${scoreColor(s.score)} ${s.score * 3.6}deg, var(--color-pearl) 0deg)`,
             display: 'grid', placeItems: 'center',
           }}>
             <div style={{
-              width: 104, height: 104, borderRadius: '50%', background: 'var(--color-pure-white, #ffffff)',
+              width: 104, height: 104, borderRadius: '50%', background: '#ffffff',
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)',
+              boxShadow: '0 1px 3px rgba(17, 17, 17, 0.08)',
             }}>
               <span style={{ fontSize: '2.2rem', fontWeight: 700, color: scoreColor(s.score), lineHeight: 1 }}>{s.score}</span>
-              <span style={{ fontFamily: 'var(--font-notioninter)', fontSize: '0.65rem', color: 'var(--color-stone)' }}>/ 100</span>
+              <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.65rem', color: 'var(--color-ash)', fontWeight: 600 }}>/ 100</span>
             </div>
           </div>
-          <div style={{ fontFamily: 'var(--font-notioninter)', fontSize: '0.75rem', fontWeight: 500, color: 'var(--color-stone)', marginTop: '1rem', textAlign: 'center' }}>
+          <div style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-ash)', marginTop: '1rem', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             BlackHawk Security Score
           </div>
         </div>
@@ -104,23 +104,23 @@ export default function AnalyticsPage() {
             const max = Math.max(1, ...SEVERITIES.map((x) => s.riskCounts[x] ?? 0));
             return (
               <div key={sev} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr 2.5rem', alignItems: 'center', gap: '0.75rem' }}>
-                <span style={{ fontFamily: 'var(--font-notioninter)', fontSize: '0.75rem', color: SEVERITY_COLORS[sev], fontWeight: 600 }}>{sev}</span>
-                <div style={{ height: 8, borderRadius: 4, background: 'rgba(0, 0, 0, 0.06)' }}>
-                  <div style={{ width: `${(count / max) * 100}%`, height: '100%', borderRadius: 4, background: SEVERITY_COLORS[sev], transition: 'width 0.4s ease' }} />
+                <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: SEVERITY_COLORS[sev], fontWeight: 600 }}>{sev}</span>
+                <div style={{ height: 8, borderRadius: 'var(--radius-small)', background: 'var(--color-pearl)' }}>
+                  <div style={{ width: `${(count / max) * 100}%`, height: '100%', borderRadius: 'var(--radius-small)', background: SEVERITY_COLORS[sev], transition: 'width 0.4s ease' }} />
                 </div>
-                <span style={{ textAlign: 'right', fontWeight: 600, fontSize: '0.85rem' }}>{count}</span>
+                <span style={{ textAlign: 'right', fontWeight: 600, fontSize: '0.85rem', color: 'var(--color-ink)' }}>{count}</span>
               </div>
             );
           })}
-          <div style={{ display: 'flex', gap: '1.25rem', marginTop: '0.5rem', flexWrap: 'wrap', fontFamily: 'var(--font-label)', fontSize: '0.68rem', color: 'var(--on-surface-variant)' }}>
+          <div style={{ display: 'flex', gap: '1.25rem', marginTop: '0.5rem', flexWrap: 'wrap', fontFamily: 'var(--font-inter)', fontSize: '0.72rem', color: 'var(--color-ash)', fontWeight: 500 }}>
             <span>{s.findingCount} correlated finding{s.findingCount !== 1 ? 's' : ''}</span>
             <span>{s.alertCount} raw alert{s.alertCount !== 1 ? 's' : ''}</span>
             <span>{s.affectedEndpoints} affected endpoint{s.affectedEndpoints !== 1 ? 's' : ''}</span>
             <span>{data.totalEndpoints} discovered endpoint{data.totalEndpoints !== 1 ? 's' : ''}</span>
           </div>
           <details style={{ marginTop: 'auto' }}>
-            <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: '0.68rem', color: 'var(--primary)' }}>Scoring methodology</summary>
-            <p style={{ fontSize: '0.75rem', color: 'var(--on-surface-variant)', lineHeight: 1.5, margin: '0.5rem 0 0' }}>{s.methodology} Not a CVSS score.</p>
+            <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-inter)', fontSize: '0.72rem', color: 'var(--color-phoenix-orange)', fontWeight: 600 }}>Scoring methodology</summary>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-ash)', lineHeight: 1.5, margin: '0.5rem 0 0' }}>{s.methodology} Not a CVSS score.</p>
           </details>
         </div>
       </div>
@@ -131,18 +131,18 @@ export default function AnalyticsPage() {
           <h3 style={sectionTitle()}>Vulnerability Categories</h3>
           {s.categories.length === 0 && <Empty text="No vulnerabilities found — clean scan." />}
           {s.categories.map((c) => (
-            <div key={c.pluginId + c.name} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <div key={c.pluginId + c.name} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', padding: '0.55rem 0', borderBottom: '1px solid rgba(17, 17, 17, 0.06)' }}>
               <div style={{ minWidth: 0 }}>
                 <button
                   onClick={() => { const f = data.findings.find((x) => x.name === c.name && x.pluginId === c.pluginId); if (f) openFinding(f); }}
-                  style={{ ...linkStyle, color: SEVERITY_COLORS[c.risk] ?? 'var(--on-surface)' }}
+                  style={{ ...linkStyle, color: SEVERITY_COLORS[c.risk] ?? 'var(--color-ink)', fontWeight: 600 }}
                   title="View finding detail"
                 >
                   {c.name}
                 </button>
-                {c.cweId && <span style={{ marginLeft: '0.5rem', fontFamily: 'var(--font-label)', fontSize: '0.62rem', color: 'var(--on-surface-variant)' }}>CWE-{c.cweId}</span>}
+                {c.cweId && <span style={{ marginLeft: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--color-stone)' }}>CWE-{c.cweId}</span>}
               </div>
-              <span style={{ fontWeight: 700, flexShrink: 0 }}>{c.count}</span>
+              <span style={{ fontWeight: 700, flexShrink: 0, color: 'var(--color-ink)' }}>{c.count}</span>
             </div>
           ))}
         </div>
@@ -152,9 +152,9 @@ export default function AnalyticsPage() {
           <h3 style={sectionTitle()}>Most Affected Endpoints</h3>
           {data.mostAffected.length === 0 && <Empty text="No endpoint has known findings." />}
           {data.mostAffected.map((h) => (
-            <div key={h.url} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', padding: '0.45rem 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-              <code style={{ fontSize: '0.78rem', wordBreak: 'break-all' }}>{h.path}</code>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.68rem', color: h.risks.High ? 'var(--error)' : 'var(--on-surface-variant)', flexShrink: 0 }}>
+            <div key={h.url} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', padding: '0.55rem 0', borderBottom: '1px solid rgba(17, 17, 17, 0.06)' }}>
+              <code style={{ fontSize: '0.8rem', wordBreak: 'break-all', color: 'var(--color-ink)' }}>{h.path}</code>
+              <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.72rem', color: h.risks.High ? 'var(--color-vermillion)' : 'var(--color-ash)', fontWeight: 600, flexShrink: 0 }}>
                 {h.findingCount} finding{h.findingCount !== 1 ? 's' : ''}
               </span>
             </div>
@@ -162,7 +162,7 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Finding detail drawer */}
+      {/* Finding detail modal */}
       {selected && (
         <FindingDetail finding={selected} onClose={() => setSelected(null)} />
       )}
@@ -176,12 +176,13 @@ function repeat_fit() {
 
 function sectionTitle(): React.CSSProperties {
   return {
-    fontFamily: 'var(--font-label)',
-    fontSize: '0.72rem',
+    fontFamily: 'var(--font-inter)',
+    fontSize: 'var(--text-eyebrow)',
     textTransform: 'uppercase',
-    letterSpacing: '0.08em',
-    color: 'var(--on-surface-variant)',
-    margin: '0 0 0.6rem',
+    letterSpacing: 'var(--tracking-eyebrow)',
+    color: 'var(--color-ash)',
+    margin: '0 0 0.75rem',
+    fontWeight: 600,
   };
 }
 
@@ -195,29 +196,29 @@ const linkStyle: React.CSSProperties = {
 };
 
 function Empty({ text }: { text: string }) {
-  return <p style={{ color: 'var(--on-surface-variant)', fontSize: '0.85rem', padding: '1rem 0' }}>{text}</p>;
+  return <p style={{ color: 'var(--color-ash)', fontSize: '0.85rem', padding: '1rem 0' }}>{text}</p>;
 }
 
 function FindingDetail({ finding, onClose }: { finding: Finding; onClose: () => void }) {
   return (
-    <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 40, display: 'grid', placeItems: 'center', padding: '1.5rem' }}>
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(17,17,17,0.45)', backdropFilter: 'blur(4px)', zIndex: 60, display: 'grid', placeItems: 'center', padding: '1.5rem' }}>
       <div
         className="panel"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label={`Finding: ${finding.name}`}
-        style={{ maxWidth: 720, width: '100%', maxHeight: '80vh', overflowY: 'auto', padding: '1.5rem' }}
+        style={{ maxWidth: 720, width: '100%', maxHeight: '80vh', overflowY: 'auto', padding: '2rem', boxShadow: 'var(--shadow-product-mockup)' }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', marginBottom: '0.75rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem' }}>
           <div>
             <span className={`severity-badge severity-${finding.risk.toLowerCase()}`}>{finding.risk}</span>
-            <span style={{ marginLeft: '0.5rem', fontFamily: 'var(--font-label)', fontSize: '0.68rem', color: 'var(--on-surface-variant)' }}>
+            <span style={{ marginLeft: '0.5rem', fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--color-ash)', fontWeight: 500 }}>
               Confidence: {finding.confidence || 'Unknown'}
             </span>
-            <h2 style={{ margin: '0.5rem 0 0', fontSize: '1.15rem' }}>{finding.name}</h2>
+            <h2 style={{ margin: '0.5rem 0 0', fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-ink)' }}>{finding.name}</h2>
           </div>
-          <button className="ghost" onClick={onClose} aria-label="Close" style={{ alignSelf: 'flex-start', padding: '0.35rem' }}>
+          <button className="ghost" onClick={onClose} aria-label="Close" style={{ alignSelf: 'flex-start', padding: '0.35rem', borderRadius: 'var(--radius-pills)' }}>
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -242,15 +243,17 @@ function FindingDetail({ finding, onClose }: { finding: Finding; onClose: () => 
 function Section({ title, body, mono }: { title: string; body?: string; mono?: boolean }) {
   if (!body) return null;
   return (
-    <div style={{ marginTop: '1rem' }}>
-      <h4 style={{ ...sectionTitle(), marginBottom: '0.3rem' }}>{title}</h4>
+    <div style={{ marginTop: '1.25rem' }}>
+      <h4 style={{ ...sectionTitle(), marginBottom: '0.4rem' }}>{title}</h4>
       <pre style={{
         whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-        fontFamily: mono ? 'monospace' : 'inherit',
-        fontSize: mono ? '0.75rem' : '0.85rem',
-        color: 'var(--on-surface)',
-        background: 'var(--surface-container-high, #222222)',
-        padding: '0.6rem', borderRadius: '6px',
+        fontFamily: mono ? 'var(--font-mono)' : 'var(--font-inter)',
+        fontSize: mono ? '0.75rem' : '0.875rem',
+        color: 'var(--color-ink)',
+        background: 'var(--color-cream-wash)',
+        border: '1px solid rgba(17, 17, 17, 0.08)',
+        padding: '0.75rem 1rem', borderRadius: 'var(--radius-buttons)',
+        lineHeight: 1.5,
       }}>{body}</pre>
     </div>
   );
@@ -258,9 +261,9 @@ function Section({ title, body, mono }: { title: string; body?: string; mono?: b
 
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', fontSize: '0.8rem' }}>
-      <span style={{ fontFamily: 'var(--font-label)', color: 'var(--on-surface-variant)', flexShrink: 0 }}>{label}:</span>
-      <span style={{ wordBreak: 'break-all' }}>{value}</span>
+    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', fontSize: '0.8125rem' }}>
+      <span style={{ fontFamily: 'var(--font-inter)', color: 'var(--color-ash)', fontWeight: 600, flexShrink: 0 }}>{label}:</span>
+      <span style={{ wordBreak: 'break-all', color: 'var(--color-ink)' }}>{value}</span>
     </div>
   );
 }

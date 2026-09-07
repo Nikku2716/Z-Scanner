@@ -79,7 +79,7 @@ export default function Dashboard() {
     <div ref={containerRef}>
       <header className="page-header gsap-dash-header">
         <h1>Dashboard</h1>
-        <p>Scan history and quick launch</p>
+        <p>Scan history, live telemetry, and workspace triage</p>
       </header>
 
       <div className="search-shell">
@@ -88,7 +88,7 @@ export default function Dashboard() {
           <input
             className="search-input"
             type="search"
-            placeholder="Search scans, modes, or status"
+            placeholder="Search scans by target, mode, or status…"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             aria-label="Search scans"
@@ -97,14 +97,14 @@ export default function Dashboard() {
       </div>
 
       <div className="panel toolbar gsap-dash-toolbar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontFamily: 'var(--font-label)', fontSize: '0.75rem', color: 'var(--on-surface-variant)' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontFamily: 'var(--font-inter)', fontSize: '0.8rem', color: 'var(--color-ash)' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
             <span className="pulse-dot" />
-            <span style={{ color: 'var(--primary)' }}>
+            <span style={{ color: 'var(--color-ink)', fontWeight: 600 }}>
               {filteredScans.filter(s => s.status === 'running' || s.status === 'pending').length} active
             </span>
           </span>
-          <span style={{ color: 'var(--on-surface-variant)' }}>·</span>
+          <span style={{ color: 'var(--color-stone)' }}>·</span>
           <span>{filteredScans.length} total scan{filteredScans.length !== 1 ? 's' : ''}</span>
         </div>
         <Link to="/scan/new">
@@ -116,14 +116,14 @@ export default function Dashboard() {
       </div>
 
       {loading && (
-        <div className="panel" style={{ color: 'var(--on-surface-variant)', textAlign: 'center', padding: '3rem' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.4 }}>hourglass_empty</span>
+        <div className="panel" style={{ color: 'var(--color-ash)', textAlign: 'center', padding: '3.5rem' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.5 }}>hourglass_empty</span>
           Loading scans…
         </div>
       )}
 
       {error && (
-        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2' }}>
+        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(232, 64, 13, 0.25)', background: '#fff5f5' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
@@ -133,9 +133,9 @@ export default function Dashboard() {
 
       {!loading && scans.length === 0 && (
         <div className="panel" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: 'var(--on-surface-variant)', display: 'block', marginBottom: '1rem' }}>radar</span>
-          <p style={{ color: 'var(--on-surface-variant)', marginBottom: '1.5rem', fontSize: '0.9375rem' }}>No scans yet. Point BlackHawk at a target to begin.</p>
-          <Link to="/scan/new"><button className="primary" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '10px 26px', fontSize: '15px', fontWeight: 500, minWidth: '170px', margin: '0 auto' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: 'var(--color-stone)', display: 'block', marginBottom: '1rem' }}>radar</span>
+          <p style={{ color: 'var(--color-ash)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>No scans yet. Point BlackHawk at a target to begin.</p>
+          <Link to="/scan/new"><button className="primary" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '10px 24px', fontSize: '14.5px', fontWeight: 500, minWidth: '160px', margin: '0 auto' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>add</span>
             Start First Scan
           </button></Link>
@@ -144,9 +144,9 @@ export default function Dashboard() {
 
       {!loading && scans.length > 0 && filteredScans.length === 0 && (
         <div className="panel" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: 'var(--on-surface-variant)', display: 'block', marginBottom: '1rem' }}>search_off</span>
-          <p style={{ color: 'var(--on-surface-variant)', marginBottom: '1.5rem', fontSize: '0.9375rem' }}>No scans match "{searchTerm.trim()}". Try a different target, mode, or status.</p>
-          <button className="ghost" onClick={() => setSearchTerm('')} style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: 'var(--color-stone)', display: 'block', marginBottom: '1rem' }}>search_off</span>
+          <p style={{ color: 'var(--color-ash)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>No scans match "{searchTerm.trim()}". Try a different target, mode, or status.</p>
+          <button className="pearl" onClick={() => setSearchTerm('')} style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>close</span>
             Clear search
           </button>
@@ -170,29 +170,29 @@ export default function Dashboard() {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.375rem' }}>
                       <span className="mode-tag">{scan.config.mode}</span>
-                      <div style={{ fontFamily: 'var(--font-body)', color: 'var(--on-surface)', fontSize: '0.9375rem', fontWeight: 600, wordBreak: 'break-all' }}>
+                      <div style={{ fontFamily: 'var(--font-inter)', color: 'var(--color-ink)', fontSize: '0.95rem', fontWeight: 600, wordBreak: 'break-all' }}>
                         {scan.target}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem', fontFamily: 'var(--font-label)', fontSize: '0.7rem', color: 'var(--color-mist)' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem', fontFamily: 'var(--font-inter)', fontSize: '0.72rem', color: 'var(--color-ash)' }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                        <span className="material-symbols-outlined" style={{ fontSize: '0.8rem' }}>schedule</span>
+                        <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>schedule</span>
                         {new Date(scan.createdAt).toLocaleString()}
                       </span>
                       {isComplete && highCount > 0 && (
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--error)' }}>
-                          <span className="material-symbols-outlined" style={{ fontSize: '0.8rem', fontVariationSettings: "'FILL' 1" }}>error</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-vermillion)', fontWeight: 600 }}>
+                          <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>error</span>
                           High: {highCount}
                         </span>
                       )}
                       {isComplete && medCount > 0 && (
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--tertiary)' }}>
-                          <span className="material-symbols-outlined" style={{ fontSize: '0.8rem', fontVariationSettings: "'FILL' 1" }}>warning</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#b45309', fontWeight: 600 }}>
+                          <span className="material-symbols-outlined" style={{ fontSize: '0.85rem' }}>warning</span>
                           Medium: {medCount}
                         </span>
                       )}
                       {isRunning && (
-                        <span style={{ color: 'var(--primary)', fontSize: '0.7rem' }}>
+                        <span style={{ color: 'var(--color-phoenix-orange)', fontSize: '0.72rem', fontWeight: 500 }}>
                           {scan.progress.message}
                         </span>
                       )}
@@ -206,7 +206,7 @@ export default function Dashboard() {
                         onClick={(e) => handleDelete(e, scan.id)}
                         disabled={isDeleting}
                         title="Delete scan"
-                        style={{ padding: '0.35rem', borderRadius: 'var(--radius-full)', lineHeight: 1 }}
+                        style={{ padding: '0.35rem', borderRadius: 'var(--radius-pills)', lineHeight: 1 }}
                       >
                         <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>
                           {isDeleting ? 'hourglass_empty' : 'delete'}

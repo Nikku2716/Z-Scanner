@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { api, type ScanMode } from '../api/client';
 import gsap from 'gsap';
 
-const MODES: { value: ScanMode; label: string; desc: string; icon: string }[] = [
-  { value: 'quick', label: 'Quick', desc: 'Fast surface scan, 5 pages max', icon: 'bolt' },
-  { value: 'fast', label: 'Fast', desc: 'Moderate depth, 20 pages', icon: 'speed' },
-  { value: 'deep', label: 'Deep', desc: 'Full crawl, 100 pages', icon: 'network_check' },
-  { value: 'stealth', label: 'Stealth', desc: 'Low footprint, 10 pages', icon: 'visibility_off' },
+const MODES: { value: ScanMode; label: string; desc: string; icon: string; pastel: string }[] = [
+  { value: 'quick', label: 'Quick', desc: 'Fast surface check, 5 pages max', icon: 'bolt', pastel: 'var(--color-aqua)' },
+  { value: 'fast', label: 'Fast', desc: 'Moderate depth, 20 pages crawl', icon: 'speed', pastel: 'var(--color-mint-green)' },
+  { value: 'deep', label: 'Deep', desc: 'Full recursive crawl, 100 pages', icon: 'network_check', pastel: 'var(--color-canary-yellow)' },
+  { value: 'stealth', label: 'Stealth', desc: 'Low footprint, 10 pages max', icon: 'visibility_off', pastel: 'var(--color-soft-violet)' },
 ];
 
 export default function NewScan() {
@@ -69,13 +69,13 @@ export default function NewScan() {
         <div style={{ marginBottom: '2rem' }}>
           <label style={{
             display: 'block',
-            fontFamily: 'var(--font-label)',
-            fontSize: '0.68rem',
-            color: 'var(--color-mist)',
+            fontFamily: 'var(--font-inter)',
+            fontSize: 'var(--text-eyebrow)',
+            color: 'var(--color-ash)',
             marginBottom: '0.625rem',
-            letterSpacing: '0.06em',
+            letterSpacing: 'var(--tracking-eyebrow)',
             textTransform: 'uppercase',
-            fontWeight: 500,
+            fontWeight: 600,
           }}>
             Target URL
           </label>
@@ -86,24 +86,24 @@ export default function NewScan() {
             onChange={(e) => setTarget(e.target.value)}
             required
             autoFocus
-            style={{ fontSize: '0.9375rem' }}
+            style={{ fontSize: '0.95rem' }}
           />
         </div>
 
         <div style={{ marginBottom: '2rem' }}>
           <label style={{
             display: 'block',
-            fontFamily: 'var(--font-label)',
-            fontSize: '0.68rem',
-            color: 'var(--color-mist)',
+            fontFamily: 'var(--font-inter)',
+            fontSize: 'var(--text-eyebrow)',
+            color: 'var(--color-ash)',
             marginBottom: '0.75rem',
-            letterSpacing: '0.06em',
+            letterSpacing: 'var(--tracking-eyebrow)',
             textTransform: 'uppercase',
-            fontWeight: 500,
+            fontWeight: 600,
           }}>
             Scan Mode
           </label>
-          <div style={{ display: 'grid', gap: '0.6rem' }}>
+          <div style={{ display: 'grid', gap: '0.65rem' }}>
             {MODES.map((m) => {
               const selected = mode === m.value;
               return (
@@ -114,43 +114,42 @@ export default function NewScan() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
-                    padding: '0.9rem 1.1rem',
-                    border: `1px solid ${selected ? 'var(--color-notion-blue)' : 'rgba(0, 0, 0, 0.08)'}`,
+                    padding: '0.95rem 1.15rem',
+                    border: `1px solid ${selected ? 'var(--color-ink)' : 'rgba(17, 17, 17, 0.08)'}`,
                     borderRadius: 'var(--radius-cards)',
                     cursor: 'pointer',
-                    background: selected ? 'var(--color-sky-tint)' : 'var(--color-pure-white)',
+                    background: selected ? 'var(--color-pearl)' : '#ffffff',
                     transition: 'all var(--transition)',
                   }}
                 >
                   <span
                     className="material-symbols-outlined"
                     style={{
-                      width: '36px',
-                      height: '36px',
+                      width: '38px',
+                      height: '38px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 'var(--radius-buttons)',
-                      border: `1px solid ${selected ? 'var(--color-notion-blue)' : 'rgba(0, 0, 0, 0.08)'}`,
-                      color: selected ? '#ffffff' : 'var(--color-stone)',
-                      fontSize: '1.2rem',
+                      color: 'var(--color-ink)',
+                      fontSize: '1.25rem',
                       flexShrink: 0,
                       transition: 'all var(--transition)',
-                      background: selected ? 'var(--color-notion-blue)' : 'var(--color-paper-warmth)',
+                      background: selected ? m.pastel : 'var(--color-pearl)',
                     }}
                   >
                     {m.icon}
                   </span>
                   <div style={{ flex: 1 }}>
                     <div style={{
-                      fontFamily: 'var(--font-body)',
-                      fontSize: '0.875rem',
+                      fontFamily: 'var(--font-inter)',
+                      fontSize: '0.9rem',
                       fontWeight: 600,
-                      color: selected ? 'var(--primary)' : 'var(--on-surface)',
+                      color: 'var(--color-ink)',
                     }}>
                       {m.label}
                     </div>
-                    <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'var(--color-mist)', marginTop: '0.125rem' }}>
+                    <div style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--color-ash)', marginTop: '0.125rem' }}>
                       {m.desc}
                     </div>
                   </div>
@@ -160,7 +159,7 @@ export default function NewScan() {
                     value={m.value}
                     checked={selected}
                     onChange={() => setMode(m.value)}
-                    style={{ width: 'auto', marginLeft: 'auto', accentColor: 'var(--primary)' }}
+                    style={{ width: 'auto', marginLeft: 'auto', accentColor: 'var(--color-ink)' }}
                   />
                 </label>
               );
@@ -170,13 +169,13 @@ export default function NewScan() {
 
         {error && (
           <div style={{
-            color: 'var(--error)',
+            color: 'var(--color-vermillion)',
             fontSize: '0.8125rem',
             marginBottom: '1.25rem',
             padding: '0.625rem 0.875rem',
-            border: '1px solid rgba(239, 68, 68, 0.25)',
-            borderRadius: 'var(--radius)',
-            background: 'var(--error-container)',
+            border: '1px solid rgba(232, 64, 13, 0.25)',
+            borderRadius: 'var(--radius-buttons)',
+            background: '#fff5f5',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
@@ -190,7 +189,7 @@ export default function NewScan() {
           style={{
             width: '100%',
             padding: '0.875rem',
-            fontSize: '0.875rem',
+            fontSize: '0.9rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

@@ -1,33 +1,33 @@
 /* ============================================================
-   BlackHawk Landing — Notion Style Reference
+   BlackHawk Landing — Amplemarket Style Reference
    Theme: Light
-   "Warm paper notebook under afternoon sun"
-   - Canvas: #f6f5f4 (warm tactile off-white)
-   - Fixed 64px sticky navigation bar with subtle shadow
-   - 7-Avatar character mark row with spring bouncy animations
-   - Centered hero stack with 72px display headline and highlight pill
-   - Editorial 18px Lyon Text subhead
-   - Large centered product UI mockup (with kanban task cards & live telemetry)
-   - Greyscale partner logo wall (treated as typography at 60% alpha)
-   - 2x2 Feature section with Marigold accent card and Midnight Ink dark island
-   - White feature card grid with 1px hairline borders, no shadows
-   - Scan modes in Moleskine ruled card style
-   - 3-tier container architecture
-   - 200ms ease transitions and spring animations
+   "Sunlit workspace with scattered confetti"
+   - Canvas: #ffffff (pure white) & #f6f5f3 (soft cream wash)
+   - Sticky 64px frosted glass navigation bar with blur(20px)
+   - Atmospheric Phoenix Orange radial gradient wash in hero
+   - 7-Avatar character mark row with pastel accent rings
+   - Display headline (84px / 56px) with aggressive negative tracking
+   - Product UI mockup with live telemetry & pastel kanban cards
+   - Multi-hue pastel feature mosaic (Petal Pink, Mint Green, Canary Yellow, Soft Violet, Aqua)
+   - Charcoal & Midnight Indigo dark contrast feature blocks
+   - Clean white 12px radius cards with hairline borders
+   - Amplemarket buttons (8px radius, #111111 Ink primary, #ecebea Pearl)
    ============================================================ */
 
 .landing {
-  background: var(--color-paper-warmth);
-  color: var(--color-ink-black);
+  background: var(--color-cream-wash);
+  color: var(--color-ink);
   min-height: 100vh;
   position: relative;
   overflow-x: clip;
 }
 
-/* ── Sticky Top Navigation Bar ── */
+/* ── Sticky Top Navigation Bar (Frosted Glass) ── */
 .landing__nav {
-  background: var(--color-pure-white);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
   height: 64px;
   position: sticky;
   top: 0;
@@ -54,22 +54,22 @@
 
 .landing__brand-mark {
   align-items: center;
-  background: #000000;
+  background: var(--color-ink);
   border-radius: 6px;
   color: #ffffff;
   display: inline-flex;
-  font-family: var(--font-notioninter);
+  font-family: var(--font-inter);
   font-size: 15px;
   font-weight: 700;
   height: 28px;
   justify-content: center;
   width: 28px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.15);
 }
 
 .landing__brand-title {
-  color: #000000;
-  font-family: var(--font-notioninter);
+  color: var(--color-ink);
+  font-family: var(--font-inter);
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -77,8 +77,8 @@
 }
 
 .landing__brand-title-sub {
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.75);
+  font-weight: 400;
+  color: var(--color-ash);
 }
 
 .landing__nav-links {
@@ -87,13 +87,12 @@
   gap: 1.5rem;
 }
 
-/* Muted Nav Links: 54% alpha text, 8px radius, darkens on hover, never underlines */
 .landing__nav-link {
   background: transparent;
   border: none;
   border-radius: var(--radius-buttons);
-  color: rgba(0, 0, 0, 0.54);
-  font-family: var(--font-notioninter);
+  color: var(--color-ash);
+  font-family: var(--font-inter);
   font-size: 14px;
   font-weight: 500;
   padding: 8px 12px;
@@ -102,8 +101,8 @@
 }
 
 .landing__nav-link:hover {
-  color: rgba(0, 0, 0, 0.95);
-  background: rgba(0, 0, 0, 0.04);
+  color: var(--color-ink);
+  background: rgba(17, 17, 17, 0.04);
   text-decoration: none;
 }
 
@@ -113,155 +112,173 @@
   gap: 0.75rem;
 }
 
-/* Ghost CTA in nav */
+/* Pearl nav button */
 .landing__nav-btn-demo {
-  background: var(--color-sky-tint);
+  background: var(--color-pearl);
   border-radius: var(--radius-buttons);
-  color: var(--color-notion-blue);
-  font-family: var(--font-notioninter);
-  font-size: 14px;
+  color: var(--color-ink);
+  font-family: var(--font-inter);
+  font-size: 13.5px;
   font-weight: 500;
-  padding: 6px 14px;
+  padding: 7px 15px;
   text-decoration: none;
   transition: background var(--transition), color var(--transition);
 }
 
 .landing__nav-btn-demo:hover {
-  background: #d4eafc;
-  color: #005bb0;
+  background: #dfdedc;
+  color: var(--color-ink);
 }
 
-/* Primary CTA button */
+/* Primary Ink CTA button */
 .landing__nav-cta {
   align-items: center;
-  background: var(--color-notion-blue);
+  background: var(--color-ink);
   border-radius: var(--radius-buttons);
   color: #ffffff;
   display: inline-flex;
-  font-family: var(--font-notioninter);
-  font-size: 14px;
+  font-family: var(--font-inter);
+  font-size: 13.5px;
   font-weight: 500;
   gap: 6px;
-  padding: 6px 15px;
+  padding: 7px 16px;
   text-decoration: none;
   transition: background var(--transition), transform var(--transition);
 }
 
 .landing__nav-cta:hover {
-  background: #0060b8;
+  background: #272625;
   color: #ffffff;
 }
 
-/* ── Hero Section (Centered Stack) ── */
+/* ── Hero Section (Atmospheric Radial Gradient Wash) ── */
+.landing__hero-wash {
+  background: var(--gradient-phoenix-orange);
+  padding: 4.5rem 1.5rem 3.5rem;
+  position: relative;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+}
+
 .landing__hero {
   margin: 0 auto;
   max-width: var(--page-max-width);
-  padding: 4rem 1.5rem 3rem;
   text-align: center;
 }
 
-/* ── 7-Avatar Character Mark Row ──
-   40-48px circle with 2px colored border (blue, red, yellow, sky), flat illustration inside, white bg */
+/* ── 7-Avatar Character Mark Row (Pastel Rings) ── */
 .landing__avatar-row {
   align-items: center;
   display: inline-flex;
   gap: 12px;
   justify-content: center;
   margin-bottom: 2rem;
-  padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: var(--radius-pills);
+  box-shadow: 0 2px 10px rgba(17, 17, 17, 0.04);
 }
 
 .landing__avatar-mark {
   align-items: center;
   background: #ffffff;
-  border: 2px solid var(--color-signal-blue);
+  border: 2px solid var(--color-phoenix-orange);
   border-radius: 50%;
   display: inline-flex;
-  font-size: 20px;
-  height: 44px;
+  font-size: 18px;
+  height: 42px;
   justify-content: center;
-  width: 44px;
+  width: 42px;
   user-select: none;
   transition: transform var(--transition-spring), box-shadow var(--transition);
   cursor: pointer;
+  color: var(--color-ink);
 }
 
 .landing__avatar-mark:hover {
   transform: translateY(-4px) scale(1.12);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 14px rgba(17, 17, 17, 0.1);
 }
 
-.landing__avatar-mark--coral {
-  border-color: var(--color-coral);
-}
+.landing__avatar-mark--pink { border-color: #f472b6; background: var(--color-petal-pink); }
+.landing__avatar-mark--mint { border-color: #4ade80; background: var(--color-mint-green); }
+.landing__avatar-mark--yellow { border-color: #facc15; background: var(--color-canary-yellow); }
+.landing__avatar-mark--violet { border-color: #a78bfa; background: var(--color-soft-violet); }
+.landing__avatar-mark--aqua { border-color: #22d3ee; background: var(--color-aqua); }
+.landing__avatar-mark--orange { border-color: var(--color-phoenix-orange); background: #fff1ee; }
+.landing__avatar-mark--charcoal { border-color: var(--color-charcoal); background: var(--color-pearl); }
 
-.landing__avatar-mark--yellow {
-  border-color: var(--color-marigold);
-}
-
-.landing__avatar-mark--sky {
-  border-color: var(--color-sky-wash);
-}
-
-.landing__avatar-mark--midnight {
-  border-color: var(--color-midnight-ink);
-}
-
-/* ── Hero Headline with Highlight Pill ── */
+/* ── Hero Headline ── */
 .landing__hero-headline {
-  color: #000000;
-  font-family: var(--font-notioninter);
-  font-size: clamp(36px, 6vw, var(--text-display));
-  font-weight: 600;
-  letter-spacing: var(--tracking-display);
-  line-height: 1.15;
-  margin: 0 auto 1.5rem;
-  max-width: 960px;
+  color: var(--color-ink);
+  font-family: var(--font-inter);
+  font-size: clamp(38px, 6.5vw, var(--text-heading-lg));
+  font-weight: 400; /* Confident whisper-weight heading */
+  letter-spacing: var(--tracking-heading-lg);
+  line-height: var(--leading-heading-lg);
+  margin: 0 auto 1.25rem;
+  max-width: 980px;
 }
 
-/* Hero Highlight Rectangle: colored rectangular highlight behind a verb in hero copy (not oval) */
+/* Poster Eyebrow Tag */
+.landing__hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-inter);
+  font-size: var(--text-eyebrow);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-phoenix-orange);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  border-radius: var(--radius-pills);
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.05);
+}
+
+/* Hero Highlight Rectangle: Flat canary yellow or pastel pink */
 .landing__highlight-pill {
   align-items: center;
-  background: #f6d5b8; /* Warm peach highlight */
-  border-radius: 4px; /* Crisp rectangle shape, not oval */
-  color: #000000;
+  background: var(--color-canary-yellow);
+  border-radius: var(--radius-small);
+  color: var(--color-ink);
   display: inline-flex;
   font-weight: 600;
-  font-style: italic; /* Only the highlighted word is italic */
   padding: 2px 14px 4px;
   margin: 0 6px;
   vertical-align: baseline;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  transition: background var(--transition), transform var(--transition-spring);
+  transition: transform var(--transition-spring);
 }
 
 .landing__highlight-pill:hover {
-  background: var(--color-marigold);
   transform: scale(1.04);
 }
 
-.landing__highlight-pill--sky {
-  background: var(--color-sky-tint);
-  color: var(--color-notion-blue);
-  border-radius: 4px;
+.landing__highlight-pill--pink {
+  background: var(--color-petal-pink);
 }
 
-/* ── Editorial Subhead (Lyon Text / Source Serif 4 at 18px) ── */
+.landing__highlight-pill--mint {
+  background: var(--color-mint-green);
+}
+
+/* Editorial Subhead */
 .landing__hero-subhead {
-  color: var(--color-graphite);
-  font-family: var(--font-lyon-text);
-  font-size: 18px;
+  color: rgba(17, 17, 17, 0.75);
+  font-family: var(--font-inter);
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.56;
+  line-height: 1.55;
   margin: 0 auto 2.25rem;
   max-width: 720px;
 }
 
-/* ── Two-Button CTA Row ── */
+/* Two-Button CTA Row */
 .landing__hero-cta-row {
   align-items: center;
   display: flex;
@@ -273,49 +290,70 @@
 
 .landing__btn-primary {
   align-items: center;
-  background: var(--color-notion-blue);
-  border: 1px solid var(--color-notion-blue);
+  background: var(--color-ink);
+  border: 1px solid var(--color-ink);
   border-radius: var(--radius-buttons);
   color: #ffffff;
   display: inline-flex;
-  font-family: var(--font-notioninter);
+  font-family: var(--font-inter);
   font-size: 15px;
   font-weight: 500;
   gap: 8px;
-  padding: 9px 20px;
+  padding: 10px 22px;
   text-decoration: none;
   transition: background var(--transition), transform var(--transition);
 }
 
 .landing__btn-primary:hover {
-  background: #0060b8;
-  border-color: #0060b8;
+  background: #272625;
+  border-color: #272625;
   color: #ffffff;
 }
 
-.landing__btn-ghost-cta {
+.landing__btn-accent {
   align-items: center;
-  background: var(--color-sky-tint);
-  border: 1px solid transparent;
+  background: var(--color-phoenix-orange);
+  border: 1px solid var(--color-phoenix-orange);
   border-radius: var(--radius-buttons);
-  color: var(--color-notion-blue);
+  color: #ffffff;
   display: inline-flex;
-  font-family: var(--font-notioninter);
+  font-family: var(--font-inter);
   font-size: 15px;
   font-weight: 500;
   gap: 8px;
-  padding: 9px 20px;
+  padding: 10px 22px;
+  text-decoration: none;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.landing__btn-accent:hover {
+  background: #cf3709;
+  border-color: #cf3709;
+  color: #ffffff;
+}
+
+.landing__btn-secondary {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-radius: var(--radius-buttons);
+  color: var(--color-ink);
+  display: inline-flex;
+  font-family: var(--font-inter);
+  font-size: 15px;
+  font-weight: 500;
+  gap: 8px;
+  padding: 10px 22px;
   text-decoration: none;
   transition: background var(--transition), color var(--transition);
 }
 
-.landing__btn-ghost-cta:hover {
-  background: #d4eafc;
-  color: #005bb0;
+.landing__btn-secondary:hover {
+  background: var(--color-pearl);
+  color: var(--color-ink);
 }
 
-/* ── Large Product UI Mockup ──
-   Centered, max-width ~1140px, 12px radius, hairline border, elevation 0px 4px 12px rgba(0,0,0,0.1) */
+/* ── Product UI Mockup ── */
 .landing__mockup-wrapper {
   margin: 0 auto;
   max-width: 1140px;
@@ -323,19 +361,19 @@
 }
 
 .landing__mockup-card {
-  background: var(--color-pure-white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-canvas-white);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: var(--radius-cards);
   box-shadow: var(--shadow-product-mockup);
   overflow: hidden;
   text-align: left;
 }
 
-/* Notion-style Window Header */
+/* Mockup Window Header */
 .landing__mockup-header {
   align-items: center;
-  background: #faf9f8;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fbfbfa;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
   display: flex;
   gap: 1rem;
   justify-content: space-between;
@@ -359,16 +397,16 @@
 
 .landing__mockup-breadcrumbs {
   align-items: center;
-  color: var(--color-stone);
+  color: var(--color-ash);
   display: flex;
-  font-family: var(--font-notioninter);
-  font-size: 13px;
+  font-family: var(--font-inter);
+  font-size: 12.5px;
   gap: 6px;
   font-weight: 500;
 }
 
 .landing__mockup-breadcrumbs strong {
-  color: #000000;
+  color: var(--color-ink);
 }
 
 .landing__mockup-tabs {
@@ -380,9 +418,9 @@
   align-items: center;
   background: transparent;
   border-radius: var(--radius-buttons);
-  color: var(--color-stone);
+  color: var(--color-ash);
   display: inline-flex;
-  font-family: var(--font-notioninter);
+  font-family: var(--font-inter);
   font-size: 12px;
   font-weight: 500;
   gap: 4px;
@@ -391,12 +429,12 @@
 
 .landing__mockup-tab--active {
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  color: #000000;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  color: var(--color-ink);
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04);
 }
 
-/* Inside Mockup: Kanban Board Layout */
+/* Inside Mockup: Kanban Board */
 .landing__mockup-body {
   padding: 20px;
   background: #ffffff;
@@ -410,8 +448,7 @@
 }
 
 .landing__kanban-col {
-  background: var(--color-paper-warmth);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--color-cream-wash);
   border-radius: var(--radius-cards);
   padding: 12px;
 }
@@ -426,9 +463,9 @@
 
 .landing__kanban-col-title {
   align-items: center;
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--color-ink);
   display: inline-flex;
-  font-family: var(--font-notioninter);
+  font-family: var(--font-inter);
   font-size: 12px;
   font-weight: 600;
   gap: 6px;
@@ -437,21 +474,19 @@
 }
 
 .landing__kanban-col-count {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(17, 17, 17, 0.06);
   border-radius: var(--radius-pills);
-  color: rgba(0, 0, 0, 0.7);
+  color: var(--color-ink);
   font-size: 11px;
   font-weight: 600;
   padding: 1px 7px;
 }
 
-/* Kanban Task Card:
-   Background #ffffff, border-radius 8px, padding 8px 12px, 1px border at rgba(0,0,0,0.08), small status text and emoji. */
 .landing__task-card {
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: var(--radius-buttons);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.03);
   margin-bottom: 8px;
   padding: 10px 12px;
   transition: transform var(--transition), border-color var(--transition);
@@ -460,7 +495,7 @@
 
 .landing__task-card:hover {
   transform: translateY(-1px);
-  border-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(17, 17, 17, 0.2);
 }
 
 .landing__task-header {
@@ -472,39 +507,36 @@
 
 .landing__task-pill {
   border-radius: var(--radius-pills);
-  font-family: var(--font-notioninter);
-  font-size: 11px;
+  font-family: var(--font-inter);
+  font-size: 10.5px;
   font-weight: 600;
   padding: 2px 8px;
+  letter-spacing: 0.02em;
 }
 
 .landing__task-pill--high {
-  background: #fef2f2;
-  color: var(--color-vermillion);
-  border: 1px solid rgba(227, 45, 20, 0.2);
+  background: var(--color-petal-pink);
+  color: #9f1239;
 }
 
 .landing__task-pill--med {
-  background: #fffbeb;
-  color: #b45309;
-  border: 1px solid rgba(232, 157, 1, 0.25);
+  background: var(--color-canary-yellow);
+  color: #854d0e;
 }
 
 .landing__task-pill--low {
-  background: var(--color-sky-tint);
-  color: var(--color-notion-blue);
-  border: 1px solid rgba(0, 117, 222, 0.25);
+  background: var(--color-soft-violet);
+  color: #3730a3;
 }
 
 .landing__task-pill--clean {
-  background: #ecfdf5;
-  color: #15803d;
-  border: 1px solid rgba(22, 163, 74, 0.25);
+  background: var(--color-mint-green);
+  color: #14532d;
 }
 
 .landing__task-title {
-  color: #000000;
-  font-family: var(--font-notioninter);
+  color: var(--color-ink);
+  font-family: var(--font-inter);
   font-size: 13px;
   font-weight: 600;
   line-height: 1.35;
@@ -512,7 +544,7 @@
 }
 
 .landing__task-meta {
-  color: var(--color-stone);
+  color: var(--color-ash);
   font-family: var(--font-mono);
   font-size: 11px;
   word-break: break-all;
@@ -520,18 +552,18 @@
 
 /* Mockup Terminal Bar */
 .landing__mockup-terminal {
-  background: #faf9f8;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-midnight-indigo);
   border-radius: var(--radius-buttons);
   padding: 12px 16px;
   font-family: var(--font-mono);
   font-size: 12px;
   line-height: 1.6;
+  color: #ffffff;
 }
 
 .landing__terminal-label {
   align-items: center;
-  color: var(--color-stone);
+  color: var(--color-soft-violet);
   display: flex;
   font-size: 11px;
   font-weight: 600;
@@ -542,7 +574,7 @@
 }
 
 .landing__typed-line {
-  color: var(--color-notion-blue);
+  color: var(--color-aqua);
   font-weight: 500;
   min-height: 20px;
 }
@@ -551,29 +583,27 @@
   content: '▋';
   animation: blink 1s step-end infinite;
   margin-left: 2px;
-  color: var(--color-notion-blue);
+  color: var(--color-phoenix-orange);
 }
 
 @keyframes blink {
   50% { opacity: 0; }
 }
 
-/* ── Greyscale Logo Wall ──
-   SVG logo at native proportions, desaturated to near-black (#000000 at 60% alpha),
-   no individual borders or backgrounds. Centered grid layout with generous spacing. */
+/* ── Greyscale Logo Wall ── */
 .landing__logo-wall {
-  margin: 5rem auto 3rem;
+  margin: 4.5rem auto 2.5rem;
   max-width: 1200px;
   padding: 0 1.5rem;
   text-align: center;
 }
 
 .landing__logo-wall-label {
-  color: var(--color-stone);
-  font-family: var(--font-notioninter);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  color: var(--color-ash);
+  font-family: var(--font-inter);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   margin-bottom: 1.75rem;
   text-transform: uppercase;
 }
@@ -582,17 +612,17 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 3rem;
+  gap: 2.75rem;
   justify-content: center;
 }
 
 .landing__logo-item {
   align-items: center;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(17, 17, 17, 0.6);
   display: inline-flex;
-  font-family: var(--font-notioninter);
-  font-size: 16px;
-  font-weight: 600;
+  font-family: var(--font-inter);
+  font-size: 15px;
+  font-weight: 500;
   gap: 8px;
   letter-spacing: -0.01em;
   transition: color var(--transition);
@@ -600,11 +630,11 @@
 }
 
 .landing__logo-item:hover {
-  color: rgba(0, 0, 0, 0.95);
+  color: var(--color-ink);
 }
 
 .landing__logo-item .material-symbols-outlined {
-  font-size: 22px;
+  font-size: 20px;
 }
 
 /* ── Section Dividers & Shared Styles ── */
@@ -615,7 +645,7 @@
 }
 
 .landing__section-header {
-  margin-bottom: 2.75rem;
+  margin-bottom: 2.5rem;
   text-align: left;
 }
 
@@ -627,77 +657,75 @@
 }
 
 .landing__section-title {
-  color: var(--color-ink-black);
-  font-family: var(--font-notioninter);
-  font-size: var(--text-heading-lg);
-  font-weight: 600;
-  letter-spacing: -1.89px;
-  line-height: 1.12;
-  margin-bottom: 0.75rem;
+  color: var(--color-ink);
+  font-family: var(--font-inter);
+  font-size: var(--text-heading);
+  font-weight: 400; /* Restrained weight 400 */
+  letter-spacing: var(--tracking-heading);
+  line-height: var(--leading-heading);
+  margin-bottom: 0.5rem;
 }
 
 .landing__section-subhead {
-  color: var(--color-graphite);
-  font-family: var(--font-lyon-text);
-  font-size: 18px;
+  color: var(--color-ash);
+  font-family: var(--font-inter);
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.56;
+  line-height: 1.5;
 }
 
-/* ── 2×2 Feature Section ("Ask your on-demand assistants" style) ──
-   Top card is full-width. Bottom row splits into two equal columns. */
+/* ── Multi-Hue Pastel Feature Mosaic (Amplemarket Taxonomy System) ── */
 .landing__feature-mosaic {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
-/* Accent Feature Card: full-bleed colored card for feature blocks */
+/* Canary Yellow Top Feature Block */
 .landing__mosaic-full {
-  background: var(--color-marigold); /* Accent #ffb110 */
+  background: var(--color-canary-yellow);
   border-radius: var(--radius-cards);
-  color: #000000;
-  padding: 36px;
+  color: var(--color-ink);
+  padding: 40px;
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: center;
 }
 
 .landing__mosaic-title {
-  font-family: var(--font-notioninter);
+  font-family: var(--font-inter);
   font-size: 36px;
-  font-weight: 600;
-  letter-spacing: -1.2px;
-  line-height: 1.18;
+  font-weight: 400;
+  letter-spacing: var(--tracking-heading-md);
+  line-height: var(--leading-heading-md);
   margin-bottom: 1rem;
 }
 
 .landing__mosaic-desc {
-  font-size: 16px;
+  font-size: 15.5px;
   line-height: 1.5;
-  color: rgba(0, 0, 0, 0.82);
+  color: rgba(17, 17, 17, 0.8);
   margin-bottom: 1.5rem;
 }
 
 .landing__mosaic-split {
   display: grid;
-  gap: 24px;
+  gap: 20px;
   grid-template-columns: 1fr 1fr;
 }
 
-/* Sky wash accent card */
-.landing__mosaic-col--sky {
-  background: var(--color-sky-tint);
-  border: 1px solid rgba(0, 117, 222, 0.15);
+/* Soft Violet Accent Card */
+.landing__mosaic-col--violet {
+  background: var(--color-soft-violet);
   border-radius: var(--radius-cards);
-  color: #000000;
+  color: var(--color-ink);
   padding: 32px;
 }
 
-/* Dark Feature Card: Inverted card for dark-on-light contrast moments */
+/* Midnight Indigo Dark Feature Card */
 .landing__mosaic-col--midnight {
-  background: var(--color-midnight-ink);
+  background: var(--color-midnight-indigo);
   border-radius: var(--radius-cards);
   color: #ffffff;
   padding: 32px;
@@ -705,23 +733,23 @@
 
 .landing__mosaic-col--midnight h3 {
   color: #ffffff;
+  font-weight: 400;
 }
 
 .landing__mosaic-col--midnight p {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* ── White Feature Cards Grid ──
-   Background #ffffff, border-radius 12px, padding 24px, 1px solid border rgba(0,0,0,0.08), no shadow */
+/* ── White Feature Cards Grid ── */
 .landing__white-grid {
   display: grid;
-  gap: 20px;
+  gap: 18px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .landing__white-card {
-  background: var(--color-pure-white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-canvas-white);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: var(--radius-cards);
   padding: 24px;
   box-shadow: none;
@@ -729,52 +757,55 @@
 }
 
 .landing__white-card:hover {
-  border-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(17, 17, 17, 0.2);
   transform: translateY(-2px);
 }
 
 .landing__white-card-icon {
   align-items: center;
-  background: var(--color-paper-warmth);
-  border: 2px solid var(--color-signal-blue);
-  border-radius: 50%;
+  background: var(--color-pearl);
+  border-radius: var(--radius-buttons);
   display: inline-flex;
-  height: 44px;
+  height: 42px;
   justify-content: center;
   margin-bottom: 1.25rem;
-  width: 44px;
+  width: 42px;
+  color: var(--color-ink);
 }
 
-.landing__white-card-icon--coral { border-color: var(--color-coral); }
-.landing__white-card-icon--marigold { border-color: var(--color-marigold); }
-.landing__white-card-icon--sky { border-color: var(--color-sky-wash); }
+.landing__white-card-icon--pink { background: var(--color-petal-pink); }
+.landing__white-card-icon--mint { background: var(--color-mint-green); }
+.landing__white-card-icon--yellow { background: var(--color-canary-yellow); }
+.landing__white-card-icon--violet { background: var(--color-soft-violet); }
+.landing__white-card-icon--aqua { background: var(--color-aqua); }
+.landing__white-card-icon--orange { background: #fff1ee; color: var(--color-phoenix-orange); }
 
 .landing__white-card-title {
-  color: var(--color-ink-black);
-  font-family: var(--font-notioninter);
+  color: var(--color-ink);
+  font-family: var(--font-inter);
   font-size: var(--text-heading-sm);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: var(--tracking-heading-sm);
   line-height: var(--leading-heading-sm);
   margin-bottom: 0.5rem;
 }
 
 .landing__white-card-desc {
-  color: var(--color-graphite);
+  color: var(--color-ash);
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
 }
 
-/* ── Scan Modes (Ruled Moleskine Style) ── */
+/* ── Scan Modes ── */
 .landing__modes-grid {
   display: grid;
-  gap: 20px;
+  gap: 18px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .landing__mode-card {
-  background: var(--color-pure-white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-canvas-white);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: var(--radius-cards);
   padding: 24px;
   box-shadow: none;
@@ -782,15 +813,15 @@
 }
 
 .landing__mode-card:hover {
-  border-color: rgba(0, 117, 222, 0.35);
+  border-color: var(--color-ink);
   transform: translateY(-2px);
 }
 
 .landing__mode-icon {
   align-items: center;
-  background: var(--color-sky-tint);
+  background: var(--color-pearl);
   border-radius: var(--radius-buttons);
-  color: var(--color-notion-blue);
+  color: var(--color-ink);
   display: inline-flex;
   height: 40px;
   justify-content: center;
@@ -799,17 +830,17 @@
 }
 
 .landing__mode-title {
-  color: var(--color-ink-black);
-  font-family: var(--font-notioninter);
+  color: var(--color-ink);
+  font-family: var(--font-inter);
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 0.25rem;
 }
 
 .landing__mode-pill {
-  background: var(--color-paper-warmth);
+  background: var(--color-cream-wash);
   border-radius: var(--radius-pills);
-  color: var(--color-stone);
+  color: var(--color-ash);
   display: inline-block;
   font-size: 11px;
   font-weight: 600;
@@ -819,7 +850,7 @@
 }
 
 .landing__mode-desc {
-  color: var(--color-graphite);
+  color: var(--color-ash);
   font-size: 13px;
   line-height: 1.45;
 }
@@ -833,8 +864,8 @@
 }
 
 .landing__arch-node {
-  background: var(--color-pure-white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-canvas-white);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: var(--radius-cards);
   padding: 28px;
   text-align: center;
@@ -843,13 +874,13 @@
 }
 
 .landing__arch-node:hover {
-  border-color: rgba(0, 117, 222, 0.35);
+  border-color: var(--color-ink);
 }
 
 .landing__arch-tag {
-  background: var(--color-sky-tint);
+  background: var(--color-pearl);
   border-radius: var(--radius-pills);
-  color: var(--color-notion-blue);
+  color: var(--color-ink);
   display: inline-block;
   font-size: 11px;
   font-weight: 600;
@@ -859,15 +890,15 @@
 }
 
 .landing__arch-title {
-  color: var(--color-ink-black);
-  font-family: var(--font-notioninter);
+  color: var(--color-ink);
+  font-family: var(--font-inter);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 0.25rem;
 }
 
 .landing__arch-sub {
-  color: var(--color-graphite);
+  color: var(--color-ash);
   font-size: 13px;
 }
 
@@ -878,9 +909,9 @@
 
 /* ── Pre-Footer CTA Section ── */
 .landing__cta {
-  background: var(--color-pure-white);
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-canvas-white);
+  border-top: 1px solid rgba(17, 17, 17, 0.06);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
   margin-top: var(--section-gap);
   padding: 5rem 1.5rem;
   text-align: center;
@@ -892,20 +923,20 @@
 }
 
 .landing__cta-title {
-  color: var(--color-ink-black);
-  font-family: var(--font-notioninter);
+  color: var(--color-ink);
+  font-family: var(--font-inter);
   font-size: var(--text-heading-lg);
-  font-weight: 600;
-  letter-spacing: -1.89px;
-  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: var(--tracking-heading-lg);
+  line-height: var(--leading-heading-lg);
   margin-bottom: 1rem;
 }
 
 .landing__cta-desc {
-  color: var(--color-graphite);
-  font-family: var(--font-lyon-text);
-  font-size: 18px;
-  line-height: 1.56;
+  color: var(--color-ash);
+  font-family: var(--font-inter);
+  font-size: 17px;
+  line-height: 1.55;
   margin-bottom: 2rem;
 }
 
@@ -917,8 +948,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--color-stone);
-  font-family: var(--font-notioninter);
+  color: var(--color-ash);
+  font-family: var(--font-inter);
   font-size: 13px;
   flex-wrap: wrap;
   gap: 1rem;
@@ -929,7 +960,7 @@
   display: inline-flex;
   gap: 8px;
   font-weight: 600;
-  color: var(--color-ink-black);
+  color: var(--color-ink);
 }
 
 .landing__footer-links {
@@ -938,13 +969,13 @@
 }
 
 .landing__footer-link {
-  color: var(--color-stone);
+  color: var(--color-ash);
   text-decoration: none;
   transition: color var(--transition);
 }
 
 .landing__footer-link:hover {
-  color: var(--color-ink-black);
+  color: var(--color-ink);
 }
 
 /* ── Responsive Rules ── */
@@ -980,7 +1011,7 @@
     display: none;
   }
 
-  .landing__hero {
+  .landing__hero-wash {
     padding: 2.5rem 1rem 2rem;
   }
 

@@ -13,8 +13,8 @@ export default function AlertTable({ alerts, filter }: Props) {
 
   if (filtered.length === 0) {
     return (
-      <div style={{ color: 'var(--on-surface-variant)', fontSize: '0.8125rem', padding: '3rem 0', textAlign: 'center' }}>
-        <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.3 }}>filter_alt_off</span>
+      <div style={{ color: 'var(--color-ash)', fontSize: '0.85rem', padding: '3rem 0', textAlign: 'center' }}>
+        <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.4 }}>filter_alt_off</span>
         No alerts match this filter.
       </div>
     );
@@ -24,36 +24,36 @@ export default function AlertTable({ alerts, filter }: Props) {
     <div style={{ overflowX: 'auto' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
         <thead>
-          <tr style={{ borderBottom: '1px solid var(--outline-variant)' }}>
+          <tr style={{ borderBottom: '1px solid rgba(17, 17, 17, 0.08)' }}>
             <th style={{
               padding: '0.75rem 0.625rem',
-              color: 'var(--on-surface-variant)',
-              fontFamily: 'var(--font-label)',
-              fontWeight: 500,
+              color: 'var(--color-ash)',
+              fontFamily: 'var(--font-inter)',
+              fontWeight: 600,
               textAlign: 'left',
-              fontSize: '0.65rem',
+              fontSize: 'var(--text-eyebrow)',
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
+              letterSpacing: 'var(--tracking-eyebrow)',
             }}>Risk</th>
             <th style={{
               padding: '0.75rem 0.625rem',
-              color: 'var(--on-surface-variant)',
-              fontFamily: 'var(--font-label)',
-              fontWeight: 500,
+              color: 'var(--color-ash)',
+              fontFamily: 'var(--font-inter)',
+              fontWeight: 600,
               textAlign: 'left',
-              fontSize: '0.65rem',
+              fontSize: 'var(--text-eyebrow)',
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
+              letterSpacing: 'var(--tracking-eyebrow)',
             }}>Alert</th>
             <th style={{
               padding: '0.75rem 0.625rem',
-              color: 'var(--on-surface-variant)',
-              fontFamily: 'var(--font-label)',
-              fontWeight: 500,
+              color: 'var(--color-ash)',
+              fontFamily: 'var(--font-inter)',
+              fontWeight: 600,
               textAlign: 'left',
-              fontSize: '0.65rem',
+              fontSize: 'var(--text-eyebrow)',
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
+              letterSpacing: 'var(--tracking-eyebrow)',
             }}>URL</th>
           </tr>
         </thead>
@@ -62,23 +62,23 @@ export default function AlertTable({ alerts, filter }: Props) {
             <tr
               key={alert.id}
               style={{
-                borderBottom: '1px solid var(--outline-variant)',
-                transition: 'background 0.15s ease',
+                borderBottom: '1px solid rgba(17, 17, 17, 0.06)',
+                transition: 'background var(--transition)',
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(0, 0, 0, 0.02)'; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--color-cream-wash)'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
             >
-              <td style={{ padding: '0.875rem 0.625rem', verticalAlign: 'top' }}>
+              <td style={{ padding: '0.875rem 0.625rem', verticalAlign: 'top', width: '130px' }}>
                 <SeverityBadge severity={alert.risk} />
               </td>
               <td style={{ padding: '0.875rem 0.625rem', verticalAlign: 'top' }}>
-                <div style={{ color: 'var(--on-surface)', fontFamily: 'var(--font-body)', fontWeight: 600 }}>{alert.name}</div>
+                <div style={{ color: 'var(--color-ink)', fontFamily: 'var(--font-inter)', fontWeight: 600 }}>{alert.name}</div>
                 <div style={{ color: 'var(--color-stone)', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', marginTop: '0.25rem', lineHeight: 1.5 }}>
                   Plugin {alert.pluginId || 'n/a'}
                   {alert.param ? ` · Param ${alert.param}` : ''}
                   {alert.method ? ` · ${alert.method}` : ''}
                 </div>
-                <div style={{ color: 'var(--color-graphite)', fontFamily: 'var(--font-body)', fontSize: '0.8125rem', marginTop: '0.25rem', lineHeight: 1.5 }}>
+                <div style={{ color: 'var(--color-ash)', fontFamily: 'var(--font-inter)', fontSize: '0.8125rem', marginTop: '0.25rem', lineHeight: 1.5 }}>
                   {alert.description.slice(0, 150)}{alert.description.length > 150 ? '…' : ''}
                 </div>
                 {(alert.attack || alert.evidence) && (
@@ -93,7 +93,7 @@ export default function AlertTable({ alerts, filter }: Props) {
                 padding: '0.875rem 0.625rem',
                 verticalAlign: 'top',
                 wordBreak: 'break-all',
-                color: 'var(--color-notion-blue)',
+                color: 'var(--color-ink)',
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.75rem',
                 maxWidth: '300px',

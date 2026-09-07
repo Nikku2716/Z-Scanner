@@ -2,27 +2,27 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, type AttackSurface, type Endpoint } from '../api/client';
 
-const METHOD_COLORS: Record<string, string> = {
-  GET: 'var(--color-notion-blue)',
-  POST: '#b45309',
-  PUT: '#e89d01',
-  DELETE: 'var(--color-vermillion)',
-  PATCH: '#7c3aed',
+const METHOD_PASTELS: Record<string, { bg: string; color: string }> = {
+  GET: { bg: 'var(--color-aqua)', color: 'var(--color-ink)' },
+  POST: { bg: 'var(--color-canary-yellow)', color: '#854d0e' },
+  PUT: { bg: 'var(--color-mint-green)', color: '#14532d' },
+  DELETE: { bg: 'var(--color-petal-pink)', color: '#9f1239' },
+  PATCH: { bg: 'var(--color-soft-violet)', color: '#3730a3' },
 };
 
 function MethodTag({ method }: { method: string }) {
-  const color = METHOD_COLORS[method] ?? 'var(--color-graphite)';
+  const styling = METHOD_PASTELS[method] ?? { bg: 'var(--color-pearl)', color: 'var(--color-ink)' };
   return (
     <span style={{
       fontFamily: 'var(--font-mono)',
       fontSize: '0.68rem',
       fontWeight: 600,
       letterSpacing: '0.04em',
-      color,
-      border: `1px solid ${color}`,
+      color: styling.color,
+      background: styling.bg,
       borderRadius: 'var(--radius-small)',
-      padding: '0.1rem 0.45rem',
-      background: 'rgba(0, 0, 0, 0.02)',
+      padding: '0.15rem 0.5rem',
+      display: 'inline-block',
     }}>
       {method}
     </span>
@@ -64,19 +64,19 @@ export default function AttackSurfacePage() {
       </header>
 
       {!surface && !error && (
-        <div className="panel" style={{ color: 'var(--on-surface-variant)', textAlign: 'center', padding: '3rem' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.4 }}>hourglass_empty</span>
+        <div className="panel" style={{ color: 'var(--color-ash)', textAlign: 'center', padding: '3.5rem' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.5 }}>hourglass_empty</span>
           Loading attack surface…
         </div>
       )}
 
       {error && (
-        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(227, 45, 20, 0.25)', background: '#fef2f2' }}>
+        <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(232, 64, 13, 0.25)', background: '#fff5f5' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
             {error}
           </span>
-          <Link to="/dashboard"><button className="ghost" style={{ marginTop: '1rem' }}>Back to Dashboard</button></Link>
+          <Link to="/dashboard"><button className="pearl" style={{ marginTop: '1rem' }}>Back to Dashboard</button></Link>
         </div>
       )}
 
@@ -107,13 +107,13 @@ export default function AttackSurfacePage() {
               onChange={(e) => setMethodFilter(e.target.value)}
               aria-label="Filter by HTTP method"
               style={{
-                background: 'var(--surface-container)',
-                color: 'var(--on-surface)',
-                border: '1px solid var(--outline-variant)',
-                borderRadius: 'var(--radius-sm)',
-                padding: '0.45rem 0.6rem',
-                fontFamily: 'var(--font-label)',
-                fontSize: '0.8rem',
+                background: '#ffffff',
+                color: 'var(--color-ink)',
+                border: '1px solid rgba(17, 17, 17, 0.12)',
+                borderRadius: 'var(--radius-buttons)',
+                padding: '0.45rem 0.75rem',
+                fontFamily: 'var(--font-inter)',
+                fontSize: '0.8125rem',
               }}
             >
               <option value="">All methods</option>
@@ -121,13 +121,13 @@ export default function AttackSurfacePage() {
             </select>
           </form>
 
-          {loading && <p style={{ color: 'var(--on-surface-variant)', fontFamily: 'var(--font-label)' }}>Filtering…</p>}
+          {loading && <p style={{ color: 'var(--color-ash)', fontFamily: 'var(--font-inter)', fontSize: '0.85rem' }}>Filtering…</p>}
 
           {!loading && surface.endpoints.length === 0 && (
-            <div className="panel" style={{ textAlign: 'center', padding: '3rem' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '2.5rem', color: 'var(--on-surface-variant)' }}>search_off</span>
-              <p style={{ color: 'var(--on-surface-variant)' }}>No endpoints match the current filters.</p>
-              <button className="ghost" onClick={() => { setSearch(''); setMethodFilter(''); }}>Clear filters</button>
+            <div className="panel" style={{ textAlign: 'center', padding: '3.5rem' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '2.5rem', color: 'var(--color-stone)' }}>search_off</span>
+              <p style={{ color: 'var(--color-ash)' }}>No endpoints match the current filters.</p>
+              <button className="pearl" onClick={() => { setSearch(''); setMethodFilter(''); }}>Clear filters</button>
             </div>
           )}
 
@@ -136,18 +136,19 @@ export default function AttackSurfacePage() {
               <div key={ep.id || ep.url + ep.method} className="card">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                   <MethodTag method={ep.method} />
-                  <code style={{ fontSize: '0.85rem', wordBreak: 'break-all', flex: 1 }}>{ep.path}</code>
+                  <code style={{ fontSize: '0.85rem', wordBreak: 'break-all', flex: 1, color: 'var(--color-ink)' }}>{ep.path}</code>
                   {(ep.statusCode ?? 0) > 0 && (
                     <span style={{
-                      fontFamily: 'var(--font-label)',
-                      fontSize: '0.7rem',
-                      color: (ep.statusCode ?? 0) >= 400 ? 'var(--error)' : (ep.statusCode ?? 0) >= 300 ? '#8a6d00' : 'var(--success)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: (ep.statusCode ?? 0) >= 400 ? 'var(--color-vermillion)' : (ep.statusCode ?? 0) >= 300 ? '#b45309' : '#15803d',
                     }}>
                       {ep.statusCode}
                     </span>
                   )}
                   {(ep.params ?? []).length > 0 && (
-                    <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.7rem', color: 'var(--on-surface-variant)' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--color-ash)' }}>
                       params: {(ep.params ?? []).join(', ')}
                     </span>
                   )}
@@ -167,10 +168,10 @@ export default function AttackSurfacePage() {
 function StatCard({ label, value, icon }: { label: string; value: string; icon: string }) {
   return (
     <div className="panel" style={{ padding: '0.9rem 1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-      <span className="material-symbols-outlined" style={{ color: 'var(--primary)', opacity: 0.8 }}>{icon}</span>
+      <span className="material-symbols-outlined" style={{ color: 'var(--color-ink)', opacity: 0.8 }}>{icon}</span>
       <div>
-        <div style={{ fontSize: '1.35rem', fontWeight: 700, lineHeight: 1 }}>{value}</div>
-        <div style={{ fontFamily: 'var(--font-label)', fontSize: '0.65rem', color: 'var(--on-surface-variant)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
+        <div style={{ fontSize: '1.35rem', fontWeight: 700, lineHeight: 1, color: 'var(--color-ink)' }}>{value}</div>
+        <div style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', color: 'var(--color-ash)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', fontWeight: 600 }}>{label}</div>
       </div>
     </div>
   );
