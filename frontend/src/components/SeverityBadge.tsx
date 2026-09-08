@@ -5,14 +5,14 @@ interface Props {
 }
 
 const config: Record<string, { bg: string; fg: string; border: string; icon: string }> = {
-  High:          { bg: 'var(--color-petal-pink)', fg: '#9f1239', border: '#f472b6', icon: 'error' },
-  Medium:        { bg: 'var(--color-canary-yellow)', fg: '#854d0e', border: '#facc15', icon: 'warning' },
-  Low:           { bg: 'var(--color-soft-violet)', fg: '#3730a3', border: '#a78bfa', icon: 'info' },
-  Informational: { bg: 'var(--color-pearl)', fg: 'var(--color-ash)', border: 'rgba(17, 17, 17, 0.1)', icon: 'help_outline' },
+  High:          { bg: 'rgba(248, 113, 113, 0.15)', fg: 'var(--color-error-red)', border: 'rgba(248, 113, 113, 0.3)', icon: 'error' },
+  Medium:        { bg: 'rgba(250, 204, 21, 0.15)', fg: 'var(--color-warning-yellow)', border: 'rgba(250, 204, 21, 0.3)', icon: 'warning' },
+  Low:           { bg: 'rgba(167, 139, 250, 0.15)', fg: 'var(--color-lavender)', border: 'rgba(167, 139, 250, 0.3)', icon: 'info' },
+  Informational: { bg: 'rgba(255, 255, 255, 0.05)', fg: 'var(--color-medium-gray)', border: 'rgba(255, 255, 255, 0.1)', icon: 'help_outline' },
 };
 
 export default function SeverityBadge({ severity, count, showCount }: Props) {
-  const c = config[severity] ?? { bg: 'var(--color-pearl)', fg: 'var(--color-ash)', border: 'rgba(17, 17, 17, 0.1)', icon: 'help' };
+  const c = config[severity] ?? { bg: 'rgba(255, 255, 255, 0.05)', fg: 'var(--color-medium-gray)', border: 'rgba(255, 255, 255, 0.1)', icon: 'help' };
   return (
     <span
       style={{

@@ -26,35 +26,36 @@ export default function App() {
       <aside className="sidebar">
         <div className="logo">
           <NavLink to="/" className="logo-title" style={{ textDecoration: 'none' }}>
-            <span className="logo-mark">B</span>
-            <span className="logo-text-black">Black</span>
-            <span className="logo-text-hawk">Hawk</span>
+            <span className="logo-icon material-symbols-outlined">radar</span>
+            <span className="logo-text">BlackHawk</span>
           </NavLink>
         </div>
-        <NavLink to="/dashboard" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} end>
-          <span className="material-symbols-outlined">grid_view</span>
-          Dashboard
-        </NavLink>
-        <NavLink to="/scan/new" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
-          <span className="material-symbols-outlined">add_circle</span>
-          New Scan
-        </NavLink>
-        <NavLink to="/capabilities" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
-          <span className="material-symbols-outlined">auto_awesome</span>
-          Capabilities
-        </NavLink>
-        <NavLink to="/compare" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
-          <span className="material-symbols-outlined">difference</span>
-          Compare
-        </NavLink>
-        <NavLink to="/" end className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
-          <span className="material-symbols-outlined">home</span>
-          Landing
-        </NavLink>
+        <nav className="nav-group" aria-label="Main navigation">
+          <NavLink to="/dashboard" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} end>
+            <span className="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+          </NavLink>
+          <NavLink to="/scan/new" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+            <span className="material-symbols-outlined">add_circle</span>
+            <span>New Scan</span>
+          </NavLink>
+          <NavLink to="/capabilities" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+            <span className="material-symbols-outlined">auto_awesome</span>
+            <span>Capabilities</span>
+          </NavLink>
+          <NavLink to="/compare" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+            <span className="material-symbols-outlined">difference</span>
+            <span>Compare</span>
+          </NavLink>
+          <NavLink to="/" end className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+            <span className="material-symbols-outlined">home</span>
+            <span>Landing</span>
+          </NavLink>
+        </nav>
         <div className="sidebar-footer">
           <div className="version">
-            <span className="material-symbols-outlined">terminal</span>
-            v2.0.0
+            <span className="pulse-dot" />
+            <span>v2.0.0 · OWASP Core</span>
           </div>
         </div>
       </aside>

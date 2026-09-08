@@ -82,8 +82,8 @@ export default function Capabilities() {
       <header className="page-header capabilities-hero gsap-cap-header">
         <h1>What BlackHawk can do</h1>
         <p>
-          BlackHawk combines OWASP ZAP with Amplemarket's calm taxonomy: choose a mode, watch the scan unfold,
-          and review findings with flat pastel risk classification.
+          BlackHawk combines OWASP ZAP with Obsidian's crystalline knowledge vault: choose a mode, watch the scan unfold,
+          and review findings with crisp risk classification.
         </p>
       </header>
 

@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { api, type ScanMode } from '../api/client';
 import gsap from 'gsap';
 
-const MODES: { value: ScanMode; label: string; desc: string; icon: string; pastel: string }[] = [
-  { value: 'quick', label: 'Quick', desc: 'Fast surface check, 5 pages max', icon: 'bolt', pastel: 'var(--color-aqua)' },
-  { value: 'fast', label: 'Fast', desc: 'Moderate depth, 20 pages crawl', icon: 'speed', pastel: 'var(--color-mint-green)' },
-  { value: 'deep', label: 'Deep', desc: 'Full recursive crawl, 100 pages', icon: 'network_check', pastel: 'var(--color-canary-yellow)' },
-  { value: 'stealth', label: 'Stealth', desc: 'Low footprint, 10 pages max', icon: 'visibility_off', pastel: 'var(--color-soft-violet)' },
+const MODES: { value: ScanMode; label: string; desc: string; icon: string; accent: string; tint: string }[] = [
+  { value: 'quick', label: 'Quick', desc: 'Fast surface check, 5 pages max', icon: 'bolt', accent: 'var(--color-amethyst)', tint: 'rgba(124, 58, 237, 0.15)' },
+  { value: 'fast', label: 'Fast', desc: 'Moderate depth, 20 pages crawl', icon: 'speed', accent: 'var(--color-lavender)', tint: 'rgba(167, 139, 250, 0.15)' },
+  { value: 'deep', label: 'Deep', desc: 'Full recursive crawl, 100 pages', icon: 'network_check', accent: 'var(--color-warning-yellow)', tint: 'rgba(250, 204, 21, 0.15)' },
+  { value: 'stealth', label: 'Stealth', desc: 'Low footprint, 10 pages max', icon: 'visibility_off', accent: 'var(--color-success-green)', tint: 'rgba(74, 222, 128, 0.15)' },
 ];
 
 export default function NewScan() {
@@ -66,13 +66,13 @@ export default function NewScan() {
       </header>
 
       <form onSubmit={handleSubmit} className="panel gsap-form" style={{ maxWidth: '580px' }}>
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '1.5rem' }}>
           <label style={{
             display: 'block',
             fontFamily: 'var(--font-inter)',
             fontSize: 'var(--text-eyebrow)',
-            color: 'var(--color-ash)',
-            marginBottom: '0.625rem',
+            color: 'var(--color-medium-gray)',
+            marginBottom: '0.5rem',
             letterSpacing: 'var(--tracking-eyebrow)',
             textTransform: 'uppercase',
             fontWeight: 600,
@@ -86,24 +86,24 @@ export default function NewScan() {
             onChange={(e) => setTarget(e.target.value)}
             required
             autoFocus
-            style={{ fontSize: '0.95rem' }}
+            style={{ fontSize: '0.9rem' }}
           />
         </div>
 
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '1.5rem' }}>
           <label style={{
             display: 'block',
             fontFamily: 'var(--font-inter)',
             fontSize: 'var(--text-eyebrow)',
-            color: 'var(--color-ash)',
-            marginBottom: '0.75rem',
+            color: 'var(--color-medium-gray)',
+            marginBottom: '0.65rem',
             letterSpacing: 'var(--tracking-eyebrow)',
             textTransform: 'uppercase',
             fontWeight: 600,
           }}>
             Scan Mode
           </label>
-          <div style={{ display: 'grid', gap: '0.65rem' }}>
+          <div style={{ display: 'grid', gap: '0.5rem' }}>
             {MODES.map((m) => {
               const selected = mode === m.value;
               return (
@@ -113,29 +113,30 @@ export default function NewScan() {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '1rem',
-                    padding: '0.95rem 1.15rem',
-                    border: `1px solid ${selected ? 'var(--color-ink)' : 'rgba(17, 17, 17, 0.08)'}`,
+                    gap: '0.85rem',
+                    padding: '0.75rem 1rem',
+                    border: `1px solid ${selected ? 'var(--color-amethyst)' : 'rgba(255, 255, 255, 0.05)'}`,
                     borderRadius: 'var(--radius-cards)',
                     cursor: 'pointer',
-                    background: selected ? 'var(--color-pearl)' : '#ffffff',
+                    background: selected ? 'rgba(124, 58, 237, 0.08)' : 'var(--color-surface)',
+                    boxShadow: 'var(--shadow-subtle)',
                     transition: 'all var(--transition)',
                   }}
                 >
                   <span
                     className="material-symbols-outlined"
                     style={{
-                      width: '38px',
-                      height: '38px',
+                      width: '34px',
+                      height: '34px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 'var(--radius-buttons)',
-                      color: 'var(--color-ink)',
-                      fontSize: '1.25rem',
+                      color: selected ? m.accent : 'var(--color-muted-gray)',
+                      fontSize: '1.15rem',
                       flexShrink: 0,
                       transition: 'all var(--transition)',
-                      background: selected ? m.pastel : 'var(--color-pearl)',
+                      background: selected ? m.tint : 'var(--color-abyss)',
                     }}
                   >
                     {m.icon}
@@ -143,13 +144,13 @@ export default function NewScan() {
                   <div style={{ flex: 1 }}>
                     <div style={{
                       fontFamily: 'var(--font-inter)',
-                      fontSize: '0.9rem',
+                      fontSize: '0.875rem',
                       fontWeight: 600,
-                      color: 'var(--color-ink)',
+                      color: 'var(--color-bright-gray)',
                     }}>
                       {m.label}
                     </div>
-                    <div style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--color-ash)', marginTop: '0.125rem' }}>
+                    <div style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--color-medium-gray)', marginTop: '2px' }}>
                       {m.desc}
                     </div>
                   </div>
@@ -159,7 +160,7 @@ export default function NewScan() {
                     value={m.value}
                     checked={selected}
                     onChange={() => setMode(m.value)}
-                    style={{ width: 'auto', marginLeft: 'auto', accentColor: 'var(--color-ink)' }}
+                    style={{ width: 'auto', marginLeft: 'auto', accentColor: 'var(--color-amethyst)' }}
                   />
                 </label>
               );
@@ -169,13 +170,13 @@ export default function NewScan() {
 
         {error && (
           <div style={{
-            color: 'var(--color-vermillion)',
+            color: 'var(--color-error-red)',
             fontSize: '0.8125rem',
-            marginBottom: '1.25rem',
-            padding: '0.625rem 0.875rem',
-            border: '1px solid rgba(232, 64, 13, 0.25)',
+            marginBottom: '1rem',
+            padding: '0.5rem 0.75rem',
+            border: '1px solid rgba(248, 113, 113, 0.25)',
             borderRadius: 'var(--radius-buttons)',
-            background: '#fff5f5',
+            background: 'rgba(248, 113, 113, 0.1)',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
@@ -188,14 +189,15 @@ export default function NewScan() {
         <button type="submit" className="primary" disabled={loading || !target.trim()}
           style={{
             width: '100%',
-            padding: '0.875rem',
-            fontSize: '0.9rem',
+            padding: '7px 16px',
+            minHeight: '36px',
+            fontSize: '13.5px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '0.5rem',
           }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>
             {loading ? 'hourglass_empty' : 'rocket_launch'}
           </span>
           {loading ? 'Launching…' : 'Start Scan'}

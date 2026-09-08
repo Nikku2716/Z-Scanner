@@ -7,9 +7,9 @@ interface Props {
 
 const levelColor: Record<string, string> = {
   info: 'rgba(255, 255, 255, 0.75)',
-  success: 'var(--color-mint-green)',
-  warn: 'var(--color-canary-yellow)',
-  error: 'var(--color-petal-pink)',
+  success: 'var(--color-success-green)',
+  warn: 'var(--color-warning-yellow)',
+  error: 'var(--color-error-red)',
 };
 
 export default function TerminalLog({ logs }: Props) {
@@ -22,11 +22,11 @@ export default function TerminalLog({ logs }: Props) {
   return (
     <div
       style={{
-        background: 'var(--color-midnight-indigo)',
-        border: '1px solid rgba(17, 17, 17, 0.1)',
+        background: 'var(--color-surface)',
+        border: '1px solid rgba(255, 255, 255, 0.05)',
         borderRadius: 'var(--radius-cards)',
         overflow: 'hidden',
-        boxShadow: 'var(--shadow-product-mockup)',
+        boxShadow: 'var(--shadow-subtle)',
       }}
     >
       {/* Terminal header */}
@@ -35,17 +35,17 @@ export default function TerminalLog({ logs }: Props) {
         alignItems: 'center',
         gap: '0.5rem',
         padding: '0.65rem 1rem',
-        background: 'rgba(255, 255, 255, 0.06)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+        background: 'rgba(255, 255, 255, 0.03)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
       }}>
-        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#ff5f56' }} />
-        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#ffbd2e' }} />
-        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#27c93f' }} />
+        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#f87171' }} />
+        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#facc15' }} />
+        <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#4ade80' }} />
         <span style={{
           marginLeft: '0.5rem',
           fontFamily: 'var(--font-mono)',
           fontSize: '0.68rem',
-          color: 'var(--color-soft-violet)',
+          color: 'var(--color-lavender)',
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
           fontWeight: 600,

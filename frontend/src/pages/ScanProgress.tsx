@@ -81,7 +81,7 @@ export default function ScanProgress() {
 
   if (error && !scan) {
     return (
-      <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(232, 64, 13, 0.25)', background: '#fff5f5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div className="panel" style={{ color: 'var(--color-error-red)', borderColor: 'rgba(248, 113, 113, 0.25)', background: 'rgba(248, 113, 113, 0.1)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>error</span>
         {error}
       </div>
@@ -90,7 +90,7 @@ export default function ScanProgress() {
 
   if (!scan) {
     return (
-      <div className="panel" style={{ color: 'var(--color-ash)', textAlign: 'center', padding: '3.5rem' }}>
+      <div className="panel" style={{ color: 'var(--color-medium-gray)', textAlign: 'center', padding: '3.5rem' }}>
         <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.5 }}>hourglass_empty</span>
         Loading scan…
       </div>
@@ -113,7 +113,7 @@ export default function ScanProgress() {
             <div style={{
               fontFamily: 'var(--font-inter)',
               fontSize: 'var(--text-eyebrow)',
-              color: 'var(--color-ash)',
+              color: 'var(--color-medium-gray)',
               letterSpacing: 'var(--tracking-eyebrow)',
               textTransform: 'uppercase',
               display: 'flex',
@@ -122,7 +122,7 @@ export default function ScanProgress() {
               fontWeight: 600,
             }}>
               <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>timeline</span>
-              Phase: <span style={{ color: 'var(--color-phoenix-orange)', textTransform: 'none', fontWeight: 600 }}>{phase}</span>
+              Phase: <span style={{ color: 'var(--color-amethyst)', textTransform: 'none', fontWeight: 600 }}>{phase}</span>
             </div>
             <StatusPill status={scan.status} />
           </div>
@@ -134,13 +134,13 @@ export default function ScanProgress() {
             <div style={{
               fontFamily: 'var(--font-inter)',
               fontSize: '0.75rem',
-              color: 'var(--color-ash)',
+              color: 'var(--color-medium-gray)',
               marginTop: '0.5rem',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
             }}>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-canary-yellow)', display: 'inline-block' }} />
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-warning-yellow)', display: 'inline-block' }} />
               Passive queue: {scan.progress.passiveQueue} records
             </div>
           )}
@@ -149,10 +149,10 @@ export default function ScanProgress() {
             <div style={{
               marginTop: '1rem',
               padding: '0.625rem 0.875rem',
-              background: '#f0fdf4',
+              background: 'rgba(74, 222, 128, 0.1)',
               borderRadius: 'var(--radius-buttons)',
-              border: '1px solid rgba(22, 163, 74, 0.25)',
-              color: '#15803d',
+              border: '1px solid rgba(74, 222, 128, 0.25)',
+              color: 'var(--color-success-green)',
               fontSize: '0.8125rem',
               fontFamily: 'var(--font-inter)',
               display: 'flex',
@@ -167,12 +167,12 @@ export default function ScanProgress() {
           <div style={{
             marginTop: '1rem',
             padding: '0.75rem 1rem',
-            background: isRunning ? 'rgba(232, 64, 13, 0.05)' : 'var(--color-cream-wash)',
+            background: isRunning ? 'rgba(124, 58, 237, 0.08)' : 'var(--color-surface)',
             borderRadius: 'var(--radius-buttons)',
             fontSize: '0.8125rem',
             fontFamily: 'var(--font-inter)',
-            color: isRunning ? 'var(--color-phoenix-orange)' : 'var(--color-ink)',
-            border: `1px solid ${isRunning ? 'rgba(232, 64, 13, 0.2)' : 'rgba(17, 17, 17, 0.08)'}`,
+            color: isRunning ? 'var(--color-amethyst)' : 'var(--color-bright-gray)',
+            border: `1px solid ${isRunning ? 'rgba(124, 58, 237, 0.2)' : 'rgba(255, 255, 255, 0.05)'}`,
           }}>
             {scan.progress.message}
           </div>
@@ -181,10 +181,10 @@ export default function ScanProgress() {
             <div style={{
               marginTop: '1rem',
               padding: '0.625rem 0.875rem',
-              background: '#fff5f5',
+              background: 'rgba(248, 113, 113, 0.1)',
               borderRadius: 'var(--radius-buttons)',
-              border: '1px solid rgba(232, 64, 13, 0.25)',
-              color: 'var(--color-vermillion)',
+              border: '1px solid rgba(248, 113, 113, 0.25)',
+              color: 'var(--color-error-red)',
               fontSize: '0.8125rem',
               fontFamily: 'var(--font-inter)',
               display: 'flex',
@@ -212,7 +212,7 @@ export default function ScanProgress() {
               </Link>
             )}
             <Link to="/dashboard">
-              <button className="pearl" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <button className="ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>grid_view</span>
                 Dashboard
               </button>
@@ -224,7 +224,7 @@ export default function ScanProgress() {
           <div style={{
             fontFamily: 'var(--font-inter)',
             fontSize: 'var(--text-eyebrow)',
-            color: 'var(--color-ash)',
+            color: 'var(--color-medium-gray)',
             marginBottom: '0.625rem',
             letterSpacing: 'var(--tracking-eyebrow)',
             textTransform: 'uppercase',

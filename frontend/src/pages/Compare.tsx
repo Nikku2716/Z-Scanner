@@ -50,7 +50,7 @@ export default function ComparePage() {
       </header>
 
       {loading && (
-        <div className="panel" style={{ color: 'var(--color-ash)', textAlign: 'center', padding: '3.5rem' }}>
+        <div className="panel" style={{ color: 'var(--color-medium-gray)', textAlign: 'center', padding: '3.5rem' }}>
           <span className="material-symbols-outlined" style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem', opacity: 0.5 }}>hourglass_empty</span>
           Loading scans…
         </div>
@@ -58,29 +58,31 @@ export default function ComparePage() {
 
       {!loading && completedScans.length < 2 && (
         <div className="panel" style={{ textAlign: 'center', padding: '3.5rem 2rem' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '2.75rem', color: 'var(--color-stone)', display: 'block', marginBottom: '1rem' }}>compare_arrows</span>
-          <p style={{ color: 'var(--color-ash)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>At least two completed scans are required for comparison.</p>
-          <Link to="/scan/new"><button className="primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', padding: '10px 24px', fontSize: '14.5px', fontWeight: 500, minWidth: '160px' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>add</span>
-            Launch a Scan
-          </button></Link>
+          <span className="material-symbols-outlined" style={{ fontSize: '2.75rem', color: 'var(--color-muted-gray)', display: 'block', marginBottom: '1rem' }}>compare_arrows</span>
+          <p style={{ color: 'var(--color-medium-gray)', fontSize: '0.875rem', marginBottom: '1.25rem' }}>At least two completed scans are required for comparison.</p>
+          <Link to="/scan/new">
+            <button className="primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '6px 14px', fontSize: '13px' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>add</span>
+              Launch a Scan
+            </button>
+          </Link>
         </div>
       )}
 
       {!loading && completedScans.length >= 2 && (
         <>
-          <form className="panel" onSubmit={(e) => { e.preventDefault(); runCompare(); }} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <form className="panel" onSubmit={(e) => { e.preventDefault(); runCompare(); }} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
             <Select label="Base scan" value={baseId} onChange={setBaseId} scans={completedScans} exclude={targetId} />
-            <span className="material-symbols-outlined" style={{ color: 'var(--color-ink)' }}>arrow_forward</span>
+            <span className="material-symbols-outlined" style={{ color: 'var(--color-lavender)', alignSelf: 'center', marginBottom: '4px' }}>arrow_forward</span>
             <Select label="Target scan" value={targetId} onChange={setTargetId} scans={completedScans} exclude={baseId} />
-            <button className="primary" disabled={comparing || baseId === targetId} style={{ marginTop: 'auto', height: '42px' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '0.95rem' }}>{comparing ? 'hourglass_empty' : 'difference'}</span>
+            <button className="primary" disabled={comparing || baseId === targetId} style={{ height: '34px', padding: '6px 14px', fontSize: '13px' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>{comparing ? 'hourglass_empty' : 'difference'}</span>
               {comparing ? 'Comparing…' : 'Compare'}
             </button>
           </form>
 
           {error && (
-            <div className="panel" style={{ color: 'var(--color-vermillion)', borderColor: 'rgba(232, 64, 13, 0.25)', background: '#fff5f5' }}>
+            <div className="panel" style={{ color: 'var(--color-error-red)', borderColor: 'rgba(248, 113, 113, 0.25)', background: 'rgba(248, 113, 113, 0.1)' }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>error</span>
                 {error}
@@ -90,23 +92,23 @@ export default function ComparePage() {
 
           {result && (
             <>
-              <div className="panel" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2.5rem', padding: '2rem', flexWrap: 'wrap' }}>
+              <div className="panel" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2.5rem', padding: '1.5rem', flexWrap: 'wrap' }}>
                 <ScoreBox score={result.baseScore} label="BASE SCORE" />
-                <span className="material-symbols-outlined" style={{ fontSize: '2rem', color: 'var(--color-stone)' }}>trending_flat</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '1.5rem', color: 'var(--color-muted-gray)' }}>trending_flat</span>
                 <ScoreBox score={result.targetScore} label="TARGET SCORE" />
                 <div style={{
-                  padding: '0.5rem 1.25rem',
+                  padding: '0.35rem 1rem',
                   borderRadius: 'var(--radius-pills)',
-                  background: result.scoreDelta > 0 ? 'var(--color-mint-green)' : result.scoreDelta < 0 ? 'var(--color-petal-pink)' : 'var(--color-pearl)',
-                  fontSize: '1.5rem',
-                  fontWeight: 800,
-                  color: 'var(--color-ink)',
+                  background: result.scoreDelta > 0 ? 'rgba(74, 222, 128, 0.15)' : result.scoreDelta < 0 ? 'rgba(248, 113, 113, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                  fontSize: '1.25rem',
+                  fontWeight: 700,
+                  color: result.scoreDelta > 0 ? 'var(--color-success-green)' : result.scoreDelta < 0 ? 'var(--color-error-red)' : 'var(--color-medium-gray)',
                 }}>
                   {result.scoreDelta > 0 ? `+${result.scoreDelta}` : result.scoreDelta}
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.75rem', margin: '1rem 0' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.65rem', margin: '0.85rem 0' }}>
                 <CountCard label="New vulnerabilities" count={result.newFindings.length} tone="bad" icon="report" />
                 <CountCard label="Fixed vulnerabilities" count={result.fixedFindings.length} tone="good" icon="task_alt" />
                 <CountCard label="Persistent vulnerabilities" count={result.persistentFindings.length} tone="warn" icon="schedule" />
@@ -130,18 +132,19 @@ function Select({ label, value, onChange, scans, exclude }: {
 }) {
   return (
     <label style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1, minWidth: 220 }}>
-      <span style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--color-ash)', fontWeight: 600 }}>{label}</span>
+      <span style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--color-medium-gray)', fontWeight: 600 }}>{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          background: '#ffffff',
-          color: 'var(--color-ink)',
-          border: '1px solid rgba(17, 17, 17, 0.12)',
+          background: 'var(--color-surface)',
+          color: 'var(--color-bright-gray)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
           borderRadius: 'var(--radius-buttons)',
-          padding: '0.6rem 0.75rem',
+          padding: '0.45rem 0.65rem',
           fontFamily: 'var(--font-inter)',
-          fontSize: '0.85rem',
+          fontSize: '0.825rem',
+          height: '34px',
         }}
       >
         <option value="" disabled>Select…</option>
@@ -154,34 +157,34 @@ function Select({ label, value, onChange, scans, exclude }: {
 }
 
 function ScoreBox({ score, label }: { score: number; label: string }) {
-  const c = score >= 80 ? '#15803d' : score >= 50 ? '#b45309' : 'var(--color-vermillion)';
+  const c = score >= 80 ? 'var(--color-success-green)' : score >= 50 ? 'var(--color-warning-yellow)' : 'var(--color-error-red)';
   return (
     <div style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: '2.4rem', fontWeight: 800, color: c, lineHeight: 1 }}>{score}</div>
-      <div style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', color: 'var(--color-ash)', letterSpacing: 'var(--tracking-eyebrow)', textTransform: 'uppercase', fontWeight: 600, marginTop: '0.35rem' }}>{label}</div>
+      <div style={{ fontSize: '2rem', fontWeight: 800, color: c, lineHeight: 1 }}>{score}</div>
+      <div style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', color: 'var(--color-medium-gray)', letterSpacing: 'var(--tracking-eyebrow)', textTransform: 'uppercase', fontWeight: 600, marginTop: '0.25rem' }}>{label}</div>
     </div>
   );
 }
 
 function CountCard({ label, count, tone, icon }: { label: string; count: number; tone: 'good' | 'bad' | 'warn' | 'neutral'; icon: string }) {
   const toneColors = {
-    good: { icon: '#15803d', bg: 'var(--color-mint-green)' },
-    bad: { icon: '#9f1239', bg: 'var(--color-petal-pink)' },
-    warn: { icon: '#854d0e', bg: 'var(--color-canary-yellow)' },
-    neutral: { icon: 'var(--color-ink)', bg: 'var(--color-pearl)' },
+    good: { icon: 'var(--color-success-green)', bg: 'rgba(74, 222, 128, 0.15)' },
+    bad: { icon: 'var(--color-error-red)', bg: 'rgba(248, 113, 113, 0.15)' },
+    warn: { icon: 'var(--color-warning-yellow)', bg: 'rgba(250, 204, 21, 0.15)' },
+    neutral: { icon: 'var(--color-lavender)', bg: 'rgba(167, 139, 250, 0.15)' },
   };
   const t = toneColors[tone];
 
   return (
-    <div className="panel" style={{ padding: '0.9rem 1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+    <div className="panel" style={{ padding: '0.75rem 0.9rem', display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
       <span className="material-symbols-outlined" style={{
-        width: 36, height: 36, borderRadius: 'var(--radius-buttons)',
+        width: 32, height: 32, borderRadius: 'var(--radius-buttons)',
         background: t.bg, color: t.icon, display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '1.2rem',
+        fontSize: '1.1rem', flexShrink: 0,
       }}>{icon}</span>
       <div>
-        <div style={{ fontSize: '1.25rem', fontWeight: 700, lineHeight: 1, color: 'var(--color-ink)' }}>{count}</div>
-        <div style={{ fontFamily: 'var(--font-inter)', fontSize: '0.68rem', color: 'var(--color-ash)', fontWeight: 500, marginTop: '0.2rem' }}>{label}</div>
+        <div style={{ fontSize: '1.15rem', fontWeight: 700, lineHeight: 1, color: 'var(--color-bright-gray)' }}>{count}</div>
+        <div style={{ fontFamily: 'var(--font-inter)', fontSize: '0.68rem', color: 'var(--color-medium-gray)', fontWeight: 500, marginTop: '0.2rem' }}>{label}</div>
       </div>
     </div>
   );
@@ -190,20 +193,20 @@ function CountCard({ label, count, tone, icon }: { label: string; count: number;
 function FindingList({ title, findings, emptyText }: { title: string; findings: Comparison['newFindings']; emptyText: string }) {
   if (findings.length === 0) {
     return (
-      <div className="panel" style={{ marginTop: '0.75rem' }}>
-        <h3 style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--color-ash)', margin: '0 0 0.4rem', fontWeight: 600 }}>{title}</h3>
-        <p style={{ color: 'var(--color-ash)', fontSize: '0.85rem' }}>{emptyText}</p>
+      <div className="panel" style={{ marginTop: '0.65rem' }}>
+        <h3 style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--color-medium-gray)', margin: '0 0 0.35rem', fontWeight: 600 }}>{title}</h3>
+        <p style={{ color: 'var(--color-medium-gray)', fontSize: '0.8125rem', margin: 0 }}>{emptyText}</p>
       </div>
     );
   }
   return (
-    <div className="panel" style={{ marginTop: '0.75rem' }}>
-      <h3 style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--color-ash)', margin: '0 0 0.75rem', fontWeight: 600 }}>{title}</h3>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+    <div className="panel" style={{ marginTop: '0.65rem' }}>
+      <h3 style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--color-medium-gray)', margin: '0 0 0.65rem', fontWeight: 600 }}>{title}</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
         {findings.map((f) => (
-          <div key={f.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', padding: '0.4rem 0', borderBottom: '1px solid rgba(17, 17, 17, 0.06)' }}>
-            <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-ink)' }}>{f.name}</span>
-            <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--color-ash)', fontWeight: 500 }}>
+          <div key={f.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', padding: '0.35rem 0', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+            <span style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--color-bright-gray)' }}>{f.name}</span>
+            <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.72rem', color: 'var(--color-medium-gray)', fontWeight: 500 }}>
               {f.risk} · {f.affectedCount} endpoint{f.affectedCount !== 1 ? 's' : ''}
             </span>
           </div>
