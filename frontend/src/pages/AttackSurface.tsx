@@ -167,11 +167,17 @@ export default function AttackSurfacePage() {
 
 function StatCard({ label, value, icon }: { label: string; value: string; icon: string }) {
   return (
-    <div className="panel" style={{ padding: '0.65rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-      <span className="material-symbols-outlined" style={{ color: 'var(--color-lavender)', opacity: 0.8, fontSize: '1.15rem' }}>{icon}</span>
-      <div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 1, color: 'var(--color-bright-gray)' }}>{value}</div>
-        <div style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', color: 'var(--color-medium-gray)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', fontWeight: 600 }}>{label}</div>
+    <div className="panel" style={{ padding: '10px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '62px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+        <span style={{ fontSize: '11px', color: 'var(--color-medium-gray)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
+          {label}
+        </span>
+        <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--color-lavender)' }}>
+          {icon}
+        </span>
+      </div>
+      <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-bright-gray)', lineHeight: 1, marginTop: '4px' }}>
+        {value}
       </div>
     </div>
   );
