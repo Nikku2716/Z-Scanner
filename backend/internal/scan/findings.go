@@ -27,14 +27,16 @@ type Finding struct {
 	Alerts        []Alert  `json:"alerts"` // original evidence, deduplicated
 }
 
-// findingKey groups alerts by attack identity rather than exact URL so
-// per-instance duplicates collapse into a single logical finding.
+// findingKey groups alerts by vulnerability class (pluginId + name) rather
+// than by individual URL path or parameter. This means all instances of the
+// same vulnerability type (e.g. "Absence of Anti-CSRF Tokens" across 6 pages)
+// collapse into a single finding with multiple affected URLs, which is how
+// professional security tools (Burp Suite, Nessus, Qualys) present findings.
+// Per-URL evidence and parameters are preserved inside each Finding.Alerts.
 func findingKey(a Alert) string {
 	return strings.Join([]string{
 		a.PluginID,
 		strings.ToLower(strings.TrimSpace(a.Name)),
-		endpointOriginPath(a.URL),
-		strings.TrimSpace(a.Param),
 	}, "|")
 }
 

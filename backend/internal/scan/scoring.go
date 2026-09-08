@@ -1,6 +1,7 @@
 package scan
 
 import (
+	"math"
 	"sort"
 	"strings"
 )
@@ -10,19 +11,18 @@ import (
 // METHODOLOGY (BlackHawk Security Score, 0-100, higher = better):
 //
 // The score starts at 100 and is reduced by weighted deductions for each
-// correlated finding. Deductions scale with severity and confidence:
+// severity level. Deductions scale with severity, confidence, and number
+// of *distinct* finding categories, but with diminishing returns:
 //
-//   Severity base weights:  High 15, Medium 7, Low 2, Informational 0.5
-//   Confidence multipliers: Confirmed 1.0, Firm 1.0,
-//                           Low 0.5, Uncertain/other/empty 0.25
+//   Per-finding base deduction = severityWeight × confidenceMultiplier
+//     Severity weights: High 15, Medium 7, Low 2, Informational 0.5
+//     Confidence multipliers: Confirmed/Firm 1.0, Low 0.5, other 0.25
 //
-// Per-finding deduction = severityWeight * confidenceMultiplier * scopeFactor,
-// where scopeFactor grows with the number of affected endpoints but with
-// diminishing returns: 1 + min(affectedCount-1, 4) * 0.2 (max 1.8x).
+//   Total deduction for a severity level = baseWeight × log2(count+1)
+//   (diminishing returns: 1st finding costs full weight, 2nd costs ~0.58×,
+//    3rd ~0.46×, etc.)
 //
-// The final score is clamped to [0, 100] and rounded to an integer.
-// Identical inputs always produce identical outputs — no randomness, no
-// wall-clock dependence.
+//   Cap: total deduction cannot exceed 100. Score clamped to [0, 100].
 //
 // This is NOT CVSS. ZAP does not emit CVSS vectors; the BlackHawk score is a
 // prioritization aid. CWE/WASC metadata from ZAP is surfaced separately.
@@ -62,20 +62,9 @@ func confidenceMultiplier(confidence string) float64 {
 	}
 }
 
-func scopeFactor(affectedCount int) float64 {
-	if affectedCount < 1 {
-		affectedCount = 1
-	}
-	extra := affectedCount - 1
-	if extra > 4 {
-		extra = 4
-	}
-	return 1.0 + float64(extra)*0.2
-}
-
 // FindingDeduction returns the score points a single finding removes.
 func FindingDeduction(f Finding) float64 {
-	return severityWeight(f.Risk) * confidenceMultiplier(f.Confidence) * scopeFactor(len(f.AffectedURLs))
+	return severityWeight(f.Risk) * confidenceMultiplier(f.Confidence)
 }
 
 // ScoreResult is the deterministic security assessment of one scan.
@@ -89,10 +78,10 @@ type ScoreResult struct {
 	Methodology      string         `json:"methodology"`
 }
 
-const methodologyDoc = "BlackHawk Security Score: starts at 100; each correlated finding deducts " +
-	"severity weight (High 15, Medium 7, Low 2, Info 0.5) x confidence multiplier " +
-	"(Confirmed/Firm 1.0, Low 0.5, other 0.25) x scope factor (1 + up to 4 extra endpoints at 0.2 each). " +
-	"Clamped to 0-100. Not CVSS."
+const methodologyDoc = "BlackHawk Security Score: starts at 100; each severity level deducts " +
+	"base weight (High 15, Medium 7, Low 2, Info 0.5) x confidence multiplier " +
+	"(Confirmed/Firm 1.0, Low 0.5, other 0.25) x log2(distinctFindingCount+1) " +
+	"for diminishing returns. Capped at 100. Not CVSS."
 
 // ScoreScan computes the security score for a scan's alerts.
 func ScoreScan(alerts []Alert) ScoreResult {
@@ -103,16 +92,17 @@ func ScoreScan(alerts []Alert) ScoreResult {
 		Methodology: methodologyDoc,
 	}
 	urlSet := make(map[string]struct{})
-	deduction := 0.0
 
+	// Count distinct findings per severity level
+	riskCount := map[string]int{"High": 0, "Medium": 0, "Low": 0, "Informational": 0}
 	for _, f := range findings {
 		result.FindingCount++
 		result.AlertCount += len(f.Alerts)
 		result.RiskCounts[f.Risk]++
+		riskCount[f.Risk]++
 		for _, u := range f.AffectedURLs {
 			urlSet[u] = struct{}{}
 		}
-		deduction += FindingDeduction(f)
 		result.Categories = append(result.Categories, CategoryStat{
 			Name:     f.Name,
 			PluginID: f.PluginID,
@@ -123,6 +113,19 @@ func ScoreScan(alerts []Alert) ScoreResult {
 	}
 	result.AffectedEndpoint = len(urlSet)
 
+	// Deduction with diminishing returns: log2(count+1) so more findings
+	// of the same severity have smaller marginal impact.
+	deduction := 0.0
+	for risk, count := range riskCount {
+		if count == 0 {
+			continue
+		}
+		deduction += severityWeight(risk) * math.Log2(float64(count+1))
+	}
+
+	if deduction > 100 {
+		deduction = 100
+	}
 	score := 100.0 - deduction
 	if score < 0 {
 		score = 0

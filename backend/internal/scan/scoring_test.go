@@ -1,6 +1,7 @@
 package scan
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -18,17 +19,17 @@ func alertSet() []Alert {
 func TestCorrelateFindings(t *testing.T) {
 	findings := CorrelateFindings("scan-9", alertSet())
 
-	if len(findings) != 5 {
-		t.Fatalf("want 5 findings, got %d", len(findings))
+	if len(findings) != 4 {
+		t.Fatalf("want 4 findings, got %d", len(findings))
 	}
 	if findings[0].Risk != "High" || findings[0].Name != "Cross Site Scripting" {
 		t.Errorf("first finding = %+v", findings[0])
 	}
-	if findings[0].AffectedCount != 1 {
-		t.Errorf("XSS affected endpoints = %d, want 1 (exact dupes collapsed)", findings[0].AffectedCount)
+	if findings[0].AffectedCount != 2 {
+		t.Errorf("XSS affected endpoints = %d, want 2 (distinct pages grouped by vulnerability class)", findings[0].AffectedCount)
 	}
-	if len(findings[0].Alerts) != 1 {
-		t.Errorf("XSS should keep exactly one evidence alert after dedup, got %d", len(findings[0].Alerts))
+	if len(findings[0].Alerts) != 2 {
+		t.Errorf("XSS should keep both evidence alerts (different pages), got %d", len(findings[0].Alerts))
 	}
 	for _, f := range findings {
 		if len(f.Alerts) == 0 {
@@ -87,7 +88,7 @@ func TestScoreScanDeterministicAndOrdered(t *testing.T) {
 	if a.Score >= 100 {
 		t.Errorf("alerts should reduce the score, got %d", a.Score)
 	}
-	if a.RiskCounts["High"] != 3 || a.RiskCounts["Medium"] != 1 || a.RiskCounts["Low"] != 1 {
+	if a.RiskCounts["High"] != 2 || a.RiskCounts["Medium"] != 1 || a.RiskCounts["Low"] != 1 {
 		t.Errorf("risk counts wrong: %+v", a.RiskCounts)
 	}
 	// High-confidence SQLi + XSS on distinct endpoints should hurt more than
@@ -103,11 +104,13 @@ func TestScoreScanDeterministicAndOrdered(t *testing.T) {
 }
 
 func TestScoreClampsToZero(t *testing.T) {
-	alerts := make([]Alert, 0, 30)
-	for i := 0; i < 30; i++ {
+	// With logarithmic diminishing returns + vulnerability-class grouping,
+	// need enough *distinct* findings (different pluginId) to drive score to 0.
+	alerts := make([]Alert, 0, 120)
+	for i := 0; i < 120; i++ {
 		alerts = append(alerts, Alert{
-			PluginID: "1", Name: "RCE-ish", Risk: "High", Confidence: "Confirmed",
-			URL: "https://e.com/path" + string(rune('a'+i%26)) + string(rune('a'+(i/26)%26)),
+			PluginID: fmt.Sprintf("p%d", i), Name: fmt.Sprintf("Vuln %d", i), Risk: "High", Confidence: "Confirmed",
+			URL: "https://e.com/" + string(rune('a'+i%26)) + string(rune('a'+(i/26)%26)) + string(rune('A'+(i/676)%26)),
 		})
 	}
 	if got := ScoreScan(alerts).Score; got != 0 {
@@ -115,10 +118,33 @@ func TestScoreClampsToZero(t *testing.T) {
 	}
 }
 
-func TestScopeFactorDiminishing(t *testing.T) {
-	base := FindingDeduction(Finding{Risk: "High", Confidence: "Confirmed", AffectedURLs: []string{"u"}})
-	maxed := FindingDeduction(Finding{Risk: "High", Confidence: "Confirmed", AffectedURLs: []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}})
-	if maxed > base*1.8+1e-9 || maxed <= base*1.7 {
-		t.Errorf("scope factor out of expected band: base=%f maxed=%f", base, maxed)
+func TestSeverityHigherPenalizesMore(t *testing.T) {
+	high := ScoreScan([]Alert{{PluginID: "1", Name: "RCE", Risk: "High", Confidence: "Confirmed", URL: "https://e.com/a"}})
+	med := ScoreScan([]Alert{{PluginID: "2", Name: "Misconfig", Risk: "Medium", Confidence: "Confirmed", URL: "https://e.com/b"}})
+	low := ScoreScan([]Alert{{PluginID: "3", Name: "Info", Risk: "Low", Confidence: "Confirmed", URL: "https://e.com/c"}})
+	info := ScoreScan([]Alert{{PluginID: "4", Name: "Hint", Risk: "Informational", Confidence: "Confirmed", URL: "https://e.com/d"}})
+	if !(high.Score < med.Score && med.Score < low.Score && low.Score < info.Score) {
+		t.Errorf("severity ordering wrong: High=%d Med=%d Low=%d Info=%d", high.Score, med.Score, low.Score, info.Score)
+	}
+}
+
+func TestDiminishingReturnsForManyFindings(t *testing.T) {
+	one := ScoreScan([]Alert{{PluginID: "1", Name: "XSS", Risk: "High", Confidence: "Confirmed", URL: "https://e.com/a"}})
+	tenAlerts := make([]Alert, 10)
+	for i := 0; i < 10; i++ {
+		tenAlerts[i] = Alert{
+			PluginID: fmt.Sprintf("vuln%d", i), Name: fmt.Sprintf("Vuln %d", i), Risk: "High", Confidence: "Confirmed",
+			URL: "https://e.com/" + string(rune('a'+i)),
+		}
+	}
+	ten := ScoreScan(tenAlerts)
+	// 10 distinct findings should penalize more than 1, but less than 10×
+	deductionOne := 100 - one.Score
+	deductionTen := 100 - ten.Score
+	if deductionTen <= deductionOne {
+		t.Error("more findings should deduct more")
+	}
+	if deductionTen >= deductionOne*10 {
+		t.Errorf("diminishing returns broken: 10× findings deducted %fx more", float64(deductionTen)/float64(deductionOne))
 	}
 }

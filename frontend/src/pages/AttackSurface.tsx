@@ -82,7 +82,7 @@ export default function AttackSurfacePage() {
 
       {surface && (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '0.625rem', marginBottom: '1.25rem' }}>
             <StatCard label="Endpoints" value={String(surface.total)} icon="hub" />
             {methods.slice(0, 3).map(([m, n]) => (
               <StatCard key={m} label={m} value={String(n)} icon="swap_horiz" />
@@ -92,7 +92,7 @@ export default function AttackSurfacePage() {
             ))}
           </div>
 
-          <form className="panel search-panel" onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <form className="panel search-panel" onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '1.25rem' }}>
             <span className="material-symbols-outlined search-icon">search</span>
             <input
               className="search-input"
@@ -131,7 +131,7 @@ export default function AttackSurfacePage() {
             </div>
           )}
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {surface.endpoints.map((ep: Endpoint) => (
               <div key={ep.id || ep.url + ep.method} className="card">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -167,10 +167,10 @@ export default function AttackSurfacePage() {
 
 function StatCard({ label, value, icon }: { label: string; value: string; icon: string }) {
   return (
-    <div className="panel" style={{ padding: '0.9rem 1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-      <span className="material-symbols-outlined" style={{ color: 'var(--color-lavender)', opacity: 0.8 }}>{icon}</span>
+    <div className="panel" style={{ padding: '0.65rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+      <span className="material-symbols-outlined" style={{ color: 'var(--color-lavender)', opacity: 0.8, fontSize: '1.15rem' }}>{icon}</span>
       <div>
-        <div style={{ fontSize: '1.35rem', fontWeight: 700, lineHeight: 1, color: 'var(--color-bright-gray)' }}>{value}</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 1, color: 'var(--color-bright-gray)' }}>{value}</div>
         <div style={{ fontFamily: 'var(--font-inter)', fontSize: 'var(--text-eyebrow)', color: 'var(--color-medium-gray)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-eyebrow)', fontWeight: 600 }}>{label}</div>
       </div>
     </div>

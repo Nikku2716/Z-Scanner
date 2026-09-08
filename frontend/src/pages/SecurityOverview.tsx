@@ -131,16 +131,16 @@ export default function AnalyticsPage() {
           <h3 style={sectionTitle()}>Vulnerability Categories</h3>
           {s.categories.length === 0 && <Empty text="No vulnerabilities found — clean scan." />}
           {s.categories.map((c) => (
-            <div key={c.pluginId + c.name} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', padding: '0.55rem 0', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
-              <div style={{ minWidth: 0 }}>
+            <div key={c.pluginId + c.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.75rem', padding: '0.55rem 0', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+              <div style={{ minWidth: 0, overflow: 'hidden', display: 'flex', alignItems: 'baseline', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => { const f = data.findings.find((x) => x.name === c.name && x.pluginId === c.pluginId); if (f) openFinding(f); }}
-                  style={{ ...linkStyle, color: SEVERITY_COLORS[c.risk] ?? 'var(--color-bright-gray)', fontWeight: 600 }}
+                  style={{ ...linkStyle, color: SEVERITY_COLORS[c.risk] ?? 'var(--color-bright-gray)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}
                   title="View finding detail"
                 >
                   {c.name}
                 </button>
-                {c.cweId && <span style={{ marginLeft: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--color-muted-gray)' }}>CWE-{c.cweId}</span>}
+                {c.cweId && <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--color-muted-gray)', flexShrink: 0 }}>CWE-{c.cweId}</span>}
               </div>
               <span style={{ fontWeight: 700, flexShrink: 0, color: 'var(--color-bright-gray)' }}>{c.count}</span>
             </div>
@@ -153,7 +153,7 @@ export default function AnalyticsPage() {
           {data.mostAffected.length === 0 && <Empty text="No endpoint has known findings." />}
           {data.mostAffected.map((h) => (
             <div key={h.url} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', padding: '0.55rem 0', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
-              <code style={{ fontSize: '0.8rem', wordBreak: 'break-all', color: 'var(--color-bright-gray)' }}>{h.path}</code>
+              <code style={{ fontSize: '0.8rem', wordBreak: 'break-all', color: 'var(--color-bright-gray)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{h.path}</code>
               <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.72rem', color: h.risks.High ? 'var(--color-error-red)' : 'var(--color-medium-gray)', fontWeight: 600, flexShrink: 0 }}>
                 {h.findingCount} finding{h.findingCount !== 1 ? 's' : ''}
               </span>

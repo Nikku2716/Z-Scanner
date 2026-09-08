@@ -192,12 +192,9 @@ Properties:
 Raw ZAP alerts frequently contain exact or near duplicates (same issue hit at several URLs or re-reported across phases). BlackHawk groups them into **findings** keyed by:
 
 - plugin ID,
-- alert name,
-- normalized URL path (query string normalized, params sorted),
-- parameter name,
-- risk + confidence + CWE metadata.
+- alert name.
 
-Each finding aggregates its affected URLs and retains the original alerts (URL, method, param, attack payload, evidence) so no analyst-relevant evidence is lost. Exact duplicate alerts are removed; distinct URLs under one finding are preserved as `affectedUrls`.
+Each finding aggregates its affected URLs and retains the original alerts (URL, method, param, attack payload, evidence) so no analyst-relevant evidence is lost. This matches how professional security tools (Burp Suite, Nessus, Qualys) present findings — by vulnerability class, not by individual instance. "Absence of Anti-CSRF Tokens" across 6 pages appears as one finding with 6 affected URLs, not 6 identical-looking entries.
 
 ---
 

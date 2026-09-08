@@ -348,7 +348,7 @@ export default function Dashboard() {
               style={{
                 opacity: isDeleting ? 0.4 : 1,
                 padding: '1rem 1.25rem',
-                borderLeft: isRunning ? '3px solid var(--color-amethyst)' : isComplete ? '3px solid var(--color-success-green)' : '3px solid rgba(255, 255, 255, 0.1)',
+
                 transition: 'border-color var(--transition), background var(--transition)',
               }}
             >
